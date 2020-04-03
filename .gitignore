@@ -14,3 +14,8 @@
 /target/classes/app/infy/util/repository/EmployeeRestRepository.class
 /target/classes/bootstrap.properties
 /target/classes/infy_employees_employee_detail.sql
+/.factorypath
+/target/classes/META-INF/spring-configuration-metadata.json
+/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+/target/test-classes/test/app/infy/util/BusServiceHelperTest.class
