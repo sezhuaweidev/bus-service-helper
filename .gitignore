@@ -19,3 +19,7 @@
 /target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
 /target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
 /target/test-classes/test/app/infy/util/BusServiceHelperTest.class
+/target/classes/app/infy/util/entity/EmployeeDetail.class
+/target/classes/app/infy/util/repository/AbstractEmployeeRepository.class
+/target/classes/app/infy/util/repository/impl/EmployeeDbRepository.class
+/target/classes/app/infy/util/repository/impl/EmployeeRestRepository.class
