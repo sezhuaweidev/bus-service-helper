@@ -23,3 +23,14 @@
 /target/classes/app/infy/util/repository/AbstractEmployeeRepository.class
 /target/classes/app/infy/util/repository/impl/EmployeeDbRepository.class
 /target/classes/app/infy/util/repository/impl/EmployeeRestRepository.class
+/target/classes/app/infy/util/controller/BusServiceController.class
+/target/classes/app/infy/util/exception/ApplicationException.class
+/target/classes/app/infy/util/helper/AppResponse.class
+/target/classes/app/infy/util/helper/MessageConstants.class
+/target/classes/app/infy/util/helper/StatusEnum.class
+/target/classes/app/infy/util/model/ShuttleBookingAck.class
+/target/classes/app/infy/util/model/ShuttleBookingStatus.class
+/target/classes/app/infy/util/model/ShuttleBookingStatusUpdate.class
+/target/classes/app/infy/util/model/ShuttleRequest.class
+/target/classes/app/infy/util/service/ShuttleService.class
+/target/classes/app/infy/util/service/impl/ShuttleServiceImpl.class
