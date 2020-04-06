@@ -28,6 +28,7 @@ public class EmailSenderService {
         context.setVariables(mail.getProps());
         String html = templateEngine.process("shuttle_req_mail", context);
         helper.setTo(mail.getMailTo());
+        helper.setCc(mail.getMailCc());
         helper.setText(html, true);
         helper.setSubject(mail.getSubject());
         helper.setFrom(mail.getFrom());

@@ -1,12 +1,25 @@
 package app.infy.util.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="employee_detail")
 public class EmployeeDetail {
+	
+	@Id
+	@Column(name="emp_id")
 	private Integer empId;
 
+	@Column(name="emp_name")
 	private String empName;
 
+	@Column(name="emp_email")
 	private String empMail;
 
+	@Column(name="emp_manager_id")
 	private Integer empManagerId;
 	
 	public EmployeeDetail() {

@@ -7,6 +7,7 @@ public class Mail {
 
     private String from;
     private String mailTo;
+    private String[] mailCc;
     private String subject;
     private List<Object> attachments;
     private Map<String, Object> props;
@@ -51,6 +52,14 @@ public class Mail {
 
 	public void setProps(Map<String, Object> props) {
 		this.props = props;
+	}
+
+	public String[] getMailCc() {
+		return mailCc;
+	}
+
+	public void setMailCc(String[] mailCc) {
+		this.mailCc = mailCc;
 	}
 
 }

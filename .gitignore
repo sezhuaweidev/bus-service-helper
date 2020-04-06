@@ -34,3 +34,15 @@
 /target/classes/app/infy/util/model/ShuttleRequest.class
 /target/classes/app/infy/util/service/ShuttleService.class
 /target/classes/app/infy/util/service/impl/ShuttleServiceImpl.class
+/target/classes/app/infy/util/config/SwaggerConfig.class
+/target/classes/app/infy/util/converter/EntityToShuttleRequestConverter.class
+/target/classes/app/infy/util/converter/FormToShuttleRequestConverter.class
+/target/classes/app/infy/util/entity/ShuttleRequest.class
+/target/classes/app/infy/util/entity/ShuttleTiming.class
+/target/classes/app/infy/util/model/FormShuttleRequest.class
+/target/classes/app/infy/util/model/Mail.class
+/target/classes/app/infy/util/repository/EmployeeDetailRepository.class
+/target/classes/app/infy/util/repository/ShuttleRequestRepository.class
+/target/classes/app/infy/util/repository/ShuttleTimingRepository.class
+/target/classes/app/infy/util/service/EmailSenderService.class
+/target/classes/templates/shuttle_req_mail.html
