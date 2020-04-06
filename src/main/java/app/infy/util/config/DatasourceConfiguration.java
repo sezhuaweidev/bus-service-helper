@@ -23,7 +23,7 @@ import app.infy.util.repository.impl.EmployeeDbRepository;
  * Datasource properties are first read from properties file.
  * Then the HikariDataSource is configured. Hikari is a connection pooling framework.
  * Then our {@link AbstractEmployeeRepository} is initialized
- * with {@link aEmployeeDbRepository} implementation.
+ * with {@link EmployeeDbRepository} implementation.
  * @author Soham
  */
 @Configuration
