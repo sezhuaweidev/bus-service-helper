@@ -1,7 +1,14 @@
 package app.infy.util.controller;
 
-import javax.validation.Valid;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.mail.MessagingException;
+import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -12,7 +19,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import app.infy.util.model.Mail;
 import app.infy.util.exception.ApplicationException;
 import app.infy.util.helper.AppResponse;
 import app.infy.util.helper.MessageConstants;
@@ -21,6 +28,7 @@ import app.infy.util.model.ShuttleBookingAck;
 import app.infy.util.model.ShuttleBookingStatus;
 import app.infy.util.model.ShuttleBookingStatusUpdate;
 import app.infy.util.model.ShuttleRequest;
+import app.infy.util.service.EmailSenderService;
 import app.infy.util.service.ShuttleService;
 
 @RestController
@@ -28,6 +36,8 @@ import app.infy.util.service.ShuttleService;
 public class BusServiceController {
 
 	private ShuttleService shuttleService;
+	@Autowired
+	EmailSenderService emailSenderService;
 	
 	public BusServiceController(ShuttleService shuttleService) {
 		this.shuttleService = shuttleService;
@@ -43,6 +53,32 @@ public class BusServiceController {
 		//logic
 		String saveStatus = shuttleService.prepareShuttleRequest(shuttleRequest);
 		
+		
+		//send email
+		System.out.println("START... Sending email");
+		String shuttleRequestId = "";//get this id from ShuttleRequest model
+        Mail mail = new Mail();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+        mail.setFrom("sez.huawei.dev@gmail.com");//replace with your desired email
+        mail.setMailTo("surya.sahu92@gmail.com");//replace with your desired email
+        mail.setSubject("Shuttle Pass!");
+        //email template parameter
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("name", "Manager!");//put manager name
+        model.put("location", "Infosys DC");
+        model.put("sign", "Transportation Team");
+        model.put("approveUrl", MessageConstants.BETA_BASE_URL+shuttleRequestId+"/approve");// put shuttle request time
+        model.put("rejectUrl", MessageConstants.BETA_BASE_URL+shuttleRequestId+"/reject");// put shuttle request time
+        model.put("dateTime", sdf.format(new Date()));// put shuttle request time
+        mail.setProps(model);
+        try {
+			emailSenderService.sendEmail(mail);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        System.out.println("END... Email sent success");
 		
 		return null;
 	}
