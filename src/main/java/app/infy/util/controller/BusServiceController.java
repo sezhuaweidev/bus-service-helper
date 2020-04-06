@@ -73,10 +73,8 @@ public class BusServiceController {
         mail.setProps(model);
         try {
 			emailSenderService.sendEmail(mail);
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new ApplicationException(MessageConstants.EMAIL_FAILED+e.getMessage());
 		}
         System.out.println("END... Email sent success");
 		
