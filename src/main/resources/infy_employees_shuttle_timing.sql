@@ -16,28 +16,29 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `employee_detail`
+-- Table structure for table `shuttle_timing`
 --
 
-DROP TABLE IF EXISTS `employee_detail`;
+DROP TABLE IF EXISTS `shuttle_timing`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `employee_detail` (
-  `emp_id` int(11) NOT NULL,
-  `emp_name` varchar(80) NOT NULL,
-  `emp_email` varchar(100) NOT NULL,
-  `emp_manager_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`emp_id`)
+CREATE TABLE `shuttle_timing` (
+  `code` varchar(40) NOT NULL,
+  `start_time` time(2) NOT NULL,
+  `return_time1` time(2) NOT NULL,
+  `return_time2` time(2) NOT NULL,
+  PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `employee_detail`
+-- Dumping data for table `shuttle_timing`
 --
 
-LOCK TABLES `employee_detail` WRITE;
-/*!40000 ALTER TABLE `employee_detail` DISABLE KEYS */;
-/*!40000 ALTER TABLE `employee_detail` ENABLE KEYS */;
+LOCK TABLES `shuttle_timing` WRITE;
+/*!40000 ALTER TABLE `shuttle_timing` DISABLE KEYS */;
+INSERT INTO `shuttle_timing` VALUES ('STL0800','08:00:00.00','16:00:00.00','18:15:00.00'),('STL1100','11:00:00.00','16:00:00.00','19:15:00.00');
+/*!40000 ALTER TABLE `shuttle_timing` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
