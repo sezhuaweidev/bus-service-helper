@@ -37,4 +37,14 @@ public class CoreDataController {
 		return infyDcs;
 	} 
 	
+	@GetMapping(value = "getCountry")
+	public String getCountry() {
+		return "Write country service";
+	}
+	
+	@GetMapping(value = "getDc")
+	public String getDc() {
+		return "Write Dc service";
+	}
+	
 }
