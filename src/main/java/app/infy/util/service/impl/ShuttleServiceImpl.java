@@ -3,12 +3,16 @@ package app.infy.util.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
 
 import app.infy.util.entity.EmployeeDetail;
+import app.infy.util.entity.InfyDc;
 import app.infy.util.entity.ShuttleRequest;
 import app.infy.util.entity.ShuttleTiming;
 import app.infy.util.exception.ApplicationException;
@@ -18,6 +22,7 @@ import app.infy.util.model.FormShuttleRequest;
 import app.infy.util.model.Mail;
 import app.infy.util.model.ShuttleBookingStatus;
 import app.infy.util.repository.EmployeeDetailRepository;
+import app.infy.util.repository.InfyDcRepository;
 import app.infy.util.repository.ShuttleRequestRepository;
 import app.infy.util.repository.ShuttleTimingRepository;
 import app.infy.util.service.EmailSenderService;
@@ -33,13 +38,16 @@ public class ShuttleServiceImpl implements ShuttleService {
 	private EmailSenderService emailSenderService;
 	private Converter<ShuttleRequest, ShuttleBookingStatus> entityToShuttleRequestModelConverter;
 	
+	private InfyDcRepository infyDcRepository;
+	
 	public ShuttleServiceImpl(
 			EmployeeDetailRepository employeeDetailRepository,
 			ShuttleRequestRepository shuttleRequestRepository,
 			ShuttleTimingRepository shuttleTimingRepository,
 			Converter<FormShuttleRequest, ShuttleRequest> formToShuttleReuqestConverter,
 			Converter<ShuttleRequest, ShuttleBookingStatus> entityToShuttleRequestModelConverter,
-			EmailSenderService emailSenderService ) {
+			EmailSenderService emailSenderService,
+			InfyDcRepository infyDcRepository ) {
 		
 		this.employeeDetailRepository = employeeDetailRepository;
 		this.shuttleRequestRepository = shuttleRequestRepository;
@@ -47,6 +55,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 		this.formToShuttleReuqestConverter = formToShuttleReuqestConverter;
 		this.entityToShuttleRequestModelConverter = entityToShuttleRequestModelConverter;
 		this.emailSenderService = emailSenderService;
+		this.infyDcRepository = infyDcRepository;
 	}
 	
 	@Override
@@ -166,6 +175,21 @@ public class ShuttleServiceImpl implements ShuttleService {
 	public void processShuttleRequests() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	@Cacheable
+	@CachePut
+	public List<ShuttleTiming> getAllShuttles() {
+		// TODO Auto-generated method stub
+		return shuttleTimingRepository.findAll();
+	}
+
+	@Override
+	@Cacheable
+	@CachePut
+	public List<InfyDc> getAllInfyDcs() {
+		return infyDcRepository.findAll();
 	}
 
 }
