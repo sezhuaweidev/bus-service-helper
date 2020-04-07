@@ -5,159 +5,159 @@
 <title>Buss Pass</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" type='text/css'
-	href="../static/css/bootstrap.min.css"
-	th:href="@{/css/bootstrap.min.css}" />
-<script src="../static/js/bootstrap.min.js"
-	th:src="@{/js/bootstrap.min.js}"></script>
-<link rel='stylesheet' type='text/css'
-	href='../static/css/coming-soon.min.css'
-	th:href="@{/css/coming-soon.min.css}" />
+<link rel="stylesheet" type='text/css' href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+<script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+<link rel='stylesheet' type='text/css' href='../static/css/coming-soon.min.css' th:href="@{/css/coming-soon.min.css}" />
 
 
 <style>
-.right_panel {
+
+.right_panel{
 	width: 42rem;
 	z-index: 99;
 }
-
-.right_panel label {
+.right_panel label{
 	font-weight: bold;
 }
 </style>
 
 </head>
-<body>
+<body onload = "getEmployeeDetails()">
 
-	<div class="overlay"></div>
+  <div class="overlay"></div>
   <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
     <source src="../static/video/bus.mp4" th:src="@{/video/bus.mp4}" type="video/mp4">
   </video>
 	<div class="register_panel d-flex">
-		<div class="masthead">
-			<div class="masthead-bg"></div>
-			<div class="container h-100">
-				<div class="row h-100">
-					<div class="col-12 my-auto">
-						<div class="masthead-content text-white py-5 pb-2">
-							<h2 class="mb-3 text-center">Infosys Buss Pass</h2>
-							<h3 class="mb-3 text-center">Coming Soon!!!</h3>
+	<div class="masthead">
+    <div class="masthead-bg"></div>
+    <div class="container h-100">
+      <div class="row h-100">
+        <div class="col-12 my-auto">
+          <div class="masthead-content text-white py-5 pb-2">
+            <h2 class="mb-3 text-center">Infosys Buss Pass</h2>
+            <h3 class="mb-3 text-center">Coming Soon!!!</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="right_panel">
+  <div class="row">
+  	<div class="col-md-12">
+		  <h2 class="text-white">Personal Details:</h2>
+		  <div class="card">
+			<div class="card-body">
+				<div class="form-group row mb-0">
+					<label for="staticEmail" class="col-md-3 col-form-label text-right">Employee Id:</label>
+					<div class="col-md-9">
+						<label for="staticEmaildsd" class="col-form-label" th:text="${employeeid}"></label>
+					</div>
+				</div>
+				<div class="form-group row mb-0">
+					<label for="staticEmail" class="col-md-3 col-form-label text-right">Employee Name:</label>
+					<div class="col-md-9">
+						<label for="staticEmaildsd" class="col-form-label" th:text="${employeename}"></label>
+					</div>
+				</div>
+				<!-- 
+				<div class="form-group row mb-0">
+					<label for="staticEmail" class="col-md-3 col-form-label text-right">Project Name:</label>
+					<div class="col-md-9">
+						<label for="staticEmaildsd" class="col-form-label">Huawei Project</label>
+					</div>
+				</div>
+				<div class="form-group row mb-0">
+					<label for="staticEmail" class="col-md-3 col-form-label text-right">Manager Name:</label>
+					<div class="col-md-9">
+						<label for="staticEmaildsd" class="col-form-label">Pramod Kumar Pradhan</label>
+					</div>
+				</div>-->
+			
+			</div>
+		  </div>
+		  <h2 class="text-white">Pass Entry:</h2>
+		  <div class="card">
+			  <div class="card-body">
+				<form action="">
+
+				<!-- <div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>Region:</label> <select class="form-control" id="region">
+								<option value="">Select Region</option>
+								<option>Middle East</option>
+								<option>South East</option>
+								<option>North East</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>Country:</label> <select class="form-control"
+								id="country">
+								<option value="">Select Country</option>
+								<option>India</option>
+								<option>China</option>
+								<option>UAE</option>
+							</select>
+						</div>
+					</div>
+				</div> -->
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>DC From:</label> 
+								<select class="form-control" id="dcFrom">
+									<option value="-1">Select DC</option>
+									<option th:each="data : ${shuttledcs}" th:text="${data.value}" th:value="${data.code}">
+								</select>
+						</div>
+					</div>
+					<!-- <div class="col-sm-6">
+						<div class="form-group">
+							<label>DC To:</label> <select class="form-control" id="dcTo">
+								<option value="">Select DC</option>
+								<option>Bhubaneswar STP</option>
+								<option>Bhubaneswar SEZ</option>
+							</select>
+						</div>
+					</div> -->
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Date:</label> <input class="form-control" type="text"
+								readonly="readonly" value="07-04-2020" />
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-		<div class="right_panel">
-			<div class="row">
-				<div class="col-md-12">
-					<h2 class="text-white">Personal Details:</h2>
-					<div class="card">
-						<div class="card-body">
-							<div class="form-group row mb-0">
-								<label for="staticEmail"
-									class="col-md-3 col-form-label text-right">Employee Id:</label>
-								<div class="col-md-9">
-									<label for="staticEmaildsd" class="col-form-label">1019017</label>
-								</div>
-							</div>
-							<div class="form-group row mb-0">
-								<label for="staticEmail"
-									class="col-md-3 col-form-label text-right">Employee
-									Name:</label>
-								<div class="col-md-9">
-									<label for="staticEmaildsd" class="col-form-label">Surya
-										Narayan Sahu</label>
-								</div>
-							</div>
-
-						</div>
-					</div>
-					<h2 class="text-white">Pass Entry:</h2>
-					<div class="card" style="margin-bottom:20px;">
-						<div class="card-body">
-							<form action="">
-
-								<div class="row">
-									<div class="col-sm-6">
-										<div class="form-group">
-											<label>Region:</label> <select class="form-control"
-												id="region">
-												<option value="">Select Region</option>
-												<option>Middle East</option>
-												<option>South East</option>
-												<option>North East</option>
-											</select>
-										</div>
-									</div>
-									<div class="col-sm-6">
-										<div class="form-group">
-											<label>Country:</label> <select class="form-control"
-												id="country">
-												<option value="">Select Country</option>
-												<option>India</option>
-												<option>China</option>
-												<option>UAE</option>
-											</select>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-6">
-										<div class="form-group">
-											<label>DC From:</label> <select class="form-control"
-												id="dcFrom">
-												<option value="">Select DC</option>
-												<option>Bhubaneswar STP</option>
-												<option>Bhubaneswar SEZ</option>
-											</select>
-										</div>
-									</div>
-									<div class="col-sm-6">
-										<div class="form-group">
-											<label>DC To:</label> <select class="form-control" id="dcTo">
-												<option value="">Select DC</option>
-												<option>Bhubaneswar STP</option>
-												<option>Bhubaneswar SEZ</option>
-											</select>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-6">
-										<div class="form-group">
-											<label>Date:</label> <input class="form-control" type="text"
-												readonly="readonly" value="07-04-2020" />
-										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="form-group">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
 							<label>Shuttle Timing:</label> <select class="form-control" id="timming">
 								<option value="-1">Select Time</option>
 									<option th:each="data : ${shuttletimings}" th:text="${data.startTime}" th:value="${data.code}">
 							</select>
 						</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-6">
-										<div class="form-group">
-											<label>Reason:</label>
-											<textarea class="form-control" rows="3" cols="5"></textarea>
-										</div>
-									</div>
-								</div>
-								<div class="form-group" style="text-align: center;">
-									<button type="submit" class="btn btn-info mr-2">Submit</button>
-									<button type="reset" class="btn btn-warning">Reset</button>
-								</div>
-							</form>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Reason:</label> 
+							<textarea class="form-control" rows="3" cols="5"></textarea>
 						</div>
 					</div>
 				</div>
-			</div>
-
-
-		</div>
-	</div>
+				<div class="form-group" style="text-align: center;">
+					<button type="submit" class="btn btn-info mr-2">Submit</button>
+					<button type="reset" class="btn btn-warning">Reset</button>
+				</div>
+			</form>
+			  </div>
+		  </div>
+  	</div>
+  </div>
+  	
+  
+  </div>
+</div> 
 </body>
 </html>
