@@ -22,11 +22,10 @@
 </style>
 
 </head>
-<body>
+<body onload = "getEmployeeDetails()">
 
   <div class="overlay"></div>
-  <video playsinline="playsinline" autoplay="autoplay" muted="mute
-  d" loop="loop">
+  <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
     <source src="../static/video/bus.mp4" th:src="@{/video/bus.mp4}" type="video/mp4">
   </video>
 	<div class="register_panel d-flex">
@@ -52,15 +51,16 @@
 				<div class="form-group row mb-0">
 					<label for="staticEmail" class="col-md-3 col-form-label text-right">Employee Id:</label>
 					<div class="col-md-9">
-						<label for="staticEmaildsd" class="col-form-label">1019017</label>
+						<label for="staticEmaildsd" class="col-form-label" th:text="${employeeid}"></label>
 					</div>
 				</div>
 				<div class="form-group row mb-0">
 					<label for="staticEmail" class="col-md-3 col-form-label text-right">Employee Name:</label>
 					<div class="col-md-9">
-						<label for="staticEmaildsd" class="col-form-label">Surya Narayan Sahu</label>
+						<label for="staticEmaildsd" class="col-form-label" th:text="${employeename}"></label>
 					</div>
 				</div>
+				<!-- 
 				<div class="form-group row mb-0">
 					<label for="staticEmail" class="col-md-3 col-form-label text-right">Project Name:</label>
 					<div class="col-md-9">
@@ -72,7 +72,7 @@
 					<div class="col-md-9">
 						<label for="staticEmaildsd" class="col-form-label">Pramod Kumar Pradhan</label>
 					</div>
-				</div>
+				</div>-->
 			
 			</div>
 		  </div>
@@ -107,12 +107,11 @@
 				<div class="row">
 					<div class="col-sm-6">
 						<div class="form-group">
-							<label>DC From:</label> <select class="form-control"
-								id="dcFrom">
-								<option value="">Select DC</option>
-								<option>Bhubaneswar STP</option>
-								<option>Bhubaneswar SEZ</option>
-							</select>
+							<label>DC From:</label> 
+								<select class="form-control" id="dcFrom">
+									<option value="-1">Select DC</option>
+									<option th:each="data : ${shuttledcs}" th:text="${data.value}" th:value="${data.code}">
+								</select>
 						</div>
 					</div>
 					<!-- <div class="col-sm-6">
@@ -134,12 +133,9 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
-							<label>Shuttle Timing:</label> <select class="form-control"
-								id="timming">
-								<option value="">Select Time</option>
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
+							<label>Shuttle Timing:</label> <select class="form-control" id="timming">
+								<option value="-1">Select Time</option>
+									<option th:each="data : ${shuttletimings}" th:text="${data.startTime}" th:value="${data.code}">
 							</select>
 						</div>
 					</div>

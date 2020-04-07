@@ -17,7 +17,6 @@ public class FormToShuttleRequestConverter implements Converter<FormShuttleReque
 		
 		ShuttleRequest shuttleRequest = new ShuttleRequest();
 		shuttleRequest.setShuttleId(source.getShuttleId());
-		shuttleRequest.setRequestId(source.getShuttleId());
 		shuttleRequest.setApprover(source.getApprover());
 		shuttleRequest.setRequester(source.getRequester());
 		shuttleRequest.setForDate(source.getForDate());

@@ -84,11 +84,5 @@ public class ShuttleTiming {
 			return false;
 		return true;
 	}
-
-	@Override
-	public String toString() {
-		return "ShuttleTiming [code=" + code + ", startTime=" + startTime + ", returnTime1=" + returnTime1
-				+ ", returnTime2=" + returnTime2 + "]";
-	}
 	
 }
