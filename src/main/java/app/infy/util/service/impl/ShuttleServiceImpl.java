@@ -1,12 +1,16 @@
 package app.infy.util.service.impl;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.cache.annotation.CachePut;
+import javax.mail.MessagingException;
+
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
@@ -37,6 +41,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 	private ShuttleTimingRepository shuttleTimingRepository;
 	private EmailSenderService emailSenderService;
 	private Converter<ShuttleRequest, ShuttleBookingStatus> entityToShuttleRequestModelConverter;
+	private CacheManager cacheManager;
 	
 	private InfyDcRepository infyDcRepository;
 	
@@ -47,7 +52,8 @@ public class ShuttleServiceImpl implements ShuttleService {
 			Converter<FormShuttleRequest, ShuttleRequest> formToShuttleReuqestConverter,
 			Converter<ShuttleRequest, ShuttleBookingStatus> entityToShuttleRequestModelConverter,
 			EmailSenderService emailSenderService,
-			InfyDcRepository infyDcRepository ) {
+			InfyDcRepository infyDcRepository,
+			CacheManager cacheManager ) {
 		
 		this.employeeDetailRepository = employeeDetailRepository;
 		this.shuttleRequestRepository = shuttleRequestRepository;
@@ -56,6 +62,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 		this.entityToShuttleRequestModelConverter = entityToShuttleRequestModelConverter;
 		this.emailSenderService = emailSenderService;
 		this.infyDcRepository = infyDcRepository;
+		this.cacheManager = cacheManager;
 	}
 	
 	@Override
@@ -71,6 +78,10 @@ public class ShuttleServiceImpl implements ShuttleService {
 			throw new ApplicationException("REQUEST_ALREADY_EXISTS");
 		} else {
 			ShuttleRequest usr = shuttleRequestRepository.save(sr);
+			
+			//putting data in a 28 minute time to live cache.
+			//key: shuttleRequestId, value: current epochmilis
+			cacheManager.getCache("shuttleRequestIdList").put(usr.getRequestId(), new Date().getTime());
 			
 			//send email
 			System.out.println("START... Sending email");
@@ -158,11 +169,11 @@ public class ShuttleServiceImpl implements ShuttleService {
 			        model.put("rejectUrl", "http://localhost:8082/api/shuttleservice/rejected");// put shuttle request time
 			        model.put("dateTime", sdf.format(new Date()));// put shuttle request time
 			        mail.setProps(model);
-			        try {
+					try {
 						emailSenderService.sendEmail(mail);
-					} catch (Exception e) {
+					} catch (MessagingException | IOException e) {
 						e.printStackTrace();
-						throw new ApplicationException(MessageConstants.EMAIL_FAILED+e.getMessage());
+						throw new ApplicationException(MessageConstants.EMAIL_FAILED_BUT_APPROVED);
 					}
 				}
 				
@@ -178,16 +189,14 @@ public class ShuttleServiceImpl implements ShuttleService {
 	}
 
 	@Override
-	@Cacheable
-	@CachePut
+	@Cacheable("shuttletiming")
 	public List<ShuttleTiming> getAllShuttles() {
 		// TODO Auto-generated method stub
 		return shuttleTimingRepository.findAll();
 	}
 
 	@Override
-	@Cacheable
-	@CachePut
+	@Cacheable("infydc")
 	public List<InfyDc> getAllInfyDcs() {
 		return infyDcRepository.findAll();
 	}
