@@ -6,31 +6,20 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="infy_dc")
-public class InfyDc {
-
+@Table(name="infy_country")
+public class InfyCountry {
+	
 	@Id
 	@Column(name="code")
 	private String code;
 
-	@Column(name="value")
-	private String value;
-	
-	@Column(name = "country")
-	private String country;
-	
-	@Column(name = "continent")
+	@Column(name="name")
+	private String name;
+
+	@Column(name="continent")
 	private String continent;
 	
-	public String getContinent() {
-		return continent;
-	}
-
-	public void setContinent(String continent) {
-		this.continent = continent;
-	}
-
-	public InfyDc() { super(); }
+	public InfyCountry() { super(); }
 
 	public String getCode() {
 		return code;
@@ -40,20 +29,20 @@ public class InfyDc {
 		this.code = code;
 	}
 
-	public String getValue() {
-		return value;
+	public String getName() {
+		return name;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getCountry() {
-		return country;
+	public String getContinent() {
+		return continent;
 	}
 
-	public void setCountry(String country) {
-		this.country = country;
+	public void setContinent(String continent) {
+		this.continent = continent;
 	}
 
 	@Override
@@ -72,7 +61,7 @@ public class InfyDc {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		InfyDc other = (InfyDc) obj;
+		InfyCountry other = (InfyCountry) obj;
 		if (code == null) {
 			if (other.code != null)
 				return false;

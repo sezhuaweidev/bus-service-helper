@@ -9,12 +9,17 @@ public class FormShuttleRequest {
 	
 	@Pattern(regexp="(STL)[0-9]{4,4}",message="SHUTTLE_ID_INVALID")
 	private String shuttleId;
+	
 	@Digits(integer = 7,fraction = 0, message = "REQUESTER_ID_INVALID")
 	private Integer requester;
-	@Digits(integer = 7,fraction = 0, message = "APPROVER_ID_INVALID")
-	private Integer approver;
 	
-	@Length(min = 10, max=100, message="REASON_CHAR_VIOLATION")
+	@Length(min = 4, max=10, message="DC_FROM_LENGTH_VIOLATION")
+	private String dcFrom;
+	
+	@Length(min = 4, max=10, message="DC_TO_LENGTH_VIOLATION")
+	private String dcTo;
+	
+	@Length(min = 10, max=100, message="REASON_CHAR_LENGTH_VIOLATION")
 	private String reason;
 	
 	@Pattern(regexp = "[0-9]{2,2}-[0-9]{2,2}-[0-9]{4,4}", message="INVALID_FOR_DATE")
@@ -34,14 +39,6 @@ public class FormShuttleRequest {
 		this.requester = requester;
 	}
 
-	public Integer getApprover() {
-		return approver;
-	}
-
-	public void setApprover(Integer approver) {
-		this.approver = approver;
-	}
-
 	public String getReason() {
 		return reason;
 	}
@@ -57,4 +54,31 @@ public class FormShuttleRequest {
 	public void setForDate(String forDate) {
 		this.forDate = forDate;
 	}
+
+	public String getDcFrom() {
+		return dcFrom;
+	}
+
+	public void setDcFrom(String dcFrom) {
+		this.dcFrom = dcFrom;
+	}
+
+	public String getDcTo() {
+		return dcTo;
+	}
+
+	public void setDcTo(String dcTo) {
+		this.dcTo = dcTo;
+	}
+
+	public void setShuttleId(String shuttleId) {
+		this.shuttleId = shuttleId;
+	}
+
+	@Override
+	public String toString() {
+		return "FormShuttleRequest [shuttleId=" + shuttleId + ", requester=" + requester + ", dcFrom=" + dcFrom
+				+ ", dcTo=" + dcTo + ", reason=" + reason + ", forDate=" + forDate + "]";
+	}
+	
 }

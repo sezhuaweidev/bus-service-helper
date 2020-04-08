@@ -22,6 +22,12 @@ public class ShuttleRequest {
 	@Column(name="approver")
 	private Integer approver;
 	
+	@Column(name="dc_from")
+	private String dcFrom;
+	
+	@Column(name="dc_to")
+	private String dcTo;
+	
 	@Column(name="reason")
 	private String reason;
 
@@ -80,6 +86,22 @@ public class ShuttleRequest {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getDcFrom() {
+		return dcFrom;
+	}
+
+	public void setDcFrom(String dcFrom) {
+		this.dcFrom = dcFrom;
+	}
+
+	public String getDcTo() {
+		return dcTo;
+	}
+
+	public void setDcTo(String dcTo) {
+		this.dcTo = dcTo;
 	}
 
 	@Override

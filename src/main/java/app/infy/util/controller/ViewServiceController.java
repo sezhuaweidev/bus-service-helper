@@ -1,13 +1,9 @@
 package app.infy.util.controller;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import app.infy.util.entity.EmployeeDetail;
+import app.infy.util.entity.InfyCountry;
 import app.infy.util.entity.InfyDc;
+import app.infy.util.entity.InfyRegion;
 import app.infy.util.entity.ShuttleTiming;
 import app.infy.util.exception.ControllerException;
 import app.infy.util.helper.MessageConstants;
@@ -51,14 +49,10 @@ public class ViewServiceController {
 		
 		EmployeeDetail ed = employeeService.getEmployeeDetailById(intId);
 		List<ShuttleTiming> lstShuttleTimings = shuttleService.getAllShuttles();
-		//List<Region> lstRegion = shuttleService.getAllShuttles();
-		List<Map<String,String>> lstRegion = new ArrayList<Map<String,String>>();
-		Map<String,String> mapRegions = new HashMap<String,String>();
-		mapRegions.put("regionId","RG1001");
-		mapRegions.put("regionName","South East");
-		lstRegion.add(mapRegions);
-		
 		List<InfyDc> lstInfyDcs = shuttleService.getAllInfyDcs();
+		List<InfyRegion> lstRegion = shuttleService.getAllInfyRegion();
+		List<InfyCountry> lstCountry = shuttleService.getInfyCountry("ALL");
+		
 		
 		model.addAttribute("employeename", ed.getEmpName());
 		model.addAttribute("employeeid", ed.getEmpId());
@@ -66,6 +60,7 @@ public class ViewServiceController {
 		model.addAttribute("shuttletimings", lstShuttleTimings);
 		model.addAttribute("shuttledcs", lstInfyDcs);
 		model.addAttribute("region",lstRegion);
+		model.addAttribute("country",lstCountry);
 		model.addAttribute("path",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath());
 		
 		return "emp-shuttle";

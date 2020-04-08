@@ -2,11 +2,13 @@ package app.infy.util.service;
 
 import java.util.List;
 
+import app.infy.util.entity.InfyCountry;
 import app.infy.util.entity.InfyDc;
+import app.infy.util.entity.InfyRegion;
 import app.infy.util.entity.ShuttleTiming;
 import app.infy.util.helper.StatusEnum;
-import app.infy.util.model.ShuttleBookingStatus;
 import app.infy.util.model.FormShuttleRequest;
+import app.infy.util.model.ShuttleBookingStatus;
 
 public interface ShuttleService {
 
@@ -15,10 +17,10 @@ public interface ShuttleService {
 	ShuttleBookingStatus getShuttleStatusById(String id);
 
 	String updateShuttleBookingStatus(String shuttleRequestId, StatusEnum statusEnum);
-	
-	void processShuttleRequests();
 
 	List<ShuttleTiming> getAllShuttles();
 
 	List<InfyDc> getAllInfyDcs();
+	List<InfyRegion> getAllInfyRegion();
+	List<InfyCountry> getInfyCountry(String continent);
 }

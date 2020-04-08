@@ -27,12 +27,12 @@
     <p th:text="${'Hi ' + name}"></p>
 
     <p>
-      The employee number has been applied for shuttle pass for  <span th:text="${dateTime}"></span>.
+      <span th:text="${employeeName}"></span>(<span th:text="${employeeId}"></span>) has been applied for shuttle pass for  <span th:text="${dateTime}"></span>.
       Kindly do the need full action.
     </p>
     <p>
-    	<a href="${approveUrl}"><button type="button">Approve</button></a>
-    	<a href="${rejectUrl}"><button type="button">Reject</button></a>
+    	<a th:href="${approveUrl}"><button type="button">Approve</button></a>
+    	<a th:href="${rejectUrl}"><button type="button">Reject</button></a>
     </p>
     <p>
       Regards, <br />

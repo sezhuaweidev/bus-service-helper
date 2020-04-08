@@ -1,5 +1,7 @@
 package app.infy.util;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -8,6 +10,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -33,15 +36,20 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @SpringBootApplication
 @EnableCaching
+@EnableScheduling
 @EnableSwagger2
 public class BusServiceHelper extends SpringBootServletInitializer {
+	
+	//this is where the newly created shuttle requests are stored.
+	public static ConcurrentHashMap<String, Long> APPROVAL_MAP = new ConcurrentHashMap<>();
+	
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(BusServiceHelper.class, args);
 	}
 	
 	@Bean
 	public CacheManager cacheManager() {
-		return new ConcurrentMapCacheManager("shuttletiming","infydc","shuttleRequestIdList");
+		return new ConcurrentMapCacheManager("shuttletiming","infydc","infyregion","infycountry");
 	}
 	
 	@Override

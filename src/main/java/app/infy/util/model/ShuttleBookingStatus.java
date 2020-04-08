@@ -10,7 +10,25 @@ public class ShuttleBookingStatus {
 	private String reason;
 	private String forDate;
 	private String status;
+	private String dcFrom;
+	private String dcTo;
 	
+	public String getDcFrom() {
+		return dcFrom;
+	}
+
+	public void setDcFrom(String dcFrom) {
+		this.dcFrom = dcFrom;
+	}
+
+	public String getDcTo() {
+		return dcTo;
+	}
+
+	public void setDcTo(String dcTo) {
+		this.dcTo = dcTo;
+	}
+
 	public ShuttleBookingStatus() { super(); }
 
 	public String getRequestId() {
