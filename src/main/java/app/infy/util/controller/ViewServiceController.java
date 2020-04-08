@@ -66,7 +66,7 @@ public class ViewServiceController {
 		return "emp-shuttle";
 	}
 	
-	@GetMapping(value = "manage")
+	@GetMapping(value = "{id}/manage")
 	public String getManagePage() {
 		return "mng-shuttle";
 	}
