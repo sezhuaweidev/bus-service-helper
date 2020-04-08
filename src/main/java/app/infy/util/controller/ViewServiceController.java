@@ -17,6 +17,7 @@ import app.infy.util.entity.EmployeeDetail;
 import app.infy.util.entity.InfyCountry;
 import app.infy.util.entity.InfyDc;
 import app.infy.util.entity.InfyRegion;
+import app.infy.util.entity.ShuttleRequest;
 import app.infy.util.entity.ShuttleTiming;
 import app.infy.util.exception.ControllerException;
 import app.infy.util.helper.MessageConstants;
@@ -31,6 +32,7 @@ public class ViewServiceController {
 	private ShuttleService shuttleService;
 	@Autowired
 	private HttpServletRequest request;
+	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	
 	public ViewServiceController(EmployeeService employeeService, ShuttleService shuttleService) {
 		this.employeeService = employeeService;
@@ -40,7 +42,6 @@ public class ViewServiceController {
 	@GetMapping(value = "{id}")
 	public String getIndexPage(@PathVariable(name="id", required=true) String id, Model model) {
 		Integer intId = null;
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		try {
 			intId = Integer.parseInt(id); 
 		} catch(NumberFormatException nfe) {
@@ -66,8 +67,12 @@ public class ViewServiceController {
 		return "emp-shuttle";
 	}
 	
-	@GetMapping(value = "{id}/manage")
-	public String getManagePage() {
+	@GetMapping(value = "/manage/{id}")
+	public String getManagePage(@PathVariable(name="id", required=true) String id,Model model) {
+		Integer mngId = Integer.parseInt(id);
+		String curDate = sdf.format(new Date());
+		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByMngIdAndDate(mngId,curDate);
+		model.addAttribute("shuttleRequestList", lstShuttleTimings);
 		return "mng-shuttle";
 	}
 	

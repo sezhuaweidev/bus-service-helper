@@ -297,5 +297,10 @@ public class ShuttleServiceImpl implements ShuttleService {
 			
 		}
 	}
+
+	@Override
+	public List<ShuttleRequest> findShuttleRequestByMngIdAndDate(Integer approverId,String forDate) {
+		return shuttleRequestRepository.findShuttleRequestByMngIdAndDate(approverId,forDate);
+	}
 	
 }

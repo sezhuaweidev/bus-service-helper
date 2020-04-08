@@ -5,6 +5,7 @@ import java.util.List;
 import app.infy.util.entity.InfyCountry;
 import app.infy.util.entity.InfyDc;
 import app.infy.util.entity.InfyRegion;
+import app.infy.util.entity.ShuttleRequest;
 import app.infy.util.entity.ShuttleTiming;
 import app.infy.util.helper.StatusEnum;
 import app.infy.util.model.FormShuttleRequest;
@@ -23,4 +24,5 @@ public interface ShuttleService {
 	List<InfyDc> getAllInfyDcs();
 	List<InfyRegion> getAllInfyRegion();
 	List<InfyCountry> getInfyCountry(String continent);
+	List<ShuttleRequest> findShuttleRequestByMngIdAndDate(Integer approverId,String forDate);
 }

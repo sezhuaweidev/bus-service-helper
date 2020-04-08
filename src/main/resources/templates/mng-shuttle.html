@@ -48,9 +48,8 @@
 </head>
 <body>
 
-	<div class="overlay"></div>
-	<video playsinline="playsinline" autoplay="autoplay" muted="mute
-  d"
+	<div class="overlays"></div>
+	<video playsinline="playsinline" autoplay="autoplay" muted="muted"
 		loop="loop"> <source src="../static/video/bus.mp4"
 		th:src="@{/video/bus.mp4}" type="video/mp4"></video>
 	<div class="register_panel d-flex">
@@ -78,7 +77,6 @@
 								<thead>
 									<tr>
 										<th>Employee Id</th>
-										<th>Project Name</th>
 										<th>DC Name</th>
 										<th>Shuttle Time</th>
 										<th>Reason</th>
@@ -86,125 +84,12 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<td>1019017</td>
-										<td>Huawei Project</td>
-										<td>Bhubaneswar STP</td>
-										<td>07-04-2020 11:00</td>
-										<td>Health Issue</td>
-										<th>Pending</th>
-									</tr>
-									<tr>
-										<td>1019017</td>
-										<td>Huawei Project</td>
-										<td>Bhubaneswar STP</td>
-										<td>07-04-2020 11:00</td>
-										<td>Health Issue</td>
-										<th>Pending</th>
-									</tr>
-									<tr>
-										<td>1019017</td>
-										<td>Huawei Project</td>
-										<td>Bhubaneswar STP</td>
-										<td>07-04-2020 11:00</td>
-										<td>Health Issue</td>
-										<th>Pending</th>
-									</tr>
-									<tr>
-										<td>1019017</td>
-										<td>Huawei Project</td>
-										<td>Bhubaneswar STP</td>
-										<td>07-04-2020 11:00</td>
-										<td>Health Issue</td>
-										<th>Pending</th>
-									</tr>
-									<tr>
-										<td>1019017</td>
-										<td>Huawei Project</td>
-										<td>Bhubaneswar STP</td>
-										<td>07-04-2020 11:00</td>
-										<td>Health Issue</td>
-										<th>Pending</th>
-									</tr>
-									<tr>
-										<td>1019017</td>
-										<td>Huawei Project</td>
-										<td>Bhubaneswar STP</td>
-										<td>07-04-2020 11:00</td>
-										<td>Health Issue</td>
-										<th>Pending</th>
-									</tr>
-									<tr>
-										<td>1019017</td>
-										<td>Huawei Project</td>
-										<td>Bhubaneswar STP</td>
-										<td>07-04-2020 11:00</td>
-										<td>Health Issue</td>
-										<th>Pending</th>
-									</tr>
-									<tr>
-										<td>1019017</td>
-										<td>Huawei Project</td>
-										<td>Bhubaneswar STP</td>
-										<td>07-04-2020 11:00</td>
-										<td>Health Issue</td>
-										<th>Pending</th>
-									</tr>
-									<tr>
-										<td>1019017</td>
-										<td>Huawei Project</td>
-										<td>Bhubaneswar STP</td>
-										<td>07-04-2020 11:00</td>
-										<td>Health Issue</td>
-										<th>Pending</th>
-									</tr>
-									<tr>
-										<td>1019017</td>
-										<td>Huawei Project</td>
-										<td>Bhubaneswar STP</td>
-										<td>07-04-2020 11:00</td>
-										<td>Health Issue</td>
-										<th>Pending</th>
-									</tr>
-									<tr>
-										<td>1019017</td>
-										<td>Huawei Project</td>
-										<td>Bhubaneswar STP</td>
-										<td>07-04-2020 11:00</td>
-										<td>Health Issue</td>
-										<th>Pending</th>
-									</tr>
-									<tr>
-										<td>1019017</td>
-										<td>Huawei Project</td>
-										<td>Bhubaneswar STP</td>
-										<td>07-04-2020 11:00</td>
-										<td>Health Issue</td>
-										<th>Pending</th>
-									</tr>
-									<tr>
-										<td>1019017</td>
-										<td>Huawei Project</td>
-										<td>Bhubaneswar STP</td>
-										<td>07-04-2020 11:00</td>
-										<td>Health Issue</td>
-										<th>Pending</th>
-									</tr>
-									<tr>
-										<td>1019017</td>
-										<td>Huawei Project</td>
-										<td>Bhubaneswar STP</td>
-										<td>07-04-2020 11:00</td>
-										<td>Health Issue</td>
-										<th>Pending</th>
-									</tr>
-									<tr>
-										<td>1019017</td>
-										<td>Huawei Project</td>
-										<td>Bhubaneswar STP</td>
-										<td>07-04-2020 11:00</td>
-										<td>Health Issue</td>
-										<th>Pending</th>
+									<tr th:each="shuttleRequest : ${shuttleRequestList}">
+										<td th:text="${shuttleRequest.requester}"></td>
+										<td th:text="${shuttleRequest.dcFrom}"></td>
+										<td th:text="${shuttleRequest.forDate}"></td>
+										<td th:text="${shuttleRequest.reason}"></td>
+										<td th:text="${shuttleRequest.status}"></td>
 									</tr>
 								</tbody>
 							</table>
