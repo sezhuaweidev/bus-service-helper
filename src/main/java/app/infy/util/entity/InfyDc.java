@@ -22,8 +22,19 @@ public class InfyDc {
 	@Column(name = "continent")
 	private String continent;
 	
+	@Column(name = "travel_desk_mail")
+	private String traveDeskMail;
+	
 	public String getContinent() {
 		return continent;
+	}
+
+	public String getTraveDeskMail() {
+		return traveDeskMail;
+	}
+
+	public void setTraveDeskMail(String traveDeskMail) {
+		this.traveDeskMail = traveDeskMail;
 	}
 
 	public void setContinent(String continent) {

@@ -116,7 +116,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 	        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	        mail.setFrom("sez.huawei.dev@gmail.com");//replace with your desired email
 	        mail.setMailTo(managerDetail.getEmpMail());//replace with your desired email
-	        mail.setMailCc(new String[] { ed.getEmpMail() });
+	        mail.setMailCc(new String[] { });
 	        mail.setSubject("Shuttle Pass Request - ACK");
 	        //email template parameter
 	        Map<String, Object> model = new HashMap<String, Object>();
@@ -189,12 +189,14 @@ public class ShuttleServiceImpl implements ShuttleService {
 			        Mail mail = new Mail();
 			        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			        mail.setFrom("sez.huawei.dev@gmail.com");//replace with your desired email
-			        mail.setMailTo("riddhi.sohampaul@gmail.com");//transport desk team
+			        mail.setMailTo(infyDcRepository.findById(shuttleRequest.getDcFrom()).orElse(new InfyDc()).getTraveDeskMail());//transport desk team
 			        mail.setMailCc(new String[] {ed.getEmpMail(),managerDetail.getEmpMail()});
 			        mail.setSubject("Shuttle Pass - "+shuttleRequest.getStatus());
 			        //email template parameter
 			        Map<String, Object> model = new HashMap<String, Object>();
-			        model.put("name", ed.getEmpName());//put manager name
+			        model.put("name", "Transportation Team");//put manager name
+			        model.put("empName", ed.getEmpName());
+			        model.put("empId", ed.getEmpId());
 			        model.put("location", infyDcRepository.findById(shuttleRequest.getDcFrom()).orElse(new InfyDc()).getValue());
 			        model.put("sign", "Transportation Team");
 			        model.put("status", shuttleRequest.getStatus());
