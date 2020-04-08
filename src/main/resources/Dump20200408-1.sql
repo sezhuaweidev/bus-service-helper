@@ -80,7 +80,8 @@ CREATE TABLE `infy_dc` (
   `value` varchar(45) NOT NULL,
   `country` char(4) NOT NULL,
   `continent` char(4) NOT NULL,
-  PRIMARY KEY (`code`)
+  `travel_desk_mail` char(60) NOT NULL,
+  PRIMARY KEY (`code`,`travel_desk_mail`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -90,7 +91,7 @@ CREATE TABLE `infy_dc` (
 
 LOCK TABLES `infy_dc` WRITE;
 /*!40000 ALTER TABLE `infy_dc` DISABLE KEYS */;
-INSERT INTO `infy_dc` VALUES ('BBSRSEZ','Bhubaneswar-SEZ','IND','AS'),('BBSRSTP','Bhubaneswar-STP','IND','AS'),('CANCAL','Canada-Calgary','CAN','NA'),('CANMONT','Canada-Montread','CAN','NA');
+INSERT INTO `infy_dc` VALUES ('BBSRSEZ','Bhubaneswar-SEZ','IND','AS','satyabrat2004@gmail.com'),('BBSRSTP','Bhubaneswar-STP','IND','AS','satyabrat2004@gmail.com'),('CANCAL','Canada-Calgary','CAN','NA',''),('CANMONT','Canada-Montread','CAN','NA','');
 /*!40000 ALTER TABLE `infy_dc` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -146,7 +147,7 @@ CREATE TABLE `shuttle_request` (
 
 LOCK TABLES `shuttle_request` WRITE;
 /*!40000 ALTER TABLE `shuttle_request` DISABLE KEYS */;
-INSERT INTO `shuttle_request` VALUES ('STLREQ103019108042020','STL1100',1030191,1030181,'Well this works I guess','PENDING','08-04-2020','BBSRSTP','BBSRSEZ');
+INSERT INTO `shuttle_request` VALUES ('STLREQ103018108042020','STL0800',1030181,1030191,'stufffff will get done','APPROVED','08-04-2020','BBSRSTP','BBSRSEZ'),('STLREQ103019108042020','STL1100',1030191,1030181,'Well this works I guess','PENDING','08-04-2020','BBSRSTP','BBSRSEZ');
 /*!40000 ALTER TABLE `shuttle_request` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -185,4 +186,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-04-08 10:39:40
+-- Dump completed on 2020-04-08 16:41:27
