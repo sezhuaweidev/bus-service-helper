@@ -192,13 +192,6 @@ function saveShuttleRequest() {
 		} 
 		forward = false;
 	}
-	else if(!reason || reason.length<10 || reason.length>100) {
-		var r = confirm("Please provide a reason. It must be within 10 to 100 characters.");
-		if (r == true) {
-			$( "#fsr-reason" ).focus();
-		} 
-		forward = false;
-	}
 	else if(timing === "-1") {
 		var r = confirm("Please select a timing.");
 		if (r == true) {
@@ -206,7 +199,13 @@ function saveShuttleRequest() {
 		} 
 		forward = false;
 	}
-	
+	else if(!reason || reason.length<10 || reason.length>100) {
+		var r = confirm("Please provide a reason. It must be within 10 to 100 characters.");
+		if (r == true) {
+			$( "#fsr-reason" ).focus();
+		} 
+		forward = false;
+	}
 	else if(dcFrom === dcTo) {
 		var r = confirm("Dc from and to cannot be same.");
 		if (r == true) {
