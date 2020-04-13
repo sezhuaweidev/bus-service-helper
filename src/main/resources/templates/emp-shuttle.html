@@ -165,37 +165,58 @@ function saveShuttleRequest() {
 	var message = "";
 	
 	if(region === "-1") {
-		message += "Please select the proper region.";
+		var r = confirm("Please select the proper region.");
+		if (r == true) {
+			$( "#region" ).focus();
+		} 
 		forward = false;
 	}
-	if(country === "-1") {
-		message += "Please select the proper country.";
+	else if(country === "-1") {
+		var r = confirm("Please select the proper country.");
+		if (r == true) {
+			$( "#country" ).focus();
+		} 
 		forward = false;
 	}
-	if(dcFrom === "-1") {
-		message += "Please select from DC.";
+	else if(dcFrom === "-1") {
+		var r = confirm("Please select from DC.");
+		if (r == true) {
+			$( "#dcFrom" ).focus();
+		} 
 		forward = false;
 	}
-	if(dcTo == "-1") {
-		message += "Please select to DC.";
+	else if(dcTo == "-1") {
+		var r = confirm("Please select to DC.");
+		if (r == true) {
+			$( "#dcTo" ).focus();
+		} 
 		forward = false;
 	}
-	if(!reason || reason.length<10 || reason.length>100) {
-		message += "Please provide a reason. It must be within 10 to 100 characters.";
+	else if(!reason || reason.length<10 || reason.length>100) {
+		var r = confirm("Please provide a reason. It must be within 10 to 100 characters.");
+		if (r == true) {
+			$( "#fsr-reason" ).focus();
+		} 
 		forward = false;
 	}
-	if(timing === "-1") {
-		message += "Please select a timing.";
+	else if(timing === "-1") {
+		var r = confirm("Please select a timing.");
+		if (r == true) {
+			$( "#timming" ).focus();
+		} 
 		forward = false;
 	}
 	
-	if(dcFrom === dcTo) {
-		message += "Dc from and to cannot be same.";
+	else if(dcFrom === dcTo) {
+		var r = confirm("Dc from and to cannot be same.");
+		if (r == true) {
+			
+		} 
 		forward = false;
 	}
 	
 	if(!forward) {
-		alert(message);
+		//alert(message);
 		return;
 	}
 	
@@ -280,14 +301,14 @@ function toggleWorkingScreen(doShow) {
 					<h2 class="text-white">Personal Details:</h2>
 					<div class="card">
 						<div class="card-body">
-							<div class="form-group row mb-0">
+							<!-- <div class="form-group row mb-0">
 								<label for="staticEmail"
 									class="col-md-3 col-form-label text-right">Employee Id:</label>
 								<div class="col-md-9">
 									<label for="staticEmaildsd" class="col-form-label"
 										th:text="${employeeid}"></label>
 								</div>
-							</div>
+							</div> -->
 							<div class="form-group row mb-0">
 								<label for="staticEmail"
 									class="col-md-3 col-form-label text-right">Employee

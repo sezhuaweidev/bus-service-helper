@@ -27,7 +27,7 @@
 
 <style>
 .right_panel {
-	width: 42rem;
+	width: 80rem;
 	z-index: 99;
 }
 
@@ -106,7 +106,7 @@
 		</ul>
 	</nav>
 	<div class="register_panel d-flex">
-		<div class="masthead">
+		<!-- <div class="masthead">
 			<div class="masthead-bg"></div>
 			<div class="container h-100">
 				<div class="row h-100">
@@ -118,8 +118,8 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="right_panel">
+		</div> -->
+		<div class="right_panel" style="margin:50px 30px 50px 30px">
 			<div class="row">
 				<div class="col-md-12">
 					<h2 class="text-white">Pass Log Details:</h2>
@@ -143,6 +143,7 @@
 										<th>Shuttle Time</th>
 										<th>Reason</th>
 										<th>Status</th>
+										<th>Option</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -152,6 +153,11 @@
 										<td th:text="${shuttleRequest.forDate}"></td>
 										<td th:text="${shuttleRequest.reason}"></td>
 										<td th:text="${shuttleRequest.status}"></td>
+										<td >
+										<a th:href="@{${optionUrl}+${shuttleRequest.requestId}+'/Approved'}">Approve</a>
+										<a th:href="@{${optionUrl}+${shuttleRequest.requestId}+'/Rejected'}">Reject</a>
+										<a th:href="@{${optionUrl}+${shuttleRequest.requestId}+'/Cancelled'}">Cancel</a>
+										</td>
 									</tr>
 								</tbody>
 							</table>

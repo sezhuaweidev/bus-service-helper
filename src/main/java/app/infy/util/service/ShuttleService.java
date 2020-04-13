@@ -27,4 +27,8 @@ public interface ShuttleService {
 	List<ShuttleRequest> findShuttleRequestByMngIdAndDate(Integer approverId,String forDate);
 
 	List<ShuttleRequest> searchShuttleRequest(String type, String value);
+
+	List<ShuttleRequest> findShuttleRequestByEmpMngIdAndDate(Integer requesterId, String curDate);
+
+	List<ShuttleRequest> findShuttleRequestByTransMngIdAndDate(String shuttleId, String curDate);
 }

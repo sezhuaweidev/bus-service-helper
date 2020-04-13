@@ -312,5 +312,15 @@ public class ShuttleServiceImpl implements ShuttleService {
 			return lstStlReq;
 		}
 	}
+
+	@Override
+	public List<ShuttleRequest> findShuttleRequestByEmpMngIdAndDate(Integer requesterId, String curDate) {
+		return shuttleRequestRepository.findShuttleRequestByEmpMngIdAndDate(requesterId,curDate);
+	}
+
+	@Override
+	public List<ShuttleRequest> findShuttleRequestByTransMngIdAndDate(String shuttleId, String curDate) {
+		return shuttleRequestRepository.findShuttleRequestByTransMngIdAndDate(shuttleId,curDate);
+	}
 	
 }

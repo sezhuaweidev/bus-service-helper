@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Buss Pass</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" type='text/css'
+	href="../static/css/bootstrap.min.css"
+	th:href="@{/css/bootstrap.min.css}" />
+<script src="../static/js/jquery-3.3.1.js"
+	th:src="@{/js/jquery-3.3.1.js}"></script>
+<script src="../static/js/bootstrap.min.js"
+	th:src="@{/js/bootstrap.min.js}"></script>
+<link rel='stylesheet' type='text/css'
+	href='../static/css/coming-soon.min.css'
+	th:href="@{/css/coming-soon.min.css}" />
+
+
+<style>
+.zIndex99 {
+	z-index:99;
+}
+.right_panel {
+	width: 42rem;
+	z-index: 98;
+}
+
+.right_panel label {
+	font-weight: bold;
+}
+.overlay {
+	float:left;
+	z-index:100;
+	position:fixed;
+	top:0px;
+	left:0px;
+	width:2000px;
+	height:1000px;
+	background-color:rgba(100,100,100,0.3);
+	content: " ";
+	display:none;
+}
+.white-text {
+ text-color:white
+}
+</style>
+<script type="text/javascript">
+/* $(document).ready(function() {
+	
+}); */
+
+
+function login() {
+	//fsr-employeeid, region, country,dcFrom,dcTo,fsr-reason,fsr-for-date,timing
+	var empId = $("#employeeid").val();
+	var password = $("#password").val();
+	
+	var forward = true;
+	var message = "";
+	
+	if(empId === "") {
+		var r = confirm("Please enter an employee id.");
+		if (r == true) {
+			$( "#employeeid" ).focus();
+		} 
+		forward = false;
+	}
+	else if(password === "") {
+		var r = confirm("Please enter a password.");
+		if (r == true) {
+			$( "#password" ).focus();
+		} 
+		forward = false;
+	}
+	
+	if(!forward) {
+		//alert(message);
+		return;
+	}
+	
+	toggleWorkingScreen(true);
+	var urlPath = '[[${path}]]';
+	var data = {
+			shuttleId: timing,
+			requester: Number(empId),
+			dcFrom: dcFrom,
+			dcTo: dcTo,
+			forDate: forDate,
+			reason: reason
+	}
+	console.log(data);
+	$.ajax({
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        url: urlPath+'/shuttleservice/',
+        success:function(data){
+        	console.log(data.data);
+         	alert("Successfully created ShuttleRequest with id:"+data.data);
+         	//add reset code here
+        },
+        error: function(data) {
+        	alert(JSON.parse(data.responseText).data);
+        },
+        complete: function() {
+        	toggleWorkingScreen(false);
+        }
+	});
+}
+
+function toggleWorkingScreen(doShow) {
+	if(doShow) {
+		$(document.body).css("cursor","wait");
+		$("#working-screen").css("display","block");
+	} else {
+		$(document.body).css("cursor","default");
+		$("#working-screen").css("display","none");
+	}
+}
+
+</script>
+
+</head>
+<body>
+
+	<div id="working-screen" class="overlay"></div>
+	<video playsinline="playsinline" autoplay="autoplay" muted="muted"
+		loop="loop"> <source src="../static/video/bus.mp4"
+		th:src="@{/video/bus.mp4}" type="video/mp4"></video>
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark zIndex99">
+		<a class="navbar-brand text-primary" href="#">Shuttle Pass</a>
+	</nav>
+	<div class="overlays"></div>
+	<div class="register_panel d-flex">
+		<div class="masthead">
+			<div class="masthead-bg"></div>
+			<div class="container h-100">
+				<div class="row h-100">
+					<div class="col-12 my-auto">
+						<div class="masthead-content text-white py-5 pb-2">
+							<h2 class="mb-3 text-center">Infosys Buss Pass</h2>
+							<h3 class="mb-3 text-center">Coming Soon!!!</h3>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="right_panel" style="margin-top: 150px;">
+			<div class="row">
+				<div class="col-md-12">
+					<h2 class="text-white">Login Details:</h2>
+					<div class="card" >
+						<div class="card-body">
+							<form id="form-shuttle-request" onsubmit="return false">
+								
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Employee Id:</label> <input class="form-control" type="text"
+												id="employeeid" />
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Passsword:</label> <input class="form-control" type="password"
+												id="password" />
+										</div>
+									</div>
+								</div>
+								<div class="form-group" style="text-align: center;">
+									<button onclick="login()" type="submit" class="btn btn-info mr-2">Login</button>
+									<button type="reset" class="btn btn-warning">Reset</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+</body>
+</html>

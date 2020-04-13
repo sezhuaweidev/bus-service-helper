@@ -17,5 +17,9 @@ public interface ShuttleRequestRepository extends JpaRepository<ShuttleRequest, 
 
 	 public List<ShuttleRequest> findByRequester(Integer id);
 	 public List<ShuttleRequest> findByApprover(Integer id);
+	 @Query("SELECT s FROM ShuttleRequest s WHERE s.shuttleId=:shuttleId and s.forDate = :forDate")
+	 public List<ShuttleRequest> findShuttleRequestByTransMngIdAndDate(@Param("shuttleId")String shuttleId, @Param("forDate")String curDate);
+	 @Query("SELECT s FROM ShuttleRequest s WHERE s.requester=:requesterId and s.forDate = :forDate")
+	 public List<ShuttleRequest> findShuttleRequestByEmpMngIdAndDate(@Param("requesterId")Integer requesterId, @Param("forDate")String curDate);
 	 
 }
