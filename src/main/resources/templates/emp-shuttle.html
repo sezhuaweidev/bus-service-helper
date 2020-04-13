@@ -18,9 +18,12 @@
 
 
 <style>
+.zIndex99 {
+	z-index:99;
+}
 .right_panel {
 	width: 42rem;
-	z-index: 99;
+	z-index: 98;
 }
 
 .right_panel label {
@@ -37,6 +40,9 @@
 	background-color:rgba(100,100,100,0.3);
 	content: " ";
 	display:none;
+}
+.white-text {
+ text-color:white
 }
 </style>
 <script type="text/javascript">
@@ -183,6 +189,11 @@ function saveShuttleRequest() {
 		forward = false;
 	}
 	
+	if(dcFrom === dcTo) {
+		message += "Dc from and to cannot be same.";
+		forward = false;
+	}
+	
 	if(!forward) {
 		alert(message);
 		return;
@@ -234,10 +245,21 @@ function toggleWorkingScreen(doShow) {
 <body>
 
 	<div id="working-screen" class="overlay"></div>
-	<div class="overlays"></div>
 	<video playsinline="playsinline" autoplay="autoplay" muted="muted"
 		loop="loop"> <source src="../static/video/bus.mp4"
 		th:src="@{/video/bus.mp4}" type="video/mp4"></video>
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark zIndex99">
+		<a class="navbar-brand text-primary" href="#">Shuttle Pass</a>
+		  <ul class="navbar-nav">
+		    <li class="nav-item">
+		      <a class="nav-link active" th:href="${pathApply}">Apply</a>
+		    </li>
+		    <li class="nav-item">
+		      <a class="nav-link" th:href="${pathManage}">Manage</a>
+		  </li>
+		</ul>
+	</nav>
+	<div class="overlays"></div>
 	<div class="register_panel d-flex">
 		<div class="masthead">
 			<div class="masthead-bg"></div>

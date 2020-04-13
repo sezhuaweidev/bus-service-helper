@@ -10,8 +10,6 @@ import java.util.Map;
 
 import javax.mail.MessagingException;
 
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -55,8 +53,6 @@ public class ShuttleServiceImpl implements ShuttleService {
 	private Converter<FormShuttleRequest, ShuttleRequest> formToShuttleReuqestConverter;
 	//private Converter<ShuttleRequest, ShuttleBookingStatus> entityToShuttleRequestModelConverter;
 	
-	private CacheManager cacheManager;
-	
 	
 	public ShuttleServiceImpl(
 			EmployeeDetailRepository employeeDetailRepository,
@@ -67,8 +63,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 			Converter<FormShuttleRequest, ShuttleRequest> formToShuttleReuqestConverter,
 			//Converter<ShuttleRequest, ShuttleBookingStatus> entityToShuttleRequestModelConverter,
 			EmailSenderService emailSenderService,
-			InfyDcRepository infyDcRepository,
-			CacheManager cacheManager ) {
+			InfyDcRepository infyDcRepository ) {
 		
 		this.employeeDetailRepository = employeeDetailRepository;
 		this.shuttleRequestRepository = shuttleRequestRepository;
@@ -79,7 +74,6 @@ public class ShuttleServiceImpl implements ShuttleService {
 		//this.entityToShuttleRequestModelConverter = entityToShuttleRequestModelConverter;
 		this.emailSenderService = emailSenderService;
 		this.infyDcRepository = infyDcRepository;
-		this.cacheManager = cacheManager;
 	}
 	
 	@Override
@@ -286,7 +280,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 			if((currentEpoch-receivedEpoch)>(5*60*1000)) {
 				String status =shuttleRequestRepository.findById(key).orElse(new ShuttleRequest()).getStatus(); 
 				if(status.equalsIgnoreCase("PENDING")) {
-					String data = updateShuttleBookingStatus(key, StatusEnum.approved);
+					updateShuttleBookingStatus(key, StatusEnum.approved);
 					System.out.println("Auto-approved request id:"+key);
 					BusServiceHelper.APPROVAL_MAP.remove(key);
 				} else {
@@ -303,6 +297,20 @@ public class ShuttleServiceImpl implements ShuttleService {
 	@Override
 	public List<ShuttleRequest> findShuttleRequestByMngIdAndDate(Integer approverId,String forDate) {
 		return shuttleRequestRepository.findShuttleRequestByMngIdAndDate(approverId,forDate);
+	}
+
+	@Override
+	public List<ShuttleRequest> searchShuttleRequest(String type, String value) {
+		
+		if(type.equals("byme")) {
+			Integer intId = Integer.parseInt(value);
+			List<ShuttleRequest> lstStlReq = shuttleRequestRepository.findByRequester(intId);
+			return lstStlReq;
+		} else {
+			Integer intId = Integer.parseInt(value);
+			List<ShuttleRequest> lstStlReq = shuttleRequestRepository.findByApprover(intId);
+			return lstStlReq;
+		}
 	}
 	
 }

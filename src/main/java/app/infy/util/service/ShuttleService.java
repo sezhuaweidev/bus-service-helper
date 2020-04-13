@@ -25,4 +25,6 @@ public interface ShuttleService {
 	List<InfyRegion> getAllInfyRegion();
 	List<InfyCountry> getInfyCountry(String continent);
 	List<ShuttleRequest> findShuttleRequestByMngIdAndDate(Integer approverId,String forDate);
+
+	List<ShuttleRequest> searchShuttleRequest(String type, String value);
 }

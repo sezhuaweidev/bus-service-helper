@@ -34,6 +34,11 @@
 .right_panel label {
 	font-weight: bold;
 }
+
+.zIndex99 {
+	z-index:99;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -42,7 +47,44 @@
         "scrollX":true,
         "scrollY":"300px"
     });
-} );
+	});
+
+	function toggleWorkingScreen(doShow) {
+		if(doShow) {
+			$(document.body).css("cursor","wait");
+			$("#working-screen").css("display","block");
+		} else {
+			$(document.body).css("cursor","default");
+			$("#working-screen").css("display","none");
+		}
+	}	
+	
+	function showBussPassList(obj) {
+		var selectedValue = obj.value;
+		var urlPath = '[[${path}]]';
+		var id = '[[${employeeid}]]';
+		alert(urlPath+'/search/'+obj.value+'/'+id);
+		$.ajax({
+	        type: 'GET',
+	        url: urlPath+'/search/'+obj.value+'/'+id,
+	        contentType: 'text/plain',
+	        success:function(data){
+	        	console.log(data);
+	        	//data needs to be added in table here
+	        	
+	        },
+	        error: function(data) {
+	        	alert(JSON.parse(data.responseText));
+	        	var tb = $("#log").DataTable();
+	        },
+	        complete: function() {
+	        	toggleWorkingScreen(false);
+	        }
+		})
+		
+	}	
+	
+	
 </script>
 
 </head>
@@ -52,6 +94,17 @@
 	<video playsinline="playsinline" autoplay="autoplay" muted="muted"
 		loop="loop"> <source src="../static/video/bus.mp4"
 		th:src="@{/video/bus.mp4}" type="video/mp4"></video>
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark zIndex99">
+		<a class="navbar-brand text-primary" href="#">Shuttle Pass</a>
+		  <ul class="navbar-nav">
+		    <li class="nav-item">
+		      <a class="nav-link" th:href="${pathApply}">Apply</a>
+		    </li>
+		    <li class="nav-item">
+		      <a class="nav-link active" th:href="${pathManage}">Manage</a>
+		  </li>
+		</ul>
+	</nav>
 	<div class="register_panel d-flex">
 		<div class="masthead">
 			<div class="masthead-bg"></div>
@@ -70,6 +123,15 @@
 			<div class="row">
 				<div class="col-md-12">
 					<h2 class="text-white">Pass Log Details:</h2>
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text" >View passes:</span>
+						</div>
+						<select id="show-selection" class="form-control" onchange="showBussPassList(this)">
+							<option value="byme" selected>Applied by me</option>
+							<option value="forme">Requires my approval</option>
+						</select>
+					</div>
 					<div class="card">
 						<div class="card-body">
 							<table id="log" class="table table-striped table-bordered"
