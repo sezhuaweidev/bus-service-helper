@@ -12,13 +12,13 @@ import app.infy.util.entity.ShuttleRequest;
 @Repository
 public interface ShuttleRequestRepository extends JpaRepository<ShuttleRequest, String> {
 	
-	 @Query("SELECT s FROM ShuttleRequest s WHERE s.approver=:approverId and s.forDate = :forDate")
+	 @Query("SELECT s FROM ShuttleRequest s WHERE s.approver=:approverId and s.forDate = :forDate and s.status='PENDING'")
 	 public List<ShuttleRequest> findShuttleRequestByMngIdAndDate(@Param("approverId") Integer approverId,@Param("forDate") String forDate);
 
 	 public List<ShuttleRequest> findByRequester(Integer id);
 	 public List<ShuttleRequest> findByApprover(Integer id);
-	 @Query("SELECT s FROM ShuttleRequest s WHERE s.shuttleId=:shuttleId and s.forDate = :forDate")
-	 public List<ShuttleRequest> findShuttleRequestByTransMngIdAndDate(@Param("shuttleId")String shuttleId, @Param("forDate")String curDate);
+	 @Query("SELECT s FROM ShuttleRequest s WHERE s.dcFrom=:dcFrom and s.forDate = :forDate and s.status='APPROVED_MGR'")
+	 public List<ShuttleRequest> findShuttleRequestByTransMngIdAndDate(@Param("dcFrom")String dcId, @Param("forDate")String curDate);
 	 @Query("SELECT s FROM ShuttleRequest s WHERE s.requester=:requesterId and s.forDate = :forDate")
 	 public List<ShuttleRequest> findShuttleRequestByEmpMngIdAndDate(@Param("requesterId")Integer requesterId, @Param("forDate")String curDate);
 	 

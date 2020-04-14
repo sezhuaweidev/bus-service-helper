@@ -13,5 +13,7 @@ public class MessageConstants {
 	public static final String WRONG_CONTINENT_NAME = "Provided continent name is wrong.";
 	public static final String EMPLOYEE_ID_NOT_FOUND = "Employee id invalid.";
 	public static final String INPUT_DATA_MALFORMED = "Input data malformed.";
+	public static final String STATUS_NOTRANSPORT = "There is no transport for current dc.";
+	public static final String SHUTTLE_APPROVER_NOT_FOUND = "There is no approver for you";
 
 }

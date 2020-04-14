@@ -95,11 +95,12 @@ public class ShuttleServiceImpl implements ShuttleService {
 		
 		if(shuttleRequestRepository.existsById(sr.getRequestId())) {
 			throw new ApplicationException("REQUEST_ALREADY_EXISTS");
-		} else {
+		}else if(ed.getEmpManagerId()==null){
+			throw new ApplicationException(MessageConstants.SHUTTLE_APPROVER_NOT_FOUND);
+		}else {
 			ShuttleRequest usr = shuttleRequestRepository.save(sr);
 			
 			EmployeeDetail managerDetail = employeeDetailRepository.findById(ed.getEmpManagerId()).orElse(new EmployeeDetail());
-			
 			//putting data in a 28 minute time to live cache.
 			//key: shuttleRequestId, value: current epochmilis
 			BusServiceHelper.APPROVAL_MAP.put(usr.getRequestId(), new Date().getTime());
@@ -110,7 +111,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 	        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	        mail.setFrom("sez.huawei.dev@gmail.com");//replace with your desired email
 	        mail.setMailTo(managerDetail.getEmpMail());//replace with your desired email
-	        mail.setMailCc(new String[] { });
+	        mail.setMailCc(new String[] {ed.getEmpMail() });
 	        mail.setSubject("Shuttle Pass Request - ACK");
 	        //email template parameter
 	        Map<String, Object> model = new HashMap<String, Object>();
@@ -169,22 +170,28 @@ public class ShuttleServiceImpl implements ShuttleService {
 			throw new ApplicationException(MessageConstants.SHUTTLE_REQUEST_ID_INVALID);
 		} else {
 			ShuttleRequest shuttleRequest = shuttleRequestRepository.findById(shuttleRequestId).orElse(new ShuttleRequest());
+			EmployeeDetail transportDetail = employeeDetailRepository.findByDc(shuttleRequest.getDcFrom());
 			System.out.println("Received: "+shuttleRequest.getStatus());
-			if(!shuttleRequest.getStatus().equalsIgnoreCase("PENDING")) {
+			/*if(!shuttleRequest.getStatus().equalsIgnoreCase("PENDING")) {
 				throw new ApplicationException(MessageConstants.STATUS_ALREADY_UPDATED);
-			} else {
+			}else*/ if(transportDetail==null){
+				throw new ApplicationException(MessageConstants.STATUS_NOTRANSPORT);
+			}else {
 				shuttleRequest.setStatus(statusEnum.name().toUpperCase());
 				shuttleRequestRepository.save(shuttleRequest);
 				
 				EmployeeDetail ed = employeeDetailRepository.findById(shuttleRequest.getRequester()).orElse(new EmployeeDetail());
 				EmployeeDetail managerDetail = employeeDetailRepository.findById(shuttleRequest.getApprover()).orElse(new EmployeeDetail());
-				if(shuttleRequest.getStatus().equalsIgnoreCase(StatusEnum.approved.name())) {
+				
+				if(shuttleRequest.getStatus().equalsIgnoreCase(StatusEnum.approved_trns.name())
+						|| shuttleRequest.getStatus().equalsIgnoreCase(StatusEnum.rejected_trns.name())) {
 					//send email
 			        Mail mail = new Mail();
 			        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			        mail.setFrom("sez.huawei.dev@gmail.com");//replace with your desired email
-			        mail.setMailTo(infyDcRepository.findById(shuttleRequest.getDcFrom()).orElse(new InfyDc()).getTraveDeskMail());//transport desk team
-			        mail.setMailCc(new String[] {ed.getEmpMail(),managerDetail.getEmpMail()});
+			        //mail.setMailCc(new String[] {managerDetail.getEmpMail(),infyDcRepository.findById(shuttleRequest.getDcFrom()).orElse(new InfyDc()).getTraveDeskMail()});//transport desk team
+			        mail.setMailCc(new String[] {managerDetail.getEmpMail(),transportDetail.getEmpMail()});//transport desk team
+			        mail.setMailTo(ed.getEmpMail());
 			        mail.setSubject("Shuttle Pass - "+shuttleRequest.getStatus());
 			        //email template parameter
 			        Map<String, Object> model = new HashMap<String, Object>();
@@ -203,13 +210,15 @@ public class ShuttleServiceImpl implements ShuttleService {
 						e.printStackTrace();
 						throw new ApplicationException(MessageConstants.EMAIL_FAILED_BUT_APPROVED);
 					}
-				} else {
+				} else if(shuttleRequest.getStatus().equalsIgnoreCase(StatusEnum.approved_mgr.name())
+						|| shuttleRequest.getStatus().equalsIgnoreCase(StatusEnum.rejected_mgr.name()) ){
 					//send email
 			        Mail mail = new Mail();
 			        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			        mail.setFrom("sez.huawei.dev@gmail.com");//replace with your desired email
-			        mail.setMailTo(ed.getEmpMail());//transport desk team
-			        mail.setMailCc(new String[] {managerDetail.getEmpMail()});
+			        //mail.setMailTo(infyDcRepository.findById(shuttleRequest.getDcFrom()).orElse(new InfyDc()).getTraveDeskMail());//transport desk team
+			        mail.setMailTo(transportDetail.getEmpMail());//transport desk team
+			        mail.setMailCc(new String[] {managerDetail.getEmpMail(),ed.getEmpMail()});
 			        mail.setSubject("Shuttle Pass - "+shuttleRequest.getStatus());
 			        //email template parameter
 			        Map<String, Object> model = new HashMap<String, Object>();
@@ -319,8 +328,8 @@ public class ShuttleServiceImpl implements ShuttleService {
 	}
 
 	@Override
-	public List<ShuttleRequest> findShuttleRequestByTransMngIdAndDate(String shuttleId, String curDate) {
-		return shuttleRequestRepository.findShuttleRequestByTransMngIdAndDate(shuttleId,curDate);
+	public List<ShuttleRequest> findShuttleRequestByTransMngIdAndDate(String dcId, String curDate) {
+		return shuttleRequestRepository.findShuttleRequestByTransMngIdAndDate(dcId,curDate);
 	}
 	
 }

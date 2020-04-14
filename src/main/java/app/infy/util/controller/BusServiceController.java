@@ -88,6 +88,6 @@ public class BusServiceController {
 		
 		//logic
 		String updateStatus = shuttleService.updateShuttleBookingStatus(shuttleRequestId, statusEnum);
-		return new AppResponse<String>("Mail has been sent to transport desk team.");
+		return new AppResponse<String>("Mail has been sent");
 	}
 }

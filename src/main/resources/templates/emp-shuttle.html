@@ -269,13 +269,21 @@ function toggleWorkingScreen(doShow) {
 		loop="loop"> <source src="../static/video/bus.mp4"
 		th:src="@{/video/bus.mp4}" type="video/mp4"></video>
 	<nav class="navbar navbar-expand-sm bg-dark navbar-dark zIndex99">
-		<a class="navbar-brand text-primary" href="#">Shuttle Pass</a>
+		<!-- <a class="navbar-brand text-primary" href="#">Shuttle Pass</a> -->
 		  <ul class="navbar-nav">
 		    <li class="nav-item">
-		      <a class="nav-link active" th:href="${pathApply}">Apply</a>
+		      <a class="nav-link" th:if="${employeeRole eq 'EMPLOYEE'}" th:href="${pathApply}">Apply</a>
 		    </li>
 		    <li class="nav-item">
 		      <a class="nav-link" th:href="${pathManage}">Manage</a>
+		  </li>
+		  <li class="nav-item active">
+		      <a class="nav-link" href="#">Log Out</a>
+	      </li>
+		</ul>
+		<ul class="navbar-nav" style="margin-left:70%">
+		<li class="nav-item">
+		     <a class="navbar-brand text-primary" href="#">Welcome <span th:text="${employeename}"></span></a>
 		  </li>
 		</ul>
 	</nav>
@@ -296,18 +304,18 @@ function toggleWorkingScreen(doShow) {
 		</div>
 		<div class="right_panel" >
 			<div class="row">
-				<div class="col-md-12">
+				<!-- <div class="col-md-12">
 					<h2 class="text-white">Personal Details:</h2>
 					<div class="card">
 						<div class="card-body">
-							<!-- <div class="form-group row mb-0">
+							<div class="form-group row mb-0">
 								<label for="staticEmail"
 									class="col-md-3 col-form-label text-right">Employee Id:</label>
 								<div class="col-md-9">
 									<label for="staticEmaildsd" class="col-form-label"
 										th:text="${employeeid}"></label>
 								</div>
-							</div> -->
+							</div>
 							<div class="form-group row mb-0">
 								<label for="staticEmail"
 									class="col-md-3 col-form-label text-right">Employee
@@ -318,7 +326,7 @@ function toggleWorkingScreen(doShow) {
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> -->
 					<h2 class="text-white">Pass Entry:</h2>
 					<div class="card" style="margin-bottom: 20px;">
 						<div class="card-body">

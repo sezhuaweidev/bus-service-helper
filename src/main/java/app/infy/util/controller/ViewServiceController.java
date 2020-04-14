@@ -39,6 +39,34 @@ public class ViewServiceController {
 		this.shuttleService = shuttleService;
 	}
 	
+	@GetMapping(value = "login")
+	public String getLoginPage() {
+		
+		return "emp-login";
+	}
+	
+	@GetMapping(value = "home/{id}")
+	public String getHomePage(@PathVariable(name="id", required=true) String id,Model model) {
+		Integer intId = null;
+		try {
+			intId = Integer.parseInt(id);
+		} catch(NumberFormatException nfe) {
+			throw new ControllerException(MessageConstants.PROVIDED_ID_INVALID);
+		}
+		
+		EmployeeDetail ed = employeeService.getEmployeeDetailById(intId);
+		String url = "";
+		
+		if(ed.getEmpType().equalsIgnoreCase("EMPLOYEE")){
+			url = "redirect:"+ request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/"+ed.getEmpId();
+		}else if(ed.getEmpType().equalsIgnoreCase("MANAGER")){
+			url = "redirect:"+request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() +"/view/manage/"+ed.getEmpId();
+		}else if(ed.getEmpType().equalsIgnoreCase("TRANSPORT")){
+			url = "redirect:"+ request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() +"/view/transManage/"+ed.getEmpId();
+		}
+		return url;
+	}
+	
 	@GetMapping(value = "apply/{id}")
 	public String getIndexPage(@PathVariable(name="id", required=true) String id, Model model) {
 		Integer intId = null;
@@ -49,12 +77,22 @@ public class ViewServiceController {
 		}
 		
 		EmployeeDetail ed = employeeService.getEmployeeDetailById(intId);
+		String role = ed.getEmpType();
+		String mngUrl = "";
 		List<ShuttleTiming> lstShuttleTimings = shuttleService.getAllShuttles();
 		List<InfyDc> lstInfyDcs = shuttleService.getAllInfyDcs();
 		List<InfyRegion> lstRegion = shuttleService.getAllInfyRegion();
 		List<InfyCountry> lstCountry = shuttleService.getInfyCountry("ALL");
 		
+		if(role.equalsIgnoreCase("EMPLOYEE")){
+			mngUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/empManage/"+ed.getEmpId();
+		}else if(role.equalsIgnoreCase("MANAGER")){
+			mngUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/manage/"+ed.getEmpId();
+		}else if(role.equalsIgnoreCase("TRANSPORT")){
+			mngUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/trnsManage/"+ed.getEmpId();
+		}
 		
+		model.addAttribute("employeeRole", role);
 		model.addAttribute("employeename", ed.getEmpName());
 		model.addAttribute("employeeid", ed.getEmpId());
 		model.addAttribute("currentdate", sdf.format(new Date()));
@@ -63,7 +101,7 @@ public class ViewServiceController {
 		model.addAttribute("region",lstRegion);
 		model.addAttribute("country",lstCountry);
 		model.addAttribute("pathApply",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/"+ed.getEmpId());
-		model.addAttribute("pathManage",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/manage/"+ed.getEmpId());
+		model.addAttribute("pathManage",mngUrl);
 		model.addAttribute("path",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath());
 		
 		return "emp-shuttle";
@@ -81,10 +119,11 @@ public class ViewServiceController {
 		
 		String curDate = sdf.format(new Date());
 		EmployeeDetail ed = employeeService.getEmployeeDetailById(intId);
+		model.addAttribute("employeename", ed.getEmpName());
+		model.addAttribute("employeeRole", ed.getEmpType());
 		model.addAttribute("employeeid", ed.getEmpId());
 		model.addAttribute("pathApply",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/"+ed.getEmpId());
 		model.addAttribute("pathManage",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/manage/"+ed.getEmpId());
-		model.addAttribute("path",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath());
 		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByMngIdAndDate(intId,curDate);
 		model.addAttribute("shuttleRequestList", lstShuttleTimings);
 		model.addAttribute("optionUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/shuttleservice/");
@@ -103,32 +142,36 @@ public class ViewServiceController {
 		String curDate = sdf.format(new Date());
 		EmployeeDetail ed = employeeService.getEmployeeDetailById(intId);
 		model.addAttribute("employeeid", ed.getEmpId());
+		model.addAttribute("employeename", ed.getEmpName());
+		model.addAttribute("employeeRole", ed.getEmpType());
 		model.addAttribute("pathApply",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/"+ed.getEmpId());
-		model.addAttribute("pathManage",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/manage/"+ed.getEmpId());
-		model.addAttribute("path",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath());
+		model.addAttribute("pathManage",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/empManage/"+ed.getEmpId());
 		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByEmpMngIdAndDate(intId,curDate);
 		model.addAttribute("shuttleRequestList", lstShuttleTimings);
 		model.addAttribute("optionUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/shuttleservice/");
 		return "mng-shuttle";
 	}
 	
-	@GetMapping(value = "transManage/{shuttleId}")
-	public String getTransManagePage(@PathVariable(name="shuttleId", required=true) String shuttleId,Model model) {
+	@GetMapping(value = "transManage/{id}")
+	public String getTransManagePage(@PathVariable(name="id", required=true) String id,Model model) {
+		Integer intId = null;
+		try {
+			intId = Integer.parseInt(id);
+		} catch(NumberFormatException nfe) {
+			throw new ControllerException(MessageConstants.PROVIDED_ID_INVALID);
+		}
 		
 		String curDate = sdf.format(new Date());
+		EmployeeDetail ed = employeeService.getEmployeeDetailById(intId);
+		model.addAttribute("employeeid", ed.getEmpId());
+		model.addAttribute("employeename", ed.getEmpName());
+		model.addAttribute("employeeRole", ed.getEmpType());
 		//model.addAttribute("pathApply",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/"+ed.getEmpId());
-		//model.addAttribute("pathManage",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/manage/"+ed.getEmpId());
-		//model.addAttribute("path",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath());
-		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByTransMngIdAndDate(shuttleId,curDate);
+		model.addAttribute("pathManage",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/transManage/"+ed.getEmpId());
+		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByTransMngIdAndDate(ed.getEmpDc(),curDate);
 		model.addAttribute("shuttleRequestList", lstShuttleTimings);
 		model.addAttribute("optionUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/shuttleservice/");
 		return "mng-shuttle";
-	}
-	
-	@GetMapping(value = "login")
-	public String getLoginPage() {
-		
-		return "emp-login";
 	}
 	
 	

@@ -59,26 +59,25 @@
 		}
 	}	
 	
-	function showBussPassList(obj) {
-		var selectedValue = obj.value;
-		var urlPath = '[[${path}]]';
-		var id = '[[${employeeid}]]';
-		alert(urlPath+'/search/'+obj.value+'/'+id);
+	function doAction(urlPath) {
+		//alert(urlPath);
+		toggleWorkingScreen(true);
 		$.ajax({
 	        type: 'GET',
-	        url: urlPath+'/search/'+obj.value+'/'+id,
+	        url: urlPath,
 	        contentType: 'text/plain',
 	        success:function(data){
-	        	console.log(data);
+	        	alert(data.data);
 	        	//data needs to be added in table here
 	        	
 	        },
 	        error: function(data) {
-	        	alert(JSON.parse(data.responseText));
-	        	var tb = $("#log").DataTable();
+	        	alert(JSON.parse(data.responseText).data);
+	        	//var tb = $("#log").DataTable();
 	        },
 	        complete: function() {
 	        	toggleWorkingScreen(false);
+	        	location.reload();
 	        }
 		})
 		
@@ -89,19 +88,26 @@
 
 </head>
 <body>
-
+	<div id="working-screen" class="overlay"></div>
 	<div class="overlays"></div>
 	<video playsinline="playsinline" autoplay="autoplay" muted="muted"
 		loop="loop"> <source src="../static/video/bus.mp4"
 		th:src="@{/video/bus.mp4}" type="video/mp4"></video>
 	<nav class="navbar navbar-expand-sm bg-dark navbar-dark zIndex99">
-		<a class="navbar-brand text-primary" href="#">Shuttle Pass</a>
-		  <ul class="navbar-nav">
+		<ul class="navbar-nav">
 		    <li class="nav-item">
-		      <a class="nav-link" th:href="${pathApply}">Apply</a>
+		      <a class="nav-link" th:if="${employeeRole eq 'EMPLOYEE'}" th:href="${pathApply}">Apply</a>
 		    </li>
 		    <li class="nav-item">
-		      <a class="nav-link active" th:href="${pathManage}">Manage</a>
+		      <a class="nav-link" th:href="${pathManage}">Manage</a>
+		  </li>
+		  <li class="nav-item active">
+		      <a class="nav-link" href="#">Log Out</a>
+	      </li>
+		</ul>
+		<ul class="navbar-nav" style="margin-left:70%">
+		<li class="nav-item">
+		     <a class="navbar-brand text-primary" href="#">Welcome <span th:text="${employeename}"></span></a>
 		  </li>
 		</ul>
 	</nav>
@@ -123,7 +129,7 @@
 			<div class="row">
 				<div class="col-md-12">
 					<h2 class="text-white">Pass Log Details:</h2>
-					<div class="input-group">
+					<!-- <div class="input-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text" >View passes:</span>
 						</div>
@@ -131,7 +137,7 @@
 							<option value="byme" selected>Applied by me</option>
 							<option value="forme">Requires my approval</option>
 						</select>
-					</div>
+					</div> -->
 					<div class="card">
 						<div class="card-body">
 							<table id="log" class="table table-striped table-bordered"
@@ -152,11 +158,23 @@
 										<td th:text="${shuttleRequest.dcFrom}"></td>
 										<td th:text="${shuttleRequest.forDate}"></td>
 										<td th:text="${shuttleRequest.reason}"></td>
-										<td th:text="${shuttleRequest.status}"></td>
-										<td >
-										<a th:href="@{${optionUrl}+${shuttleRequest.requestId}+'/Approved'}">Approve</a>
+										<td > 
+											<span th:if="${shuttleRequest.status eq 'PENDING'}">Pending</span> 
+											<span th:if="${shuttleRequest.status eq 'CANCELLED'}">Cancelled</span> 
+											<span th:if="${shuttleRequest.status eq 'APPROVED_MGR'}">Approved By Manager</span>
+											<span th:if="${shuttleRequest.status eq 'APPROVED_TRNS'}">Approved By Transport</span>
+											<span th:if="${shuttleRequest.status eq 'REJECTED_MGR'}">Rejected By Manager</span>
+											<span th:if="${shuttleRequest.status eq 'REJECTED_TRNS'}">Rejected By Transport</span>
+										</td>
+										<td>
+										<button th:if="${employeeRole eq 'MANAGER' && shuttleRequest.status eq 'PENDING'}" th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/APPROVED_MGR')|">Approve</button>
+										<button th:if="${employeeRole eq 'MANAGER' && shuttleRequest.status eq 'PENDING'}" th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/REJECTED_MGR')|">Reject</button>
+										<button th:if="${employeeRole eq 'TRANSPORT' && shuttleRequest.status eq 'APPROVED_MGR'}" th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/APPROVED_TRNS')|">Approve</button>
+										<button th:if="${employeeRole eq 'TRANSPORT' && shuttleRequest.status eq 'APPROVED_MGR'}" th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/REJECTED_TRNS')|">Reject</button>
+										<button th:if="${employeeRole eq 'EMPLOYEE' && shuttleRequest.status eq 'PENDING'}" th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/CANCELLED')|">Cancel</button>
+										<!-- <a th:href="@{${optionUrl}+${shuttleRequest.requestId}+'/Approved'}">Approve</a>
 										<a th:href="@{${optionUrl}+${shuttleRequest.requestId}+'/Rejected'}">Reject</a>
-										<a th:href="@{${optionUrl}+${shuttleRequest.requestId}+'/Cancelled'}">Cancel</a>
+										<a th:href="@{${optionUrl}+${shuttleRequest.requestId}+'/Cancelled'}">Cancel</a> -->
 										</td>
 									</tr>
 								</tbody>

@@ -22,6 +22,12 @@ public class EmployeeDetail {
 	@Column(name="emp_manager_id")
 	private Integer empManagerId;
 	
+	@Column(name="emp_type")
+	private String empType;
+	
+	@Column(name="emp_dc")
+	private String empDc;
+	
 	public EmployeeDetail() {
 		super();
 	}
@@ -56,6 +62,22 @@ public class EmployeeDetail {
 
 	public void setEmpManagerId(Integer empManagerId) {
 		this.empManagerId = empManagerId;
+	}
+	
+	public String getEmpType() {
+		return empType;
+	}
+
+	public void setEmpType(String empType) {
+		this.empType = empType;
+	}
+
+	public String getEmpDc() {
+		return empDc;
+	}
+
+	public void setEmpDc(String empDc) {
+		this.empDc = empDc;
 	}
 
 	@Override
