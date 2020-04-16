@@ -59,14 +59,14 @@ function login() {
 	var forward = true;
 	var message = "";
 	
-	if(empId === "") {
+	if(!empId || empId.trim().length<1) {
 		var r = confirm("Please enter an employee id.");
 		if (r == true) {
 			$( "#employeeid" ).focus();
 		} 
 		forward = false;
 	}
-	else if(password === "") {
+	else if(!password || password.trim().length<1) {
 		var r = confirm("Please enter a password.");
 		if (r == true) {
 			$( "#password" ).focus();
@@ -81,20 +81,20 @@ function login() {
 	
 	toggleWorkingScreen(true);
 	var urlPath = '[[${path}]]';
+	
+	var type = !isNaN(empId)?"ID":"USERNAME";
+	
 	var data = {
-			shuttleId: timing,
-			requester: Number(empId),
-			dcFrom: dcFrom,
-			dcTo: dcTo,
-			forDate: forDate,
-			reason: reason
+			type: type,
+			username: empId,
+			password: password
 	}
 	console.log(data);
 	$.ajax({
         type: 'POST',
         data: JSON.stringify(data),
         contentType: "application/json",
-        url: urlPath+'/shuttleservice/',
+        url: urlPath+'/api/auth/login/',
         success:function(data){
         	console.log(data.data);
          	alert("Successfully created ShuttleRequest with id:"+data.data);

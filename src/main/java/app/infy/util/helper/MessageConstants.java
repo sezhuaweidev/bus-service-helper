@@ -16,5 +16,12 @@ public class MessageConstants {
 	public static final String STATUS_NOTRANSPORT = "There is no transport for current dc.";
 	public static final String SHUTTLE_APPROVER_NOT_FOUND = "There is no approver for you";
 	public static final String CANCELLED = "Cancelled";
-
-}
+	public static final String USERNAME_CANNOT_BE_NULL = "Username cannot be null.";
+	public static final String USERNAME_UNACCEPTABLE = "Username is unacceptable.";
+	public static final String PASSWORD_UNACCEPTABLE = "Password must be between 6 to 20 characters and Must contain atleast one uppercase, lowercase, number and special character.";
+	public static final String PASSWORD_CANNOT_BE_NULL = "Password cannot be null.";
+	public static final String USERNAME_TYPE_CANNOT_BE_EMPTY = "Username type cannot be blank.";
+	public static final String AUTHENTICATION_CREDENTIAL_INVALID = "Provided authentication credentials are invalid.";
+	public static final String LOGIN_TYPE_INVALID = "Invalid login type provided";
+	public static final String USERNAME_NOT_FOUND = "Username not found.";
+	public static final String PASSWORD_IS_INVALID = "Password didn't match.";
