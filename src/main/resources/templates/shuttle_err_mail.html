@@ -24,11 +24,17 @@
     </style>
 </head>
  <body>
-    <p th:text="${'Hi ' + name}"></p>
+    <p th:text="${'Hi ' + name + ','}"></p>
 
-    <p>
+    <p th:if="${status eq 'APPROVED_TRNS'}">
       Your shuttle pass for  <span th:text="${dateTime}"></span>
-      has been <span th:text="${status}"></span>
+      has been approved by transport team (<span th:text="${empName}"></span>).<br/>
+      
+    </p>
+    <p th:if="${status eq 'REJECTED_TRNS'}">
+      Your shuttle pass for  <span th:text="${dateTime}"></span>
+      has been rejected by transport team (<span th:text="${empName}"></span>).<br/>
+      
     </p>
     <p>
       Regards, <br />

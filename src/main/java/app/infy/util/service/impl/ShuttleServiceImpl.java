@@ -112,7 +112,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 	        mail.setFrom("sez.huawei.dev@gmail.com");//replace with your desired email
 	        mail.setMailTo(managerDetail.getEmpMail());//replace with your desired email
 	        mail.setMailCc(new String[] {ed.getEmpMail() });
-	        mail.setSubject("Shuttle Pass Request - ACK");
+	        mail.setSubject("Shuttle Pass");
 	        //email template parameter
 	        Map<String, Object> model = new HashMap<String, Object>();
 	        model.put("employeeName", ed.getEmpName());
@@ -120,8 +120,8 @@ public class ShuttleServiceImpl implements ShuttleService {
 	        model.put("name", managerDetail.getEmpName());
 	        model.put("location", infyDcRepository.findById(shuttleRequest.getDcFrom()).orElse(new InfyDc()).getValue());
 	        model.put("sign", "Transportation Team");
-	        model.put("approveUrl", "http://localhost:8082/api/shuttleservice/"+usr.getRequestId()+"/approved");// put shuttle request time
-	        model.put("rejectUrl", "http://localhost:8082/api/shuttleservice/"+usr.getRequestId()+"/rejected");// put shuttle request time
+	        model.put("approveUrl", "http://localhost:8082/api/shuttleservice/"+usr.getRequestId()+"/approved_mgr");// put shuttle request time
+	        model.put("rejectUrl", "http://localhost:8082/api/shuttleservice/"+usr.getRequestId()+"/rejected_mgr");// put shuttle request time
 	        model.put("dateTime", sdf.format(new Date())+" "+shuttleTimingRepository.findById(shuttleRequest.getShuttleId()).orElse(new ShuttleTiming()).getStartTime());// put shuttle request time
 	        mail.setProps(model);
 	        try {
@@ -192,11 +192,11 @@ public class ShuttleServiceImpl implements ShuttleService {
 			        //mail.setMailCc(new String[] {managerDetail.getEmpMail(),infyDcRepository.findById(shuttleRequest.getDcFrom()).orElse(new InfyDc()).getTraveDeskMail()});//transport desk team
 			        mail.setMailCc(new String[] {managerDetail.getEmpMail(),transportDetail.getEmpMail()});//transport desk team
 			        mail.setMailTo(ed.getEmpMail());
-			        mail.setSubject("Shuttle Pass - "+shuttleRequest.getStatus());
+			        mail.setSubject("Shuttle Pass");
 			        //email template parameter
 			        Map<String, Object> model = new HashMap<String, Object>();
-			        model.put("name", "Transportation Team");//put manager name
-			        model.put("empName", ed.getEmpName());
+			        model.put("name", ed.getEmpName());//put manager name
+			        model.put("empName", transportDetail.getEmpName());
 			        model.put("empId", ed.getEmpId());
 			        model.put("location", infyDcRepository.findById(shuttleRequest.getDcFrom()).orElse(new InfyDc()).getValue());
 			        model.put("sign", "Transportation Team");
@@ -204,7 +204,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 			        model.put("dateTime", sdf.format(new Date())+" "+shuttleTimingRepository.findById(shuttleRequest.getShuttleId()).orElse(new ShuttleTiming()).getStartTime());// put shuttle request time
 			        mail.setProps(model);
 					try {
-						emailSenderService.sendAckEmail(mail);
+						emailSenderService.sendErrorEmail(mail);
 				        System.out.println("END... Email sent success");
 					} catch (MessagingException | IOException e) {
 						e.printStackTrace();
@@ -217,19 +217,28 @@ public class ShuttleServiceImpl implements ShuttleService {
 			        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			        mail.setFrom("sez.huawei.dev@gmail.com");//replace with your desired email
 			        //mail.setMailTo(infyDcRepository.findById(shuttleRequest.getDcFrom()).orElse(new InfyDc()).getTraveDeskMail());//transport desk team
-			        mail.setMailTo(transportDetail.getEmpMail());//transport desk team
+			        if(shuttleRequest.getStatus().equalsIgnoreCase(StatusEnum.approved_mgr.name()))
+			        	mail.setMailTo(transportDetail.getEmpMail());//transport desk team
+			        else
+			        	mail.setMailTo(ed.getEmpMail());//transport desk team
+			        
 			        mail.setMailCc(new String[] {managerDetail.getEmpMail(),ed.getEmpMail()});
-			        mail.setSubject("Shuttle Pass - "+shuttleRequest.getStatus());
+			        mail.setSubject("Shuttle Pass");
 			        //email template parameter
 			        Map<String, Object> model = new HashMap<String, Object>();
-			        model.put("name", ed.getEmpName());//put manager name
+			        model.put("approveUrl", "http://localhost:8082/api/shuttleservice/"+shuttleRequest.getRequestId()+"/approved_trns");// put shuttle request time
+			        model.put("rejectUrl", "http://localhost:8082/api/shuttleservice/"+shuttleRequest.getRequestId()+"/rejected_trns");// put shuttle request time
+			        model.put("name", transportDetail.getEmpName());//put manager name
+			        model.put("empName", ed.getEmpName());
+			        model.put("empId", ed.getEmpId());
 			        model.put("location", infyDcRepository.findById(shuttleRequest.getDcFrom()).orElse(new InfyDc()).getValue());
+			        model.put("mgrName", managerDetail.getEmpName());
 			        model.put("sign", "Transportation Team");
 			        model.put("status", shuttleRequest.getStatus());
 			        model.put("dateTime",sdf.format(new Date())+" "+shuttleTimingRepository.findById(shuttleRequest.getShuttleId()).orElse(new ShuttleTiming()).getStartTime());// put shuttle request time
 			        mail.setProps(model);
 					try {
-						emailSenderService.sendErrorEmail(mail);
+						emailSenderService.sendAckEmail(mail);
 				        System.out.println("END... Email sent success");
 					} catch (MessagingException | IOException e) {
 						e.printStackTrace();

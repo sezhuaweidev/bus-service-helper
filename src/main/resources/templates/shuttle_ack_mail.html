@@ -24,12 +24,23 @@
     </style>
 </head>
  <body>
-    <p th:text="${'Hi ' + name}"></p>
+    <p th:if="${status eq 'APPROVED_MGR'}" th:text="${'Hi ' + name +','}"></p>
+    
+    <p th:if="${status eq 'REJECTED_MGR'}" th:text="${'Hi ' + empName +','}"></p>
 
-    <p>
+    <p th:if="${status eq 'APPROVED_MGR'}">
       <span th:text="${empName}"></span>'s(<span th:text="${empId}"></span>) shuttle pass for  <span th:text="${dateTime}"></span>
-      has been <span th:text="${status}"></span><br/>
+      has been approved by manager (<span th:text="${mgrName}"></span>).<br/>
       Please allow him/her to board the bus.
+    </p>
+    <p th:if="${status eq 'REJECTED_MGR'}">
+      Your shuttle pass for  <span th:text="${dateTime}"></span>
+      has been rejected by manager (<span th:text="${mgrName}"></span>).<br/>
+      Kindly contact him/her.
+    </p>
+    <p>
+    	<a th:href="${approveUrl}"><button type="button">Approve</button></a>
+    	<a th:href="${rejectUrl}"><button type="button">Reject</button></a>
     </p>
     <p>
       Regards, <br />
