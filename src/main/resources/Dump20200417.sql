@@ -18,6 +18,80 @@ USE `infy_employees`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `core_permission`
+--
+
+DROP TABLE IF EXISTS `core_permission`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `core_permission` (
+  `id` varchar(20) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `core_permission`
+--
+
+LOCK TABLES `core_permission` WRITE;
+/*!40000 ALTER TABLE `core_permission` DISABLE KEYS */;
+INSERT INTO `core_permission` VALUES ('EMP','Employee'),('MGR','Manager');
+/*!40000 ALTER TABLE `core_permission` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `emp_auth`
+--
+
+DROP TABLE IF EXISTS `emp_auth`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `emp_auth` (
+  `id` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `emp_auth`
+--
+
+LOCK TABLES `emp_auth` WRITE;
+/*!40000 ALTER TABLE `emp_auth` DISABLE KEYS */;
+INSERT INTO `emp_auth` VALUES (1030181,'riddhi.sohampaul@gmail.com','$2a$12$N7LwWMO4AElSV1C3.W3PzeuMtMHl0unJ1C0eBxX0YZcumgRV7ch0u');
+/*!40000 ALTER TABLE `emp_auth` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `emp_permission`
+--
+
+DROP TABLE IF EXISTS `emp_permission`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `emp_permission` (
+  `record_id` int(11) NOT NULL AUTO_INCREMENT,
+  `emp_id` int(11) NOT NULL,
+  `emp_permission_id` varchar(20) NOT NULL,
+  PRIMARY KEY (`record_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `emp_permission`
+--
+
+LOCK TABLES `emp_permission` WRITE;
+/*!40000 ALTER TABLE `emp_permission` DISABLE KEYS */;
+INSERT INTO `emp_permission` VALUES (1,1030181,'EMP'),(2,1030191,'MGR');
+/*!40000 ALTER TABLE `emp_permission` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `employee_detail`
 --
 
@@ -25,14 +99,14 @@ DROP TABLE IF EXISTS `employee_detail`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `employee_detail` (
-  `emp_id` INT(11) NOT NULL,
-  `emp_name` VARCHAR(80) NOT NULL,
-  `emp_email` VARCHAR(100) NOT NULL,
-  `emp_manager_id` INT(11) DEFAULT NULL,
-  `emp_type` VARCHAR(80) NOT NULL,
-  `emp_dc` VARCHAR(80) NOT NULL,
+  `emp_id` int(11) NOT NULL,
+  `emp_name` varchar(80) NOT NULL,
+  `emp_email` varchar(100) NOT NULL,
+  `emp_manager_id` int(11) DEFAULT NULL,
+  `emp_type` varchar(80) NOT NULL,
+  `emp_dc` varchar(80) NOT NULL,
   PRIMARY KEY (`emp_id`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +115,7 @@ CREATE TABLE `employee_detail` (
 
 LOCK TABLES `employee_detail` WRITE;
 /*!40000 ALTER TABLE `employee_detail` DISABLE KEYS */;
-INSERT INTO `employee_detail` VALUES (1030181,'Soham Paul','riddhi.sohampaul@gmail.com',NULL,'MANAGER','BBSRSEZ'),(1030191,'Surya Sahu','surya.sahu92@gmail.com',1030181,'EMPLOYEE','BBSRSEZ'),(1030171,'Satya Bhai','satyabrata2004@gmail.com',NULL,'TRANSPORT','BBSRSEZ');
+INSERT INTO `employee_detail` VALUES (1030171,'Satya Bhai','satyabrata2004@gmail.com',NULL,'TRANSPORT','BBSRSEZ'),(1030181,'Soham Paul','riddhi.sohampaul@gmail.com',NULL,'MANAGER','BBSRSEZ'),(1030191,'Surya Sahu','surya.sahu92@gmail.com',1030181,'EMPLOYEE','BBSRSEZ');
 /*!40000 ALTER TABLE `employee_detail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -53,11 +127,11 @@ DROP TABLE IF EXISTS `infy_country`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `infy_country` (
-  `code` CHAR(4) NOT NULL,
-  `name` VARCHAR(50) NOT NULL,
-  `continent` VARCHAR(20) NOT NULL,
+  `code` char(4) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `continent` varchar(20) NOT NULL,
   PRIMARY KEY (`code`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -78,13 +152,13 @@ DROP TABLE IF EXISTS `infy_dc`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `infy_dc` (
-  `code` VARCHAR(20) NOT NULL,
-  `value` VARCHAR(45) NOT NULL,
-  `country` CHAR(4) NOT NULL,
-  `continent` CHAR(4) NOT NULL,
-  `travel_desk_mail` CHAR(60) NOT NULL,
+  `code` varchar(20) NOT NULL,
+  `value` varchar(45) NOT NULL,
+  `country` char(4) NOT NULL,
+  `continent` char(4) NOT NULL,
+  `travel_desk_mail` char(60) NOT NULL,
   PRIMARY KEY (`code`,`travel_desk_mail`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -105,10 +179,10 @@ DROP TABLE IF EXISTS `infy_region`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `infy_region` (
-  `code` CHAR(4) NOT NULL,
-  `value` VARCHAR(45) NOT NULL,
+  `code` char(4) NOT NULL,
+  `value` varchar(45) NOT NULL,
   PRIMARY KEY (`code`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,18 +203,18 @@ DROP TABLE IF EXISTS `shuttle_request`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `shuttle_request` (
-  `req_id` VARCHAR(40) NOT NULL,
-  `shuttle_id` VARCHAR(10) NOT NULL,
-  `requester` INT(11) NOT NULL,
-  `approver` INT(11) NOT NULL,
-  `reason` VARCHAR(100) NOT NULL,
-  `status` ENUM('PENDING','APPROVED','APPROVED_MGR','APPROVED_TRNS','REJECTED','REJECTED_MGR','REJECTED_TRNS') NOT NULL,
-  `for_date` VARCHAR(20) NOT NULL,
-  `dc_from` CHAR(20) NOT NULL,
-  `dc_to` CHAR(20) NOT NULL,
+  `req_id` varchar(40) NOT NULL,
+  `shuttle_id` varchar(10) NOT NULL,
+  `requester` int(11) NOT NULL,
+  `approver` int(11) NOT NULL,
+  `reason` varchar(100) NOT NULL,
+  `status` enum('PENDING','APPROVED','APPROVED_MGR','APPROVED_TRNS','REJECTED','REJECTED_MGR','REJECTED_TRNS') NOT NULL,
+  `for_date` varchar(20) NOT NULL,
+  `dc_from` char(20) NOT NULL,
+  `dc_to` char(20) NOT NULL,
   PRIMARY KEY (`req_id`),
   UNIQUE KEY `req_id_UNIQUE` (`req_id`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -161,12 +235,12 @@ DROP TABLE IF EXISTS `shuttle_timing`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `shuttle_timing` (
-  `code` VARCHAR(40) NOT NULL,
-  `start_time` TIME(2) NOT NULL,
-  `return_time1` TIME(2) NOT NULL,
-  `return_time2` TIME(2) NOT NULL,
+  `code` varchar(40) NOT NULL,
+  `start_time` time(2) NOT NULL,
+  `return_time1` time(2) NOT NULL,
+  `return_time2` time(2) NOT NULL,
   PRIMARY KEY (`code`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -188,4 +262,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-04-08 16:41:27
+-- Dump completed on 2020-04-17 12:12:15

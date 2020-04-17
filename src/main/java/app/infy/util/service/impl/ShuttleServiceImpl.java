@@ -165,7 +165,8 @@ public class ShuttleServiceImpl implements ShuttleService {
 
 	@Override
 	public String updateShuttleBookingStatus(String shuttleRequestId, StatusEnum statusEnum) {
-		
+		//check status of request-- to be done
+		//cancelled - no op
 		if(!shuttleRequestRepository.existsById(shuttleRequestId)) {
 			throw new ApplicationException(MessageConstants.SHUTTLE_REQUEST_ID_INVALID);
 		} else {

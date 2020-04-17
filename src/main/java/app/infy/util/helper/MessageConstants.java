@@ -25,3 +25,4 @@ public class MessageConstants {
 	public static final String LOGIN_TYPE_INVALID = "Invalid login type provided";
 	public static final String USERNAME_NOT_FOUND = "Username not found.";
 	public static final String PASSWORD_IS_INVALID = "Password didn't match.";
+}
