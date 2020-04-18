@@ -97,11 +97,11 @@ function login() {
         url: urlPath+'/api/auth/login/',
         success:function(data){
         	console.log(data.data);
-         	alert("Successfully created ShuttleRequest with id:"+data.data);
-         	//add reset code here
+         	alert("Login was successfull.");
+         	window.location.replace(urlPath+"/api/view/home");
         },
         error: function(data) {
-        	alert(JSON.parse(data.responseText).data);
+        	alert(data.data);
         },
         complete: function() {
         	toggleWorkingScreen(false);

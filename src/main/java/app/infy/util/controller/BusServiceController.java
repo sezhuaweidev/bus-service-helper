@@ -87,7 +87,7 @@ public class BusServiceController {
 		}
 		
 		//logic
-		String updateStatus = shuttleService.updateShuttleBookingStatus(shuttleRequestId, statusEnum);
+		shuttleService.updateShuttleBookingStatus(shuttleRequestId, statusEnum);
 		return new AppResponse<String>("Mail has been sent");
 	}
 }

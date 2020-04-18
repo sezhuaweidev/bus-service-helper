@@ -83,6 +83,26 @@
 		
 	}	
 	
+	function logout(url) {
+		toggleWorkingScreen(true);
+		$.ajax({
+	        type: 'GET',
+	        url: url,
+	        contentType: 'text/plain',
+	        success:function(data){
+	        	alert("Successfully logged out.");
+	        	
+	        },
+	        error: function(data) {
+	        	alert(data);
+	        },
+	        complete: function() {
+	        	toggleWorkingScreen(false);
+	        	location.reload();
+	        }
+		})
+	}
+	
 	
 </script>
 
@@ -101,7 +121,7 @@
 		      <a class="nav-link" th:href="${pathManage}">Manage</a>
 		  </li>
 		  <li class="nav-item active">
-		      <a class="nav-link" href="#">Log Out</a>
+		      <a class="nav-link" href="#" th:attr="onclick=|logout('${optionUrl}auth/logout')|">Log Out</a>
 	      </li>
 		</ul>
 		<ul class="navbar-nav" style="margin-left:70%">

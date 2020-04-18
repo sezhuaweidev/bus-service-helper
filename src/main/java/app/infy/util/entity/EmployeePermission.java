@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="employee_permission")
+@Table(name="emp_permission")
 public class EmployeePermission {
 	
 	@Id
@@ -16,7 +16,7 @@ public class EmployeePermission {
 	@Column(name="record_id")
 	private String recordId;
 	
-	@Column(name="employee_id")
+	@Column(name="emp_id")
 	private String employeeId;
 
 	@Column(name="emp_permission_id")

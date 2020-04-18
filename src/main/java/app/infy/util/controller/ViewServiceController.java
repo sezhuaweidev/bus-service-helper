@@ -1,12 +1,18 @@
 package app.infy.util.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,11 +26,13 @@ import app.infy.util.entity.InfyRegion;
 import app.infy.util.entity.ShuttleRequest;
 import app.infy.util.entity.ShuttleTiming;
 import app.infy.util.exception.ControllerException;
+import app.infy.util.exception.UnwantedAccessException;
 import app.infy.util.helper.MessageConstants;
 import app.infy.util.service.EmployeeService;
 import app.infy.util.service.ShuttleService;
 
 @Controller
+//@Scope("session")
 @RequestMapping("view")
 public class ViewServiceController {
 
@@ -45,8 +53,13 @@ public class ViewServiceController {
 		return "emp-login";
 	}
 	
-	@GetMapping(value = "home/{id}")
-	public String getHomePage(@PathVariable(name="id", required=true) String id,Model model) {
+	@GetMapping(value = "home")
+	public String getHomePage(HttpServletRequest req,Model model) {
+		//checking access
+		//no need of id path variable
+		String authString = checkGrantedAuthority(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getAuthorities(), new String[]{"EMPLOYEE","MANAGER","TRANSPORT"});
+		String id = SecurityContextHolder.getContext().getAuthentication().getName();
+		
 		Integer intId = null;
 		try {
 			intId = Integer.parseInt(id);
@@ -54,21 +67,41 @@ public class ViewServiceController {
 			throw new ControllerException(MessageConstants.PROVIDED_ID_INVALID);
 		}
 		
-		EmployeeDetail ed = employeeService.getEmployeeDetailById(intId);
+		//EmployeeDetail ed = employeeService.getEmployeeDetailById(intId);
 		String url = "";
 		
-		if(ed.getEmpType().equalsIgnoreCase("EMPLOYEE")){
-			url = "redirect:"+ request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/"+ed.getEmpId();
-		}else if(ed.getEmpType().equalsIgnoreCase("MANAGER")){
-			url = "redirect:"+request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() +"/view/manage/"+ed.getEmpId();
-		}else if(ed.getEmpType().equalsIgnoreCase("TRANSPORT")){
-			url = "redirect:"+ request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() +"/view/transManage/"+ed.getEmpId();
+		if(authString.equalsIgnoreCase("EMPLOYEE")){
+			url = "redirect:"+ request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/";
+		}else if(authString.equalsIgnoreCase("MANAGER")){
+			url = "redirect:"+request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() +"/view/manage/";
+		}else if(authString.equalsIgnoreCase("TRANSPORT")){
+			url = "redirect:"+ request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() +"/view/transManage/";
 		}
 		return url;
 	}
 	
-	@GetMapping(value = "apply/{id}")
-	public String getIndexPage(@PathVariable(name="id", required=true) String id, Model model) {
+	private String checkGrantedAuthority(Collection<? extends GrantedAuthority> authorities, String[] strings) {
+		List<String> authString = authorities.stream().map(t->t.getAuthority()).collect(Collectors.toList());
+		boolean allowed = false;
+		for(int ii=0;ii<strings.length;ii++) {
+			if(authString.contains(strings[ii])) { 
+				allowed = true;
+			}
+		}
+		if(!allowed) {
+			throw new UnwantedAccessException(MessageConstants.USER_NOT_AUTHORIZED_TO_SEE);
+		} else {
+			return authString.get(0);
+		}
+	}
+
+	@GetMapping(value = "apply")
+	public String getIndexPage(Model model) {
+		//checking access
+		//no need of id path variable
+		checkGrantedAuthority(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getAuthorities(), new String[]{"EMPLOYEE","MANAGER"});
+		String id = SecurityContextHolder.getContext().getAuthentication().getName();
+
 		Integer intId = null;
 		try {
 			intId = Integer.parseInt(id); 
@@ -108,8 +141,13 @@ public class ViewServiceController {
 	}
 	
 	
-	@GetMapping(value = "manage/{id}")
-	public String getManagePage(@PathVariable(name="id", required=true) String id,Model model) {
+	@GetMapping(value = "manage")
+	public String getManagePage(Model model) {
+		//checking access
+		//no need of id path variable
+		checkGrantedAuthority(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getAuthorities(), new String[]{"EMPLOYEE"});
+		String id = SecurityContextHolder.getContext().getAuthentication().getName();
+
 		Integer intId = null;
 		try {
 			intId = Integer.parseInt(id);
@@ -130,8 +168,12 @@ public class ViewServiceController {
 		return "mng-shuttle";
 	}
 	
-	@GetMapping(value = "empManage/{id}")
-	public String getEmpManagePage(@PathVariable(name="id", required=true) String id,Model model) {
+	@GetMapping(value = "empManage")
+	public String getEmpManagePage(Model model) {
+		//checking access
+		//no need of id path variable
+		checkGrantedAuthority(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getAuthorities(), new String[]{"MANAGER"});
+		String id = SecurityContextHolder.getContext().getAuthentication().getName();
 		Integer intId = null;
 		try {
 			intId = Integer.parseInt(id);
@@ -152,8 +194,12 @@ public class ViewServiceController {
 		return "mng-shuttle";
 	}
 	
-	@GetMapping(value = "transManage/{id}")
-	public String getTransManagePage(@PathVariable(name="id", required=true) String id,Model model) {
+	@GetMapping(value = "transManage")
+	public String getTransManagePage(Model model) {
+		//checking access
+		//no need of id path variable
+		checkGrantedAuthority(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getAuthorities(), new String[]{"TRANSPORT"});
+		String id = SecurityContextHolder.getContext().getAuthentication().getName();
 		Integer intId = null;
 		try {
 			intId = Integer.parseInt(id);

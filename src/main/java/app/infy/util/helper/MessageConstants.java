@@ -25,4 +25,6 @@ public class MessageConstants {
 	public static final String LOGIN_TYPE_INVALID = "Invalid login type provided";
 	public static final String USERNAME_NOT_FOUND = "Username not found.";
 	public static final String PASSWORD_IS_INVALID = "Password didn't match.";
+	public static final String USER_ALREADY_LOGGED_IN = "User is already logged in.";
+	public static final String USER_NOT_AUTHORIZED_TO_SEE = "User not authrozied to see this page.";
 }

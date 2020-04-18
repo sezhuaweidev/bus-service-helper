@@ -259,6 +259,26 @@ function toggleWorkingScreen(doShow) {
 	}
 }
 
+function logout() {
+	var urlPath = '[[${path}]]';
+	$.ajax({
+        type: 'GET',
+        url: urlPath+'/auth/logout',
+        success:function(data){
+        	console.log(data.data);
+         	alert("Successfully logged out.");
+         	//add reset code here
+        },
+        error: function(data) {
+        	alert(data.data);
+        },
+        complete: function() {
+        	toggleWorkingScreen(false);
+        	location.reload();
+        }
+	});
+}
+
 </script>
 
 </head>
@@ -278,7 +298,7 @@ function toggleWorkingScreen(doShow) {
 		      <a class="nav-link" th:href="${pathManage}">Manage</a>
 		  </li>
 		  <li class="nav-item active">
-		      <a class="nav-link" href="#">Log Out</a>
+		      <a class="nav-link" href="#" onclick="logout()">Log Out</a>
 	      </li>
 		</ul>
 		<ul class="navbar-nav" style="margin-left:70%">
