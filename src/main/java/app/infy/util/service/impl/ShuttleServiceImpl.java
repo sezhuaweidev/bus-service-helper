@@ -96,7 +96,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 		sr.setApprover(ed.getEmpManagerId());
 		
 		if(shuttleRequestRepository.existsById(sr.getRequestId())) {
-			throw new ApplicationException("REQUEST_ALREADY_EXISTS");
+			throw new ApplicationException(MessageConstants.REQUEST_ALREADY_EXISTS);
 		}else if(ed.getEmpManagerId()==null){
 			throw new ApplicationException(MessageConstants.SHUTTLE_APPROVER_NOT_FOUND);
 		}else {
@@ -301,7 +301,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 	 * If shuttle pass request not approved within 28 minutes, it gets auto approved.
 	 * Last hour everyday, make all pending requests to CANCELLED. --- to be done
 	 */
-	@Scheduled(cron = "0 0/1 * * * ?")
+	/*@Scheduled(cron = "0 0/1 * * * ?")
 	public void processShuttleRequests() {
 		Enumeration<String> keys = BusServiceHelper.APPROVAL_MAP.keys();
 		if(!keys.hasMoreElements()) {
@@ -328,7 +328,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 			
 		}
 	}
-
+*/
 	@Override
 	public List<ShuttleRequest> findShuttleRequestByMngIdAndDate(Integer approverId,String forDate) {
 		return shuttleRequestRepository.findShuttleRequestByMngIdAndDate(approverId);

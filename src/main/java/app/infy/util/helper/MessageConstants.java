@@ -30,4 +30,5 @@ public class MessageConstants {
 	public static final String APPROVE_SUCCESS = "Aprroved successfully.";
 	public static final String REJECT_SUCCESS = "Rejected successfully.";
 	public static final String CANCEL_SUCCESS = "Cancelled successfully.";
+	public static final String REQUEST_ALREADY_EXISTS = "Bus pass request is already there";
 }

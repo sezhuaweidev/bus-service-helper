@@ -19,8 +19,9 @@
 
 <style>
 .zIndex99 {
-	z-index:99;
+	z-index: 99;
 }
+
 .right_panel {
 	width: 42rem;
 	z-index: 98;
@@ -29,261 +30,265 @@
 .right_panel label {
 	font-weight: bold;
 }
+
 .overlay {
-	float:left;
-	z-index:100;
-	position:fixed;
-	top:0px;
-	left:0px;
-	width:2000px;
-	height:1000px;
-	background-color:rgba(100,100,100,0.3);
+	float: left;
+	z-index: 100;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 2000px;
+	height: 1000px;
+	background-color: rgba(100, 100, 100, 0.3);
 	content: " ";
-	display:none;
+	display: none;
 }
+
 .white-text {
- text-color:white
+	text-color: white
 }
 </style>
 <script type="text/javascript">
-$(document).ready(function() {
-	$('#region').change(
-        function() {
-        	var thisRegion = this.value;
-        	resetCountry();
-        	resetDcFrom();
-        	resetDcTo();
-        	$("#country option").each(function() {
-        		var thisObj = $(this);
-        		var itsContinent = thisObj.attr("continent");
+	$(document).ready(
+			function() {
+				$('#timming').change(function() {
+					var timing = this.value;
+					var date = $("#fsr-for-date").val().split("-");
+					var onlyTiming = timing.substring(timing.length - 4).split("");
+					var currentTime = new Date();
+					var selectTime = new Date(date[2],date[1]-1,date[0],onlyTiming[0]+onlyTiming[1],onlyTiming[2]+onlyTiming[3]);
+					if(selectTime<currentTime){
+						alert("Kindly select future time");
+						$('#timming').val("-1");
+					}
+				});
 
-        		if(thisRegion==="-1"|| thisObj.val() === "-1" ) {
-        			thisObj.css("display","inline");
-        		} else if(itsContinent != thisRegion) {
-        			thisObj.css("display","none");
-        		} else {
-        			thisObj.css("display","inline");
-        		}
-        	});
-        	
-        	$("#dcFrom option").each(function() {
-        		var thisObj = $(this);
-        		var itsContinent = thisObj.attr("continent");
-        		if(thisRegion==="-1") {
-        			thisObj.css("display","inline");
-        		} else if(itsContinent != thisRegion) {
-        			thisObj.css("display","none");
-        		} else {
-        			thisObj.css("display","inline");
-        		}
-        	});
-        	$("#dcTo option").each(function() {
-        		var thisObj = $(this);
-        		var itsContinent = thisObj.attr("continent");
-        		if(thisRegion==="-1") {
-        			thisObj.css("display","inline");
-        		} else if(itsContinent != thisRegion) {
-        			thisObj.css("display","none");
-        		} else {
-        			thisObj.css("display","inline");
-        		}
-        	});        	
-        }
-    );
+				$('#region').change(function() {
+					var thisRegion = this.value;
+					resetCountry();
+					resetDcFrom();
+					resetDcTo();
+					$("#country option").each(function() {
+						var thisObj = $(this);
+						var itsContinent = thisObj.attr("continent");
 
-	$('#country').change(
-        function() {
-        	resetDcFrom();
-        	resetDcTo();
-        	var thisCountry = this.value;
-        	var region = $("#region").val();
-        	//console.log(thisCountry);
-        	$("#dcFrom option").each(function() {
-        		var thisObj = $(this);
-        		var itsCountry = thisObj.attr("country");
-        		var itsContinent = thisObj.attr("continent");
-        		
-        		if(thisCountry === "-1" && region != "-1" && region === itsContinent) {
-           			thisObj.css("display","inline");
-        		} else if(itsCountry != thisCountry) {
-        			thisObj.css("display","none");
-        		} else {
-        			thisObj.css("display","inline");
-        		}
-        		
-        	});
-        	$("#dcTo option").each(function() {
-        		var thisObj = $(this);
-        		var itsCountry = thisObj.attr("country");
-        		var itsContinent = thisObj.attr("continent");
-        		
-        		if(thisCountry === "-1" && region != "-1" && region === itsContinent) {
-           			thisObj.css("display","inline");
-        		} else if(itsCountry != thisCountry) {
-        			thisObj.css("display","none");
-        		} else {
-        			thisObj.css("display","inline");
-        		}
-        		
-        	});        	
-    });
-});
+						if (thisRegion === "-1" || thisObj.val() === "-1") {
+							thisObj.css("display", "inline");
+						} else if (itsContinent != thisRegion) {
+							thisObj.css("display", "none");
+						} else {
+							thisObj.css("display", "inline");
+						}
+					});
 
-function resetCountry() {
-	$("#country").val("-1");
-	$("#country option").each(function() {
-		$(this).css("display","inline");
-	});
-}
+					$("#dcFrom option").each(function() {
+						var thisObj = $(this);
+						var itsContinent = thisObj.attr("continent");
+						if (thisRegion === "-1") {
+							thisObj.css("display", "inline");
+						} else if (itsContinent != thisRegion) {
+							thisObj.css("display", "none");
+						} else {
+							thisObj.css("display", "inline");
+						}
+					});
+					$("#dcTo option").each(function() {
+						var thisObj = $(this);
+						var itsContinent = thisObj.attr("continent");
+						if (thisRegion === "-1") {
+							thisObj.css("display", "inline");
+						} else if (itsContinent != thisRegion) {
+							thisObj.css("display", "none");
+						} else {
+							thisObj.css("display", "inline");
+						}
+					});
+				});
 
-function resetDcFrom() {
-	$("#dcFrom").val("-1");
-	$("#dcFrom option").each(function() {
-		$(this).css("display","inline");
-	});
-}
+				$('#country').change(
+						function() {
+							resetDcFrom();
+							resetDcTo();
+							var thisCountry = this.value;
+							var region = $("#region").val();
+							//console.log(thisCountry);
+							$("#dcFrom option").each(
+									function() {
+										var thisObj = $(this);
+										var itsCountry = thisObj
+												.attr("country");
+										var itsContinent = thisObj
+												.attr("continent");
 
-function resetDcTo() {
-	$("#dcTo").val("-1");
-	$("#dcTo option").each(function() {
-		$(this).css("display","inline");
-	});
-}
+										if (thisCountry === "-1"
+												&& region != "-1"
+												&& region === itsContinent) {
+											thisObj.css("display", "inline");
+										} else if (itsCountry != thisCountry) {
+											thisObj.css("display", "none");
+										} else {
+											thisObj.css("display", "inline");
+										}
 
-function saveShuttleRequest() {
-	//fsr-employeeid, region, country,dcFrom,dcTo,fsr-reason,fsr-for-date,timing
-	var empId = $("#fsr-employeeid").val();
-	var region = $("#region").val();
-	var country = $("#country").val();
-	var dcFrom = $("#dcFrom").val();
-	var dcTo = $("#dcTo").val();
-	var reason = $("#fsr-reason").val();
-	var forDate = $("#fsr-for-date").val();
-	var timing = $("#timming").val();
-	
-	var forward = true;
-	var message = "";
-	
-	if(region === "-1") {
-		var r = confirm("Please select the proper region.");
-		if (r == true) {
-			$( "#region" ).focus();
-		} 
-		forward = false;
-	}
-	else if(country === "-1") {
-		var r = confirm("Please select the proper country.");
-		if (r == true) {
-			$( "#country" ).focus();
-		} 
-		forward = false;
-	}
-	else if(dcFrom === "-1") {
-		var r = confirm("Please select from DC.");
-		if (r == true) {
-			$( "#dcFrom" ).focus();
-		} 
-		forward = false;
-	}
-	else if(dcTo == "-1") {
-		var r = confirm("Please select to DC.");
-		if (r == true) {
-			$( "#dcTo" ).focus();
-		} 
-		forward = false;
-	}
-	else if(timing === "-1") {
-		var r = confirm("Please select a timing.");
-		if (r == true) {
-			$( "#timming" ).focus();
-		} 
-		forward = false;
-	}
-	else if(!reason || reason.length<10 || reason.length>100) {
-		var r = confirm("Please provide a reason. It must be within 10 to 100 characters.");
-		if (r == true) {
-			$( "#fsr-reason" ).focus();
-		} 
-		forward = false;
-	}
-	else if(dcFrom === dcTo) {
-		var r = confirm("Dc from and to cannot be same.");
-		if (r == true) {
-			
-		} 
-		forward = false;
-	}
-	
-	if(!forward) {
-		//alert(message);
-		return;
-	}
-	
-	toggleWorkingScreen(true);
-	var urlPath = '[[${path}]]';
-	
-	//adding time to for date
-	var onlyTiming = timing.substring(timing.length-4).split("");
-	forDate += " "+onlyTiming[0]+onlyTiming[1]+":"+onlyTiming[2]+onlyTiming[3];
-	
-	var data = {
-			shuttleId: timing,
-			requester: Number(empId),
-			dcFrom: dcFrom,
-			dcTo: dcTo,
-			forDate: forDate,
-			reason: reason
-	}
-	console.log(data);
-	$.ajax({
-        type: 'POST',
-        data: JSON.stringify(data),
-        contentType: "application/json",
-        url: urlPath+'/shuttleservice/',
-        success:function(data){
-        	console.log(data.data);
-         	alert("Successfully created ShuttleRequest with id:"+data.data);
-         	//add reset code here
-        },
-        error: function(data) {
-        	alert(JSON.parse(data.responseText).data);
-        },
-        complete: function() {
-        	toggleWorkingScreen(false);
-        }
-	});
-}
+									});
+							$("#dcTo option").each(
+									function() {
+										var thisObj = $(this);
+										var itsCountry = thisObj
+												.attr("country");
+										var itsContinent = thisObj
+												.attr("continent");
 
-function toggleWorkingScreen(doShow) {
-	if(doShow) {
-		$(document.body).css("cursor","wait");
-		$("#working-screen").css("display","block");
-	} else {
-		$(document.body).css("cursor","default");
-		$("#working-screen").css("display","none");
+										if (thisCountry === "-1"
+												&& region != "-1"
+												&& region === itsContinent) {
+											thisObj.css("display", "inline");
+										} else if (itsCountry != thisCountry) {
+											thisObj.css("display", "none");
+										} else {
+											thisObj.css("display", "inline");
+										}
+
+									});
+						});
+			});
+
+	function resetCountry() {
+		$("#country").val("-1");
+		$("#country option").each(function() {
+			$(this).css("display", "inline");
+		});
 	}
-}
 
-function logout() {
-	var urlPath = '[[${path}]]';
-	$.ajax({
-        type: 'GET',
-        url: urlPath+'/auth/logout',
-        success:function(data){
-        	console.log(data.data);
-         	alert("Successfully logged out.");
-         	//add reset code here
-        },
-        error: function(data) {
-        	alert(data.responseText);
-        },
-        complete: function() {
-        	toggleWorkingScreen(false);
-        	location.reload();
-        }
-	});
-}
+	function resetDcFrom() {
+		$("#dcFrom").val("-1");
+		$("#dcFrom option").each(function() {
+			$(this).css("display", "inline");
+		});
+	}
 
+	function resetDcTo() {
+		$("#dcTo").val("-1");
+		$("#dcTo option").each(function() {
+			$(this).css("display", "inline");
+		});
+	}
+
+	function saveShuttleRequest() {
+		//fsr-employeeid, region, country,dcFrom,dcTo,fsr-reason,fsr-for-date,timing
+		var empId = $("#fsr-employeeid").val();
+		var region = $("#region").val();
+		var country = $("#country").val();
+		var dcFrom = $("#dcFrom").val();
+		var dcTo = $("#dcTo").val();
+		var reason = $("#fsr-reason").val();
+		var forDate = $("#fsr-for-date").val();
+		var timing = $("#timming").val();
+
+		var forward = true;
+		var message = "";
+
+		if (region === "-1") {
+			alert("Please select the proper region.");
+			$("#region").focus();
+			forward = false;
+		} else if (country === "-1") {
+			alert("Please select the proper country.");
+			$("#country").focus();
+			forward = false;
+		} else if (dcFrom === "-1") {
+			alert("Please select from DC.");
+			$("#dcFrom").focus();
+			forward = false;
+		} else if (dcTo == "-1") {
+			alert("Please select to DC.");
+			$("#dcTo").focus();
+			forward = false;
+		} else if (dcFrom === dcTo) {
+			alert("Dc from and to cannot be same.");
+			$("#dcTo").focus();
+			forward = false;
+		} else if (timing === "-1") {
+			alert("Please select a timing.");
+			$("#timming").focus();
+			forward = false;
+		} else if (!reason || reason.length<10 || reason.length>100) {
+			alert("Please provide a reason. It must be within 10 to 100 characters.");
+			$("#fsr-reason").focus();
+			forward = false;
+		}
+
+		if (!forward) {
+			//alert(message);
+			return;
+		}
+
+		toggleWorkingScreen(true);
+		var urlPath = '[[${path}]]';
+
+		//adding time to for date
+		var onlyTiming = timing.substring(timing.length - 4).split("");
+		forDate += " " + onlyTiming[0] + onlyTiming[1] + ":" + onlyTiming[2]
+				+ onlyTiming[3];
+
+		var data = {
+			shuttleId : timing,
+			requester : Number(empId),
+			dcFrom : dcFrom,
+			dcTo : dcTo,
+			forDate : forDate,
+			reason : reason
+		}
+		console.log(data);
+		$.ajax({
+			type : 'POST',
+			data : JSON.stringify(data),
+			contentType : "application/json",
+			url : urlPath + '/shuttleservice/',
+			success : function(data) {
+				console.log(data.data);
+				alert("Successfully created ShuttleRequest with id:"
+						+ data.data);
+				//add reset code here
+			},
+			error : function(data) {
+				alert(JSON.parse(data.responseText).data);
+			},
+			complete : function() {
+				toggleWorkingScreen(false);
+			}
+		});
+	}
+
+	function toggleWorkingScreen(doShow) {
+		if (doShow) {
+			$(document.body).css("cursor", "wait");
+			$("#working-screen").css("display", "block");
+		} else {
+			$(document.body).css("cursor", "default");
+			$("#working-screen").css("display", "none");
+		}
+	}
+
+	function logout() {
+		var urlPath = '[[${path}]]';
+		$.ajax({
+			type : 'GET',
+			url : urlPath + '/auth/logout',
+			success : function(data) {
+				console.log(data.data);
+				alert("Successfully logged out.");
+				//add reset code here
+			},
+			error : function(data) {
+				alert(data.responseText);
+			},
+			complete : function() {
+				toggleWorkingScreen(false);
+				location.reload();
+			}
+		});
+	}
 </script>
 
 </head>
@@ -294,23 +299,20 @@ function logout() {
 		loop="loop"> <source src="../static/video/bus.mp4"
 		th:src="@{/video/bus.mp4}" type="video/mp4"></video>
 	<nav class="navbar navbar-expand-sm bg-dark navbar-dark zIndex99">
-		<!-- <a class="navbar-brand text-primary" href="#">Shuttle Pass</a> -->
-		  <ul class="navbar-nav">
-		    <li class="nav-item">
-		      <a class="nav-link" th:if="${employeeRole eq 'EMPLOYEE'}" th:href="${pathApply}">Apply</a>
-		    </li>
-		    <li class="nav-item">
-		      <a class="nav-link" th:href="${pathManage}">Manage</a>
-		  </li>
-		  <li class="nav-item active">
-		      <a class="nav-link" href="#" onclick="logout()">Log Out</a>
-	      </li>
-		</ul>
-		<ul class="navbar-nav" style="margin-left:60%">
-		<li class="nav-item">
-		     <a class="navbar-brand text-primary" href="#">Welcome <span th:text="${employeename}"></span></a>
-		  </li>
-		</ul>
+	<!-- <a class="navbar-brand text-primary" href="#">Shuttle Pass</a> -->
+	<ul class="navbar-nav">
+		<li class="nav-item"><a class="nav-link"
+			th:if="${employeeRole eq 'EMPLOYEE'}" th:href="${pathApply}">Apply</a>
+		</li>
+		<li class="nav-item"><a class="nav-link" th:href="${pathManage}">Manage</a>
+		</li>
+		<li class="nav-item active"><a class="nav-link" href="#"
+			onclick="logout()">Log Out</a></li>
+	</ul>
+	<ul class="navbar-nav" style="margin-left: 60%">
+		<li class="nav-item"><a class="navbar-brand text-primary"
+			href="#">Welcome <span th:text="${employeename}"></span></a></li>
+	</ul>
 	</nav>
 	<div class="overlays"></div>
 	<div class="register_panel d-flex">
@@ -327,7 +329,7 @@ function logout() {
 				</div>
 			</div>
 		</div>
-		<div class="right_panel" >
+		<div class="right_panel">
 			<div class="row">
 				<!-- <div class="col-md-12">
 					<h2 class="text-white">Personal Details:</h2>
@@ -352,95 +354,99 @@ function logout() {
 							</div>
 						</div>
 					</div> -->
-					<h2 class="text-white">Pass Entry:</h2>
-					<div class="card" style="margin-bottom: 20px;">
-						<div class="card-body">
-							<form id="form-shuttle-request" onsubmit="return false">
-								<input type="hidden" id="fsr-employeeid" th:value="${employeeid}"/>
-								<div class="row">
-									<div class="col-sm-6">
-										<div class="form-group">
-											<label>Region:</label> 
-											<select class="form-control" id="region" >
-												<option value="-1">Select Region</option>
-												<option th:each="data : ${region}"
-													th:text="${data.value}" th:value="${data.code}"/>
-											</select>
-										</div>
-									</div>
-									<div class="col-sm-6">
-										<div class="form-group">
-											<label>Country:</label> 
-											<select class="form-control" id="country">
-												<option value="-1">Select Country</option>
-												<option th:each="data : ${country}" th:value="${data.code}"
-													th:text="${data.name}" th:continent="${data.continent}" />
-											</select>
-										</div>
+				<h2 class="text-white">Pass Entry:</h2>
+				<div class="card" style="margin-bottom: 20px;">
+					<div class="card-body">
+						<form id="form-shuttle-request" onsubmit="return false">
+							<input type="hidden" id="fsr-employeeid" th:value="${employeeid}" />
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label>Region:</label> <select class="form-control"
+											id="region">
+											<option value="-1">Select Region</option>
+											<option th:each="data : ${region}" th:text="${data.value}"
+												th:value="${data.code}" />
+										</select>
 									</div>
 								</div>
-								<div class="row">
-									<div class="col-sm-6">
-										<div class="form-group">
-											<label>DC From:</label> <select class="form-control"
-												id="dcFrom">
-												<option value="-1">Select DC</option>
-												<option th:each="data : ${shuttledcs}"
-													th:text="${data.value}" th:value="${data.code}" 
-													th:country="${data.country}" th:continent="${data.continent}" />
-											</select>
-										</div>
-									</div>
-									<div class="col-sm-6">
-										<div class="form-group">
-											<label>DC To:</label> <select class="form-control"
-												id="dcTo">
-												<option value="-1">Select DC</option>
-												<option th:each="data : ${shuttledcs}"
-													th:text="${data.value}" th:value="${data.code}" 
-													th:country="${data.country}" th:continent="${data.continent}" />
-											</select>
-										</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label>Country:</label> <select class="form-control"
+											id="country">
+											<option value="-1">Select Country</option>
+											<option th:each="data : ${country}" th:value="${data.code}"
+												th:text="${data.name}" th:continent="${data.continent}" />
+										</select>
 									</div>
 								</div>
-								<div class="row">
-									<div class="col-md-6">
-										<div class="form-group">
-											<label>Date:</label> <input class="form-control" type="text"
-												readonly="readonly" id="fsr-for-date" th:value="${currentdate}" />
-										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="form-group">
-											<label>Shuttle Timing:</label> <select class="form-control"
-												id="timming">
-												<option value="-1">Select Time</option>
-												<option th:each="data : ${shuttletimings}"
-													th:text="${data.startTime}" th:value="${data.code}"/>
-											</select>
-										</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label>DC From:</label> <select class="form-control"
+											id="dcFrom">
+											<option value="-1">Select DC</option>
+											<option th:each="data : ${shuttledcs}"
+												th:text="${data.value}" th:value="${data.code}"
+												th:country="${data.country}"
+												th:continent="${data.continent}" />
+										</select>
 									</div>
 								</div>
-								<div class="row">
-									<div class="col-md-6">
-										<div class="form-group">
-											<label>Reason:</label>
-											<textarea id="fsr-reason" class="form-control" rows="3" cols="5"></textarea>
-										</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label>DC To:</label> <select class="form-control" id="dcTo">
+											<option value="-1">Select DC</option>
+											<option th:each="data : ${shuttledcs}"
+												th:text="${data.value}" th:value="${data.code}"
+												th:country="${data.country}"
+												th:continent="${data.continent}" />
+										</select>
 									</div>
 								</div>
-								<div class="form-group" style="text-align: center;">
-									<button onclick="saveShuttleRequest()" type="submit" class="btn btn-info mr-2">Submit</button>
-									<button type="reset" class="btn btn-warning">Reset</button>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Date:</label> <input class="form-control" type="text"
+											readonly="readonly" id="fsr-for-date"
+											th:value="${currentdate}" />
+									</div>
 								</div>
-							</form>
-						</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Shuttle Timing:</label> <select class="form-control"
+											id="timming">
+											<option value="-1">Select Time</option>
+											<option th:each="data : ${shuttletimings}"
+												th:text="${data.startTime}" th:value="${data.code}" />
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Reason:</label>
+										<textarea id="fsr-reason" class="form-control" rows="3"
+											cols="5"></textarea>
+									</div>
+								</div>
+							</div>
+							<div class="form-group" style="text-align: center;">
+								<button onclick="saveShuttleRequest()" type="submit"
+									class="btn btn-info mr-2">Submit</button>
+								<button type="reset" class="btn btn-warning">Reset</button>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
-
-
 		</div>
+
+
+	</div>
 	</div>
 </body>
 </html>

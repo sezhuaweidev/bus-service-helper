@@ -60,17 +60,13 @@ function login() {
 	var message = "";
 	
 	if(!empId || empId.trim().length<1) {
-		var r = confirm("Please enter an employee id.");
-		if (r == true) {
-			$( "#employeeid" ).focus();
-		} 
+		alert("Please enter an employee id.");
+		$( "#employeeid" ).focus();
 		forward = false;
 	}
 	else if(!password || password.trim().length<1) {
-		var r = confirm("Please enter a password.");
-		if (r == true) {
-			$( "#password" ).focus();
-		} 
+		alert("Please enter a password.");
+		$( "#password" ).focus();
 		forward = false;
 	}
 	
