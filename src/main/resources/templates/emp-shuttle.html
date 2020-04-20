@@ -221,6 +221,11 @@ function saveShuttleRequest() {
 	
 	toggleWorkingScreen(true);
 	var urlPath = '[[${path}]]';
+	
+	//adding time to for date
+	var onlyTiming = timing.substring(timing.length-4).split("");
+	forDate += " "+onlyTiming[0]+onlyTiming[1]+":"+onlyTiming[2]+onlyTiming[3];
+	
 	var data = {
 			shuttleId: timing,
 			requester: Number(empId),
@@ -270,7 +275,7 @@ function logout() {
          	//add reset code here
         },
         error: function(data) {
-        	alert(data.data);
+        	alert(data.responseText);
         },
         complete: function() {
         	toggleWorkingScreen(false);
@@ -301,7 +306,7 @@ function logout() {
 		      <a class="nav-link" href="#" onclick="logout()">Log Out</a>
 	      </li>
 		</ul>
-		<ul class="navbar-nav" style="margin-left:70%">
+		<ul class="navbar-nav" style="margin-left:60%">
 		<li class="nav-item">
 		     <a class="navbar-brand text-primary" href="#">Welcome <span th:text="${employeename}"></span></a>
 		  </li>

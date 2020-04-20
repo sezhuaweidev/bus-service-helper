@@ -84,6 +84,8 @@ public class ShuttleServiceImpl implements ShuttleService {
 		//System.out.println(shuttleRequestRepository.save(formToShuttleReuqestConverter.convert(shuttleRequest)));
 		//System.out.println(Arrays.deepToString(shuttleTimingRepository.getAll().toArray()));
 		
+		
+		
 		if(!employeeDetailRepository.existsById(shuttleRequest.getRequester()) ) {
 			throw new ApplicationException(MessageConstants.EMPLOYEE_ID_NOT_FOUND);
 		}
@@ -120,8 +122,9 @@ public class ShuttleServiceImpl implements ShuttleService {
 	        model.put("name", managerDetail.getEmpName());
 	        model.put("location", infyDcRepository.findById(shuttleRequest.getDcFrom()).orElse(new InfyDc()).getValue());
 	        model.put("sign", "Transportation Team");
-	        model.put("approveUrl", "http://localhost:8082/api/shuttleservice/"+usr.getRequestId()+"/approved_mgr");// put shuttle request time
-	        model.put("rejectUrl", "http://localhost:8082/api/shuttleservice/"+usr.getRequestId()+"/rejected_mgr");// put shuttle request time
+	        model.put("manageUrl", "http://localhost:8082/api/view/home");
+	        //model.put("approveUrl", "http://localhost:8082/api/shuttleservice/"+usr.getRequestId()+"/approved_mgr");// put shuttle request time
+	        //model.put("rejectUrl", "http://localhost:8082/api/shuttleservice/"+usr.getRequestId()+"/rejected_mgr");// put shuttle request time
 	        model.put("dateTime", sdf.format(new Date())+" "+shuttleTimingRepository.findById(shuttleRequest.getShuttleId()).orElse(new ShuttleTiming()).getStartTime());// put shuttle request time
 	        mail.setProps(model);
 	        try {
@@ -173,12 +176,22 @@ public class ShuttleServiceImpl implements ShuttleService {
 			ShuttleRequest shuttleRequest = shuttleRequestRepository.findById(shuttleRequestId).orElse(new ShuttleRequest());
 			EmployeeDetail transportDetail = employeeDetailRepository.findByDc(shuttleRequest.getDcFrom());
 			System.out.println("Received: "+shuttleRequest.getStatus());
-			/*if(!shuttleRequest.getStatus().equalsIgnoreCase("PENDING")) {
+			/**if(!shuttleRequest.getStatus().equalsIgnoreCase("PENDING")) {
 				throw new ApplicationException(MessageConstants.STATUS_ALREADY_UPDATED);
-			}else*/ if(transportDetail==null){
+			}**/
+			
+			if(transportDetail==null){
 				throw new ApplicationException(MessageConstants.STATUS_NOTRANSPORT);
 			}else {
 				shuttleRequest.setStatus(statusEnum.name().toUpperCase());
+				
+				if(shuttleRequest.getStatus().equalsIgnoreCase("CANCELLED") || shuttleRequest.getStatus().equalsIgnoreCase("REJECTED_TRNS") || shuttleRequest.getStatus().equalsIgnoreCase("REJECTED_MGR")) {
+					int random = new Double(Math.floor(Math.random()*100)).intValue();
+					
+					shuttleRequestRepository.deleteById(shuttleRequestId);
+					shuttleRequest.setRequestId(shuttleRequest.getRequestId()+"F"+random);
+					
+				}
 				shuttleRequestRepository.save(shuttleRequest);
 				
 				EmployeeDetail ed = employeeDetailRepository.findById(shuttleRequest.getRequester()).orElse(new EmployeeDetail());
@@ -227,8 +240,9 @@ public class ShuttleServiceImpl implements ShuttleService {
 			        mail.setSubject("Shuttle Pass");
 			        //email template parameter
 			        Map<String, Object> model = new HashMap<String, Object>();
-			        model.put("approveUrl", "http://localhost:8082/api/shuttleservice/"+shuttleRequest.getRequestId()+"/approved_trns");// put shuttle request time
-			        model.put("rejectUrl", "http://localhost:8082/api/shuttleservice/"+shuttleRequest.getRequestId()+"/rejected_trns");// put shuttle request time
+			        model.put("manageUrl", "http://localhost:8082/api/view/home");
+			        //model.put("approveUrl", "http://localhost:8082/api/shuttleservice/"+shuttleRequest.getRequestId()+"/approved_trns");// put shuttle request time
+			        //model.put("rejectUrl", "http://localhost:8082/api/shuttleservice/"+shuttleRequest.getRequestId()+"/rejected_trns");// put shuttle request time
 			        model.put("name", transportDetail.getEmpName());//put manager name
 			        model.put("empName", ed.getEmpName());
 			        model.put("empId", ed.getEmpId());
@@ -247,7 +261,8 @@ public class ShuttleServiceImpl implements ShuttleService {
 					}
 				}
 				
-				return MessageConstants.SUCCESS;
+		        return shuttleRequest.getStatus();
+
 			}
 		}
 	}
@@ -284,6 +299,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 	/**
 	 * This method contains auto approve logic.
 	 * If shuttle pass request not approved within 28 minutes, it gets auto approved.
+	 * Last hour everyday, make all pending requests to CANCELLED. --- to be done
 	 */
 	@Scheduled(cron = "0 0/1 * * * ?")
 	public void processShuttleRequests() {
@@ -334,7 +350,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 
 	@Override
 	public List<ShuttleRequest> findShuttleRequestByEmpMngIdAndDate(Integer requesterId, String curDate) {
-		return shuttleRequestRepository.findShuttleRequestByEmpMngIdAndDate(requesterId,curDate);
+		return shuttleRequestRepository.findShuttleRequestByEmpMngIdAndDate(requesterId);
 	}
 
 	@Override

@@ -165,6 +165,7 @@ public class ViewServiceController {
 		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByMngIdAndDate(intId,curDate);
 		model.addAttribute("shuttleRequestList", lstShuttleTimings);
 		model.addAttribute("optionUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/shuttleservice/");
+		model.addAttribute("logoutUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/auth/logout");
 		return "mng-shuttle";
 	}
 	
@@ -191,6 +192,7 @@ public class ViewServiceController {
 		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByEmpMngIdAndDate(intId,curDate);
 		model.addAttribute("shuttleRequestList", lstShuttleTimings);
 		model.addAttribute("optionUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/shuttleservice/");
+		model.addAttribute("logoutUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/auth/logout");
 		return "mng-shuttle";
 	}
 	
@@ -217,6 +219,7 @@ public class ViewServiceController {
 		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByTransMngIdAndDate(ed.getEmpDc(),curDate);
 		model.addAttribute("shuttleRequestList", lstShuttleTimings);
 		model.addAttribute("optionUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/shuttleservice/");
+		model.addAttribute("logoutUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/auth/logout");
 		return "mng-shuttle";
 	}
 	

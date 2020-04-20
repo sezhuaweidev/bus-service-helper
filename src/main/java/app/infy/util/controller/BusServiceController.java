@@ -87,7 +87,18 @@ public class BusServiceController {
 		}
 		
 		//logic
-		shuttleService.updateShuttleBookingStatus(shuttleRequestId, statusEnum);
-		return new AppResponse<String>("Mail has been sent");
+		String retStatus = shuttleService.updateShuttleBookingStatus(shuttleRequestId, statusEnum);
+		return new AppResponse<String>(getMessageFromStatusEnum(retStatus));
+	}
+
+	private String getMessageFromStatusEnum(String retStatus) {
+		
+		if(retStatus.toLowerCase().startsWith("approved")) {
+			return MessageConstants.APPROVE_SUCCESS;
+		} else if(retStatus.toLowerCase().startsWith("rejected")) {
+			return MessageConstants.REJECT_SUCCESS;
+		} else {
+			return MessageConstants.CANCEL_SUCCESS;
+		}
 	}
 }

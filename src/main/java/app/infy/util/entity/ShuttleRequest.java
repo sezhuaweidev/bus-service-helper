@@ -10,7 +10,7 @@ import javax.persistence.Table;
 public class ShuttleRequest {
 	
 	@Id
-	@Column(name="req_id")
+	@Column(name="req_id",updatable = true)
 	private String requestId;
 	
 	@Column(name="shuttle_id")

@@ -105,7 +105,7 @@
 	        	
 	        },
 	        error: function(data) {
-	        	alert(data);
+	        	alert(data.responseText);
 	        },
 	        complete: function() {
 	        	toggleWorkingScreen(false);
@@ -132,7 +132,7 @@
 		      <a class="nav-link" th:href="${pathManage}">Manage</a>
 		  </li>
 		  <li class="nav-item active">
-		      <a class="nav-link" href="#" th:attr="onclick=|logout('${optionUrl}auth/logout')|">Log Out</a>
+		      <a class="nav-link" href="#" th:attr="onclick=|logout('${logoutUrl}')|">Log Out</a>
 	      </li>
 		</ul>
 		<ul class="navbar-nav" style="margin-left:70%">

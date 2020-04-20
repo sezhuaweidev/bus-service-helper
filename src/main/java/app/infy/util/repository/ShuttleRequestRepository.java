@@ -22,7 +22,9 @@ public interface ShuttleRequestRepository extends JpaRepository<ShuttleRequest, 
 	 //@Query("SELECT s FROM ShuttleRequest s WHERE s.dcFrom=:dcFrom and s.forDate = :forDate and s.status='APPROVED_MGR'")
 	 @Query("SELECT s FROM ShuttleRequest s WHERE s.dcFrom=:dcFrom and (s.status='APPROVED_MGR' or s.status='APPROVED_TRNS' or s.status='REJECTED_TRNS')")
 	 public List<ShuttleRequest> findShuttleRequestByTransMngIdAndDate(@Param("dcFrom")String dcId);
-	 @Query("SELECT s FROM ShuttleRequest s WHERE s.requester=:requesterId and s.forDate = :forDate")
-	 public List<ShuttleRequest> findShuttleRequestByEmpMngIdAndDate(@Param("requesterId")Integer requesterId, @Param("forDate")String curDate);
+	 
+	 //@Query("SELECT s FROM ShuttleRequest s WHERE s.requester=:requesterId and s.forDate = :forDate")
+	 @Query("SELECT s FROM ShuttleRequest s WHERE s.requester=:requesterId")
+	 public List<ShuttleRequest> findShuttleRequestByEmpMngIdAndDate(@Param("requesterId")Integer requesterId);
 	 
 }

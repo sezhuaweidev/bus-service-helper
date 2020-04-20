@@ -15,8 +15,13 @@ public class ApplicationExceptionHandler {
 	
 	@ExceptionHandler(ApplicationException.class)
 	@ResponseStatus(code=HttpStatus.BAD_REQUEST)
-	public AppResponse<String> handleApplicationException(ApplicationException ape) {
-		return new AppResponse<String>(ape.getMessage());
+	public Object handleApplicationException(ApplicationException ape) {
+		
+		if(ape.getMessage().startsWith("Action has already been taken for")) {
+			return "<html><body>"+MessageConstants.SHUTTLE_REQUEST_ID_INVALID+"</body></html>";
+		} else {
+			return new AppResponse<String>(ape.getMessage());
+		}
 	}
 	
 	@ExceptionHandler(HttpMessageNotReadableException.class)

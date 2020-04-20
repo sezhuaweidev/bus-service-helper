@@ -22,7 +22,7 @@ public class FormShuttleRequest {
 	@Length(min = 10, max=100, message="REASON_CHAR_LENGTH_VIOLATION")
 	private String reason;
 	
-	@Pattern(regexp = "[0-9]{2,2}-[0-9]{2,2}-[0-9]{4,4}", message="INVALID_FOR_DATE")
+	@Pattern(regexp = "[0-9]{2,2}-[0-9]{2,2}-[0-9]{4,4}[\\s]{1}[0-9]{2,}[\\:]+[0-9]{2,}", message="INVALID_FOR_DATE")
 	private String forDate;
 	
 	public FormShuttleRequest() { super(); }

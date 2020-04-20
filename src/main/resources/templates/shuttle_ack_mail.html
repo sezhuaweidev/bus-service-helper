@@ -17,8 +17,8 @@
         button{
 	        background-color: #e7e7e7;
 		    color: black;
-		    width: 73px;
-		    height: 19px;
+		    width: 203px;
+		    height: 24px;
 		    font-size: smaller;
         }
     </style>
@@ -39,8 +39,12 @@
       Kindly contact him/her.
     </p>
     <p>
+    	
+    	<a th:href="${manageUrl}"><button type="button">Click to take action.</button></a>
+    	<!-- 
     	<a th:href="${approveUrl}"><button type="button">Approve</button></a>
     	<a th:href="${rejectUrl}"><button type="button">Reject</button></a>
+    	 -->
     </p>
     <p>
       Regards, <br />
