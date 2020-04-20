@@ -62,7 +62,7 @@ CREATE TABLE `emp_auth` (
 
 LOCK TABLES `emp_auth` WRITE;
 /*!40000 ALTER TABLE `emp_auth` DISABLE KEYS */;
-INSERT INTO `emp_auth` VALUES (1030181,'riddhi.sohampaul@gmail.com','$2a$12$N7LwWMO4AElSV1C3.W3PzeuMtMHl0unJ1C0eBxX0YZcumgRV7ch0u');
+INSERT INTO `emp_auth` VALUES (1030171,'satyabrata2004@gmail.com','$2a$12$N7LwWMO4AElSV1C3.W3PzeuMtMHl0unJ1C0eBxX0YZcumgRV7ch0u'),(1030181,'riddhi.sohampaul@gmail.com','$2a$12$N7LwWMO4AElSV1C3.W3PzeuMtMHl0unJ1C0eBxX0YZcumgRV7ch0u'),(1030191,'surya.sahu26@gmail.com','$2a$12$N7LwWMO4AElSV1C3.W3PzeuMtMHl0unJ1C0eBxX0YZcumgRV7ch0u');
 /*!40000 ALTER TABLE `emp_auth` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -78,7 +78,7 @@ CREATE TABLE `emp_permission` (
   `emp_id` int(11) NOT NULL,
   `emp_permission_id` varchar(20) NOT NULL,
   PRIMARY KEY (`record_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -87,7 +87,7 @@ CREATE TABLE `emp_permission` (
 
 LOCK TABLES `emp_permission` WRITE;
 /*!40000 ALTER TABLE `emp_permission` DISABLE KEYS */;
-INSERT INTO `emp_permission` VALUES (1,1030181,'EMP'),(2,1030191,'MGR');
+INSERT INTO `emp_permission` VALUES (1,1030181,'MANAGER'),(2,1030191,'EMPLOYEE'),(3,1030171,'TRANSPORT');
 /*!40000 ALTER TABLE `emp_permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -115,7 +115,7 @@ CREATE TABLE `employee_detail` (
 
 LOCK TABLES `employee_detail` WRITE;
 /*!40000 ALTER TABLE `employee_detail` DISABLE KEYS */;
-INSERT INTO `employee_detail` VALUES (1030171,'Satya Bhai','satyabrata2004@gmail.com',NULL,'TRANSPORT','BBSRSEZ'),(1030181,'Soham Paul','riddhi.sohampaul@gmail.com',NULL,'MANAGER','BBSRSEZ'),(1030191,'Surya Sahu','surya.sahu92@gmail.com',1030181,'EMPLOYEE','BBSRSEZ');
+INSERT INTO `employee_detail` VALUES (1030171,'Satya Bhai','satyabrata2004@gmail.com',NULL,'TRANSPORT','BBSRSTP'),(1030181,'Soham Paul','riddhi.sohampaul@gmail.com',NULL,'MANAGER','BBSRSTP'),(1030191,'Surya Sahu','surya.sahu92@gmail.com',1030181,'EMPLOYEE','BBSRSTP');
 /*!40000 ALTER TABLE `employee_detail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -223,7 +223,7 @@ CREATE TABLE `shuttle_request` (
 
 LOCK TABLES `shuttle_request` WRITE;
 /*!40000 ALTER TABLE `shuttle_request` DISABLE KEYS */;
-INSERT INTO `shuttle_request` VALUES ('STLREQ103018108042020','STL0800',1030181,1030191,'stufffff will get done','APPROVED','08-04-2020','BBSRSTP','BBSRSEZ'),('STLREQ103019108042020','STL1100',1030191,1030181,'Well this works I guess','PENDING','08-04-2020','BBSRSTP','BBSRSEZ');
+INSERT INTO `shuttle_request` VALUES ('STLREQ103018108042020','STL0800',1030181,1030191,'stufffff will get done','APPROVED','08-04-2020','BBSRSTP','BBSRSEZ'),('STLREQ103019108042020','STL1100',1030191,1030181,'Well this works I guess','APPROVED_TRNS','08-04-2020','BBSRSTP','BBSRSEZ'),('STLREQ103019120042020','STL0800',1030191,1030181,'qwertyuiopzxcvbnm,asdfghjkl','APPROVED_TRNS','20-04-2020','BBSRSTP','BBSRSEZ');
 /*!40000 ALTER TABLE `shuttle_request` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -262,4 +262,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-04-17 12:12:15
+-- Dump completed on 2020-04-20 10:31:42

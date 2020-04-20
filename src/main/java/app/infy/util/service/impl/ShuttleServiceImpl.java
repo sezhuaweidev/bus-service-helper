@@ -315,7 +315,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 
 	@Override
 	public List<ShuttleRequest> findShuttleRequestByMngIdAndDate(Integer approverId,String forDate) {
-		return shuttleRequestRepository.findShuttleRequestByMngIdAndDate(approverId,forDate);
+		return shuttleRequestRepository.findShuttleRequestByMngIdAndDate(approverId);
 	}
 
 	@Override
@@ -339,7 +339,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 
 	@Override
 	public List<ShuttleRequest> findShuttleRequestByTransMngIdAndDate(String dcId, String curDate) {
-		return shuttleRequestRepository.findShuttleRequestByTransMngIdAndDate(dcId,curDate);
+		return shuttleRequestRepository.findShuttleRequestByTransMngIdAndDate(dcId);
 	}
 	
 }

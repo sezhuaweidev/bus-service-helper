@@ -118,11 +118,11 @@ public class ViewServiceController {
 		List<InfyCountry> lstCountry = shuttleService.getInfyCountry("ALL");
 		
 		if(role.equalsIgnoreCase("EMPLOYEE")){
-			mngUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/empManage/"+ed.getEmpId();
+			mngUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/empManage/";
 		}else if(role.equalsIgnoreCase("MANAGER")){
-			mngUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/manage/"+ed.getEmpId();
+			mngUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/manage/";
 		}else if(role.equalsIgnoreCase("TRANSPORT")){
-			mngUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/trnsManage/"+ed.getEmpId();
+			mngUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/trnsManage/";
 		}
 		
 		model.addAttribute("employeeRole", role);
@@ -133,7 +133,7 @@ public class ViewServiceController {
 		model.addAttribute("shuttledcs", lstInfyDcs);
 		model.addAttribute("region",lstRegion);
 		model.addAttribute("country",lstCountry);
-		model.addAttribute("pathApply",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/"+ed.getEmpId());
+		model.addAttribute("pathApply",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/");
 		model.addAttribute("pathManage",mngUrl);
 		model.addAttribute("path",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath());
 		
@@ -145,7 +145,7 @@ public class ViewServiceController {
 	public String getManagePage(Model model) {
 		//checking access
 		//no need of id path variable
-		checkGrantedAuthority(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getAuthorities(), new String[]{"EMPLOYEE"});
+		checkGrantedAuthority(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getAuthorities(), new String[]{"MANAGER"});
 		String id = SecurityContextHolder.getContext().getAuthentication().getName();
 
 		Integer intId = null;
@@ -160,8 +160,8 @@ public class ViewServiceController {
 		model.addAttribute("employeename", ed.getEmpName());
 		model.addAttribute("employeeRole", ed.getEmpType());
 		model.addAttribute("employeeid", ed.getEmpId());
-		model.addAttribute("pathApply",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/"+ed.getEmpId());
-		model.addAttribute("pathManage",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/manage/"+ed.getEmpId());
+		model.addAttribute("pathApply",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/");
+		model.addAttribute("pathManage",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/manage/");
 		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByMngIdAndDate(intId,curDate);
 		model.addAttribute("shuttleRequestList", lstShuttleTimings);
 		model.addAttribute("optionUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/shuttleservice/");
@@ -172,7 +172,7 @@ public class ViewServiceController {
 	public String getEmpManagePage(Model model) {
 		//checking access
 		//no need of id path variable
-		checkGrantedAuthority(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getAuthorities(), new String[]{"MANAGER"});
+		checkGrantedAuthority(((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getAuthorities(), new String[]{"EMPLOYEE"});
 		String id = SecurityContextHolder.getContext().getAuthentication().getName();
 		Integer intId = null;
 		try {
@@ -186,8 +186,8 @@ public class ViewServiceController {
 		model.addAttribute("employeeid", ed.getEmpId());
 		model.addAttribute("employeename", ed.getEmpName());
 		model.addAttribute("employeeRole", ed.getEmpType());
-		model.addAttribute("pathApply",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/"+ed.getEmpId());
-		model.addAttribute("pathManage",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/empManage/"+ed.getEmpId());
+		model.addAttribute("pathApply",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/");
+		model.addAttribute("pathManage",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/empManage/");
 		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByEmpMngIdAndDate(intId,curDate);
 		model.addAttribute("shuttleRequestList", lstShuttleTimings);
 		model.addAttribute("optionUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/shuttleservice/");
@@ -213,7 +213,7 @@ public class ViewServiceController {
 		model.addAttribute("employeename", ed.getEmpName());
 		model.addAttribute("employeeRole", ed.getEmpType());
 		//model.addAttribute("pathApply",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/"+ed.getEmpId());
-		model.addAttribute("pathManage",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/transManage/"+ed.getEmpId());
+		model.addAttribute("pathManage",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/transManage/");
 		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByTransMngIdAndDate(ed.getEmpDc(),curDate);
 		model.addAttribute("shuttleRequestList", lstShuttleTimings);
 		model.addAttribute("optionUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/shuttleservice/");
