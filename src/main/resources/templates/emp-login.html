@@ -10,17 +10,21 @@
 	th:href="@{/css/bootstrap.min.css}" />
 <script src="../static/js/jquery-3.3.1.js"
 	th:src="@{/js/jquery-3.3.1.js}"></script>
+	<script src="../static/js/bootbox.js" th:src="@{/js/bootbox.js}"></script>
+<script src="../static/js/bootbox.min.js" th:src="@{/js/bootbox.min.js}"></script>
 <script src="../static/js/bootstrap.min.js"
 	th:src="@{/js/bootstrap.min.js}"></script>
 <link rel='stylesheet' type='text/css'
 	href='../static/css/coming-soon.min.css'
 	th:href="@{/css/coming-soon.min.css}" />
-
+<script src="../static/js/jquery.validate.min.js"
+	th:src="@{/js/jquery.validate.min.js}"></script>
 
 <style>
 .zIndex99 {
-	z-index:99;
+	z-index: 99;
 }
+
 .right_panel {
 	width: 42rem;
 	z-index: 98;
@@ -29,82 +33,72 @@
 .right_panel label {
 	font-weight: bold;
 }
+
 .overlay {
-	float:left;
-	z-index:100;
-	position:fixed;
-	top:0px;
-	left:0px;
-	width:2000px;
-	height:1000px;
-	background-color:rgba(100,100,100,0.3);
+	float: left;
+	z-index: 100;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 2000px;
+	height: 1000px;
+	background-color: rgba(100, 100, 100, 0.3);
 	content: " ";
-	display:none;
+	display: none;
 }
+
 .white-text {
- text-color:white
+	text-color: white
 }
 </style>
 <script type="text/javascript">
-/* $(document).ready(function() {
-	
-}); */
-
-
-function login() {
-	//fsr-employeeid, region, country,dcFrom,dcTo,fsr-reason,fsr-for-date,timing
-	var empId = $("#employeeid").val();
-	var password = $("#password").val();
-	
-	var forward = true;
-	var message = "";
-	
-	if(!empId || empId.trim().length<1) {
-		alert("Please enter an employee id.");
-		$( "#employeeid" ).focus();
-		forward = false;
-	}
-	else if(!password || password.trim().length<1) {
-		alert("Please enter a password.");
-		$( "#password" ).focus();
-		forward = false;
-	}
-	
-	if(!forward) {
-		//alert(message);
-		return;
-	}
-	
-	toggleWorkingScreen(true);
-	var urlPath = '[[${path}]]';
-	
-	var type = !isNaN(empId)?"ID":"USERNAME";
-	
-	var data = {
-			type: type,
-			username: empId,
-			password: password
-	}
-	console.log(data);
-	$.ajax({
-        type: 'POST',
-        data: JSON.stringify(data),
-        contentType: "application/json",
-        url: urlPath+'/api/auth/login/',
-        success:function(data){
-        	console.log(data.data);
-         	//alert("Login was successfull.");
-         	window.location.replace(urlPath+"/api/view/home");
-        },
-        error: function(data) {
-        	console.log(data.responseText);
-        	alert(data.responseText);
-        },
-        complete: function() {
-        	toggleWorkingScreen(false);
-        }
+$(document).ready(function() {
+	$("form[name='form-shuttle-request']").validate({ 
+		 rules: {
+			 employeeid:"required",
+			 password:"required"
+		 },
+		 messages: {
+			 employeeid:"Please enter an employeee id",
+			 password:"Please enter a password"
+		 },
+		 submitHandler: function(form) {
+		 	var empId = $("#employeeid").val();
+			var password = $("#password").val();
+			
+			toggleWorkingScreen(true);
+			var urlPath = '[[${path}]]';
+			
+			var type = !isNaN(empId)?"ID":"USERNAME";
+			
+			var data = {
+					type: type,
+					username: empId,
+					password: password
+			}
+			console.log(data);
+			$.ajax({
+		        type: 'POST',
+		        data: JSON.stringify(data),
+		        contentType: "application/json",
+		        url: urlPath+'/api/auth/login/',
+		        success:function(data){
+		        	console.log(data.data);
+		         	//alert("Login was successfull.");
+		         	window.location.replace(urlPath+"/api/view/home");
+		        },
+		        error: function(data) {
+		        	console.log(data.responseText);
+		        	bootbox.alert(data.responseText);
+		        },
+		        complete: function() {
+		        	toggleWorkingScreen(false);
+		        }
+			});
+		 }
 	});
-}
+});
+
 
 function toggleWorkingScreen(doShow) {
 	if(doShow) {
@@ -120,22 +114,20 @@ function toggleWorkingScreen(doShow) {
 
 </head>
 <body>
-
 	<div id="working-screen" class="overlay"></div>
 	<video playsinline="playsinline" autoplay="autoplay" muted="muted"
 		loop="loop"> <source src="../static/video/bus.mp4"
 		th:src="@{/video/bus.mp4}" type="video/mp4"></video>
 	<nav class="navbar navbar-expand-sm bg-dark navbar-dark zIndex99">
-		<a class="navbar-brand text-white" href="#">Shuttle Pass</a>
-	</nav>
+	<h2 class="text-white">Shuttle Pass</h2> </nav>
 	<div class="overlays"></div>
 	<div class="register_panel d-flex">
 		<div class="masthead">
 			<div class="masthead-bg"></div>
 			<div class="container h-100">
 				<div class="row h-100">
-					<div class="col-12 my-auto">
-						<div class="masthead-content text-white py-5 pb-2">
+					<div class="col-md-12 my-auto">
+						<div class="masthead-content text-white py-5 pb-2" style="height: 146px;margin: 50px 20px 75px 60px;">
 							<h2 class="mb-3 text-center">Infosys Buss Pass</h2>
 							<h3 class="mb-3 text-center">Coming Soon!!!</h3>
 						</div>
@@ -143,30 +135,44 @@ function toggleWorkingScreen(doShow) {
 				</div>
 			</div>
 		</div>
-		<div class="right_panel" style="margin-top: 150px;">
+		<div class="right_panel" style="margin-top: 170px;margin-left:26px">
 			<div class="row">
 				<div class="col-md-12">
-					<h2 class="text-white">Login</h2>
-					<div class="card" >
+					<h4 class="text-white">Login</h4>
+					<div class="card" style="width:80%;height:78%">
 						<div class="card-body">
-							<form id="form-shuttle-request" onsubmit="return false">
-								
+							<form id="form-shuttle-request" name="form-shuttle-request" onsubmit="return false">
 								<div class="row">
 									<div class="col-md-12">
 										<div class="form-group">
-											<label>Employee Id:</label> <input class="form-control" type="text"
-												id="employeeid"/>
+											<div class="row">
+												<div class="col-md-3" style="text-align:right;">
+													<label>Employee Id:</label>
+												</div>
+												<div class="col-md-9">
+													<input class="form-control" type="text" id="employeeid"
+														name="employeeid" />
+												</div>
+											</div>
 										</div>
 									</div>
 									<div class="col-md-12">
 										<div class="form-group">
-											<label>Passsword:</label> <input class="form-control" type="password"
-												id="password" />
+										<div class="row">
+												<div class="col-md-3" style="text-align:right;">
+													<label>Password:</label>
+												</div>
+												<div class="col-md-9">
+													<input class="form-control"
+												type="password" id="password" name="password" />
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
 								<div class="form-group" style="text-align: center;">
-									<button onclick="login()" type="submit" class="btn btn-info mr-2">Login</button>
+									<button type="submit"
+										class="btn btn-info mr-2">Login</button>
 									<!-- <button type="reset" class="btn btn-warning">Reset</button> -->
 								</div>
 							</form>
@@ -174,8 +180,6 @@ function toggleWorkingScreen(doShow) {
 					</div>
 				</div>
 			</div>
-
-
 		</div>
 	</div>
 </body>
