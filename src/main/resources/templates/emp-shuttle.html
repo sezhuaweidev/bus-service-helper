@@ -250,6 +250,7 @@
 				alert("Successfully created ShuttleRequest with id:"
 						+ data.data);
 				//add reset code here
+				location.reload();
 			},
 			error : function(data) {
 				alert(JSON.parse(data.responseText).data);
