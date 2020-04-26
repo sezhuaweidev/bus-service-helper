@@ -7,11 +7,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +24,6 @@ import app.infy.util.entity.EmployeeDetail;
 import app.infy.util.entity.InfyCountry;
 import app.infy.util.entity.InfyDc;
 import app.infy.util.entity.InfyRegion;
-
 import app.infy.util.entity.ShuttleRequest;
 import app.infy.util.entity.ShuttleTiming;
 import app.infy.util.exception.ControllerException;
@@ -47,9 +49,14 @@ public class ViewServiceController {
 	}
 	
 	@GetMapping(value = "login")
-	public String getLoginPage() {
+	public String getLoginPage(HttpServletRequest req, HttpServletResponse res, Model model) {
 		
-		return "emp-login";
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(null != auth && !auth.getName().equalsIgnoreCase("anonymoususer")) {
+			return getHomePage(req, model);
+		} else {
+			return "emp-login";
+		}
 	}
 	
 	@GetMapping(value = "home")

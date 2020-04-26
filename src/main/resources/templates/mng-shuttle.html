@@ -5,29 +5,33 @@
 <title>Buss Pass</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script src="../static/js/jquery-3.3.1.js"
+	th:src="@{/js/jquery-3.3.1.js}"></script>
 <link rel="stylesheet" type='text/css'
 	href="../static/css/bootstrap.min.css"
 	th:href="@{/css/bootstrap.min.css}" />
-<link rel="stylesheet" type='text/css'
-	href="../static/css/dataTables.bootstrap.min.css"
-	th:href="@{/css/dataTables.bootstrap.min.css}" />
 <script src="../static/js/bootstrap.min.js"
 	th:src="@{/js/bootstrap.min.js}"></script>
-<script src="../static/js/dataTables.bootstrap.min.js"
-	th:src="@{/js/dataTables.bootstrap.min.js}"></script>
-<script src="../static/js/jquery-3.3.1.js"
-	th:src="@{/js/jquery-3.3.1.js}"></script>
 <script src="../static/js/jquery.dataTables.min.js"
 	th:src="@{/js/jquery.dataTables.min.js}"></script>
+<script src="../static/js/dataTables.bootstrap.min.js"
+	th:src="@{/js/dataTables.bootstrap.min.js}"></script>
 <script src="../static/js/bootbox.js" th:src="@{/js/bootbox.js}"></script>
 <script src="../static/js/bootbox.min.js" th:src="@{/js/bootbox.min.js}"></script>
 <link rel='stylesheet' type='text/css'
 	href='../static/css/coming-soon.min.css'
 	th:href="@{/css/coming-soon.min.css}" />
+<link rel="stylesheet" type='text/css'
+	href="../static/css/dataTables.bootstrap.min.css"
+	th:href="@{/css/dataTables.bootstrap.min.css}" />
 <!-- <link rel='stylesheet' type='text/css'
 	href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'/> -->
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
+a,h1,h2,h3,h4,h5,h6,p,label,input {
+font-family: 'Open Sans', sans-serif;
+}
 .right_panel {
 	width: 80rem;
 	z-index: 99;
@@ -80,17 +84,16 @@
 			url : urlPath,
 			contentType : 'text/plain',
 			success : function(data) {
-				bootbox.alert(data.data);
+				showModal("Success",data.data);
 				//data needs to be added in table here
 
 			},
 			error : function(data) {
-				bootbox.alert(JSON.parse(data.responseText).data);
+				showModal("Error",JSON.parse(data.responseText).data);
 				//var tb = $("#log").DataTable();
 			},
 			complete : function() {
 				toggleWorkingScreen(false);
-				location.reload();
 			}
 		})
 
@@ -103,17 +106,27 @@
 			url : url,
 			contentType : 'text/plain',
 			success : function(data) {
-				bootbox.alert("Successfully logged out.");
+				//bootbox.alert("Successfully logged out.");
 
 			},
 			error : function(data) {
-				bootbox.alert(data.responseText);
+				showModal(data.responseText);
 			},
 			complete : function() {
 				toggleWorkingScreen(false);
 				location.reload();
 			}
 		})
+	}
+	
+	function locationReload() {
+		location.reload();
+	}
+	
+	function showModal(header, body) {
+		$("#modal-title").text(header);
+		$("#modal-body").text(body);
+		$("#show-modal-dialog").modal('show');
 	}
 </script>
 
@@ -124,48 +137,35 @@
 		loop="loop"> <source src="../static/video/bus.mp4"
 		th:src="@{/video/bus.mp4}" type="video/mp4"></video>
 	<nav class="navbar navbar-expand-sm bg-dark navbar-dark zIndex99">
-	<ul class="navbar-nav">
-		<li class="nav-item"><a class="nav-link"
-			th:if="${employeeRole eq 'EMPLOYEE'}" th:href="${pathApply}">Apply</a>
-		</li>
-		<li class="nav-item"><a class="nav-link" th:href="${pathManage}">Manage</a>
-		</li>
-		<li class="nav-item active"><a class="nav-link" href="#"
-			th:attr="onclick=|logout('${logoutUrl}')|">Log Out</a></li>
-	</ul>
-	<ul class="navbar-nav" style="margin-left: 70%">
-		<li class="nav-item"><a class="navbar-brand text-primary"
-			href="#">Welcome <span th:text="${employeename}"></span></a></li>
-	</ul>
+		<div class="navbar-brand">
+		<a class="text-white navbar-brand">Shuttle Pass</a>
+		</div>
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item"><a class="nav-link"
+				th:if="${employeeRole eq 'EMPLOYEE'}" th:href="${pathApply}">Apply</a>
+			</li>
+			<li class="nav-item active"><a class="nav-link" th:href="${pathManage}">Manage</a>
+			</li>
+		</ul>
+		<ul class="navbar-nav">
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle font-weight-bold" href="#" data-toggle="dropdown" >
+					Welcome <mark th:text="${employeename}"></mark>
+				</a>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="#"
+					th:attr="onclick=|logout('${logoutUrl}')|"
+					style="">Log Out</a>
+				</div>
+			</li>
+		</ul>
 	</nav>
 	<div class="overlays"></div>
 	<div class="register_panel d-flex">
-		<!-- <div class="masthead">
-			<div class="masthead-bg"></div>
-			<div class="container h-100">
-				<div class="row h-100">
-					<div class="col-12 my-auto">
-						<div class="masthead-content text-white py-5 pb-2">
-							<h2 class="mb-3 text-center">Infosys Buss Pass</h2>
-							<h3 class="mb-3 text-center">Coming Soon!!!</h3>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div> -->
 		<div class="right_panel" style="margin: 50px 30px 50px 30px">
 			<div class="row">
 				<div class="col-md-12">
 					<h2 class="text-white">Pass Log Details:</h2>
-					<!-- <div class="input-group">
-						<div class="input-group-prepend">
-							<span class="input-group-text" >View passes:</span>
-						</div>
-						<select id="show-selection" class="form-control" onchange="showBussPassList(this)">
-							<option value="byme" selected>Applied by me</option>
-							<option value="forme">Requires my approval</option>
-						</select>
-					</div> -->
 					<div class="card">
 						<div class="card-body">
 							<table id="log" class="table responsive table-striped table-bordered"
@@ -225,5 +225,28 @@
 			</div>
 		</div>
 	</div>
+	
+	<div class="modal" id="show-modal-dialog">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	
+	      <!-- Modal Header -->
+	      <div class="modal-header">
+	        <h4 class="modal-title" id="modal-title"></h4>
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	      </div>
+	
+	      <!-- Modal body -->
+	      <div class="modal-body" id="modal-body">
+	      </div>
+	
+	      <!-- Modal footer -->
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="locationReload()">Close</button>
+	      </div>
+	
+	    </div>
+	  </div>
+	</div>		
 </body>
 </html>
