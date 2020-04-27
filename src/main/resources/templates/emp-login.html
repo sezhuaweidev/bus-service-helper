@@ -108,12 +108,29 @@ $(document).ready(function() {
 		 }
 	});
 });**/
-
+function showPopover(id, text, duration) {
+	$(id).popover({
+        placement:'auto',
+        content:text
+	});
+	$(id).popover('show');
+	$(id).focus();
+	setTimeout(function() {
+		$(id).popover('dispose');
+	}, duration);
+}
 function loginSubmission(evt) {
 	//evt.preventDefault();
  	var empId = $("#employeeid").val();
 	var password = $("#password").val();
-	
+	if(empId == ""){
+		showPopover("#employeeid","Kindly enter an user id!!!",3000);
+		return false;
+	}else if(password == ""){
+		showPopover("#password","Kindly enter a password!!!",3000);
+		return false;
+	}else {
+		
 	toggleWorkingScreen(true);
 	var urlPath = '[[${path}]]';
 	
@@ -149,6 +166,8 @@ function loginSubmission(evt) {
         	toggleWorkingScreen(false);
         }
 	});	
+	
+	}
 	
 	return false;
 }
@@ -187,11 +206,11 @@ function toggleWorkingScreen(doShow) {
 					<form action='#' id="form-shuttle-request" name="form-shuttle-request" onsubmit="return loginSubmission()" style="background-color:rgba(4,41,86,0.4);box-shadow:0px -1px 2px 1px black;padding:10px 30px;border:1px rgba(4,41,86,1) outset;border-radius:4px">
 						<div class="form-group mb-4">
 							<label for="employeeid" class='text-white'>Employee Id:</label>
-							<input class="form-control" placeholder="Enter your employee id here" type="text" style="font-size:14px" id="employeeid" name="employeeid" required/>
+							<input class="form-control" placeholder="Enter your employee id here" type="text" style="font-size:14px" id="employeeid" name="employeeid" />
 						</div>
 						<div class="form-group mb-4">
 							<label for="password" class='text-white'>Password:</label>
-							<input class="form-control" placeholder="Enter your password here" style="font-size:14px" type="password" id="password" name="password" required/>
+							<input class="form-control" placeholder="Enter your password here" style="font-size:14px" type="password" id="password" name="password" />
 						</div>
 						<div class="form-group mb-3 text-right">
 							<button id="submit-button" type="submit" class="btn btn-primary">

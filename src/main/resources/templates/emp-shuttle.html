@@ -74,7 +74,7 @@ $(document).ready(function() {
 				var currentTime = new Date();
 				var selectTime = new Date(date[2], date[1] - 1, date[0], onlyTiming[0] + onlyTiming[1], onlyTiming[2] + onlyTiming[3]);
 				if (selectTime < currentTime) {
-					showPopover("#fsr-for-date","Kindly select future time",3000);
+					showPopover("#timming","Kindly select future time",3000);
 					$('#timming').val("-1");
 				}
 			});
