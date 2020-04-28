@@ -57,6 +57,15 @@ font-family: 'Open Sans', sans-serif;
 	content: " ";
 	display: none;
 }
+
+.black-overlay {
+	background-color:rgba(0,0,0,0.6);
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+}
 </style>
 
 <script type="text/javascript">
@@ -160,12 +169,12 @@ font-family: 'Open Sans', sans-serif;
 			</li>
 		</ul>
 	</nav>
-	<div class="overlays"></div>
+	<div class="black-overlay"></div>
 	<div class="register_panel d-flex">
-		<div class="right_panel" style="margin: 50px 30px 50px 30px">
+		<div class="right_panel" style="margin: 60px 40px 50px 43px">
 			<div class="row">
 				<div class="col-md-12">
-					<h2 class="text-white">Pass Log Details:</h2>
+					<h3 class="text-white">Shuttle Pass Log Details:</h3>
 					<div class="card">
 						<div class="card-body">
 							<table id="log" class="table responsive table-striped table-bordered"

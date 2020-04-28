@@ -27,7 +27,7 @@ public class MessageConstants {
 	public static final String PASSWORD_IS_INVALID = "Password didn't match.";
 	public static final String USER_ALREADY_LOGGED_IN = "User is already logged in.";
 	public static final String USER_NOT_AUTHORIZED_TO_SEE = "User not authrozied to see this page.";
-	public static final String APPROVE_SUCCESS = "Aprroved successfully.";
+	public static final String APPROVE_SUCCESS = "Approved successfully.";
 	public static final String REJECT_SUCCESS = "Rejected successfully.";
 	public static final String CANCEL_SUCCESS = "Cancelled successfully.";
 	public static final String REQUEST_ALREADY_EXISTS = "Bus pass request is already there";
