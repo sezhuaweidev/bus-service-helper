@@ -203,8 +203,14 @@ video {
 	font-weight: 300 !important
 }
 
+.container-fluid-ovr {
+	margin-top: 160px;
+	padding-right: 120px;
+	padding-left: 120px;
+}
+
 .main-desc {
-	background-color: rgba(4, 41, 86, 1);
+	/* background-color: rgba(4, 41, 86, 1); */
 	margin-top: 100px;
 	height: 300px
 }
@@ -214,15 +220,14 @@ video {
 }
 
 .main-desc-title {
-	height: 40px;
-	margin: auto;
-	margin-top: 95px;
-	margin-bottom: 60px;;
-	text-align: right;
+	text-align: center;
+	padding-top: 75px;
+	padding-bottom: 75px;
 }
 
 .main-form-sty {
-	background-color: rgba(4, 41, 86, 0.4);
+	/* background-color: rgba(4, 41, 86, 0.4); */
+	background-color: #fff;
 	box-shadow: 0px -1px 2px 1px black;
 	padding: 10px 30px;
 	border: 1px rgba(4, 41, 86, 1) outset;
@@ -243,14 +248,21 @@ video {
 }
 
 @media ( max-width :768px) {
+	.container-fluid-ovr {
+		margin-top: 160px;
+		padding-right: 70px;
+		padding-left: 70px;
+	}
 	.main-desc-title {
 		text-align: center;
+		padding-top: 65px;
+		padding-bottom: 65px;
 	}
 	.main-form {
 		padding: 20px 2%
 	}
-	.shuttle-title{
-		margin-top:-10px;
+	.shuttle-title {
+		margin-top: -10px;
 	}
 	.shuttle-title-desc {
 		margin-bottom: 150px
@@ -258,8 +270,10 @@ video {
 }
 
 @media ( max-width :425px) {
-	.main-desc {
-		margin-top: 0px;
+	.container-fluid-ovr {
+		margin-top: 30px;
+		padding-right: 18px;
+		padding-left: 18px;
 	}
 	.main-desc-title {
 		text-align: center;
@@ -267,8 +281,8 @@ video {
 	.main-form {
 		padding: 20px 5%
 	}
-	.shuttle-title{
-		margin-top:-200px;
+	.shuttle-title {
+		margin-top: -200px;
 	}
 	.shuttle-title-desc {
 		margin-bottom: 135px

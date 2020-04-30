@@ -16,9 +16,12 @@
 	href='../static/css/coming-soon.min.css'
 	th:href="@{/css/coming-soon.min.css}" />
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
-a,h1,h2,h3,h4,h5,h6,p,label,input {
-font-family: 'Open Sans', sans-serif;
+@import
+	url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap')
+	;
+
+a, h1, h2, h3, h4, h5, h6, p, label, input {
+	font-family: 'Open Sans', sans-serif;
 }
 
 .zIndex99 {
@@ -48,12 +51,12 @@ font-family: 'Open Sans', sans-serif;
 }
 
 .black-overlay {
-	background-color:rgba(0,0,0,0.6);
-	position:absolute;
-	top:0px;
-	left:0px;
-	width:100%;
-	height:100%;
+	background-color: rgba(0, 0, 0, 0.6);
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
 }
 
 .white-text {
@@ -61,169 +64,168 @@ font-family: 'Open Sans', sans-serif;
 }
 </style>
 <script type="text/javascript">
-/**
-$(document).ready(function() {
-	$("form[name='form-shuttle-request']").validate({ 
-		 rules: {
-			 employeeid:"required",
-			 password:"required"
-		 },
-		 messages: {
-			 employeeid:"Please enter an employeee id",
-			 password:"Please enter a password"
-		 },
-		 submitHandler: function(form) {
-		 	var empId = $("#employeeid").val();
-			var password = $("#password").val();
-			
+	/**
+	 $(document).ready(function() {
+	 $("form[name='form-shuttle-request']").validate({ 
+	 rules: {
+	 employeeid:"required",
+	 password:"required"
+	 },
+	 messages: {
+	 employeeid:"Please enter an employeee id",
+	 password:"Please enter a password"
+	 },
+	 submitHandler: function(form) {
+	 var empId = $("#employeeid").val();
+	 var password = $("#password").val();
+	
+	 toggleWorkingScreen(true);
+	 var urlPath = '[[${path}]]';
+	
+	 var type = !isNaN(empId)?"ID":"USERNAME";
+	
+	 var data = {
+	 type: type,
+	 username: empId,
+	 password: password
+	 }
+	 console.log(data);
+	 $.ajax({
+	 type: 'POST',
+	 data: JSON.stringify(data),
+	 contentType: "application/json",
+	 url: urlPath+'/api/auth/login/',
+	 success:function(data){
+	 console.log(data.data);
+	 //alert("Login was successfull.");
+	 window.location.replace(urlPath+"/api/view/home");
+	 },
+	 error: function(data) {
+	 console.log(data.responseText);
+	 bootbox.alert(data.responseText);
+	 },
+	 complete: function() {
+	 toggleWorkingScreen(false);
+	 }
+	 });
+	 }
+	 });
+	 });**/
+	function showPopover(id, text, duration) {
+		$(id).popover({
+			placement : 'auto',
+			content : text
+		});
+		$(id).popover('show');
+		$(id).focus();
+		setTimeout(function() {
+			$(id).popover('dispose');
+		}, duration);
+	}
+	function loginSubmission(evt) {
+		//evt.preventDefault();
+		var empId = $("#employeeid").val();
+		var password = $("#password").val();
+		if (empId == "") {
+			showPopover("#employeeid", "Enter an user id", 3000);
+			return false;
+		} else if (password == "") {
+			showPopover("#password", "Enter a password", 3000);
+			return false;
+		} else {
+
 			toggleWorkingScreen(true);
 			var urlPath = '[[${path}]]';
-			
-			var type = !isNaN(empId)?"ID":"USERNAME";
-			
-			var data = {
-					type: type,
-					username: empId,
-					password: password
-			}
-			console.log(data);
-			$.ajax({
-		        type: 'POST',
-		        data: JSON.stringify(data),
-		        contentType: "application/json",
-		        url: urlPath+'/api/auth/login/',
-		        success:function(data){
-		        	console.log(data.data);
-		         	//alert("Login was successfull.");
-		         	window.location.replace(urlPath+"/api/view/home");
-		        },
-		        error: function(data) {
-		        	console.log(data.responseText);
-		        	bootbox.alert(data.responseText);
-		        },
-		        complete: function() {
-		        	toggleWorkingScreen(false);
-		        }
-			});
-		 }
-	});
-});**/
-function showPopover(id, text, duration) {
-	$(id).popover({
-        placement:'auto',
-        content:text
-	});
-	$(id).popover('show');
-	$(id).focus();
-	setTimeout(function() {
-		$(id).popover('dispose');
-	}, duration);
-}
-function loginSubmission(evt) {
-	//evt.preventDefault();
- 	var empId = $("#employeeid").val();
-	var password = $("#password").val();
-	if(empId == ""){
-		showPopover("#employeeid","Enter an user id",3000);
-		return false;
-	}else if(password == ""){
-		showPopover("#password","Enter a password",3000);
-		return false;
-	}else {
-		
-	toggleWorkingScreen(true);
-	var urlPath = '[[${path}]]';
-	
-	var type = !isNaN(empId)?"ID":"USERNAME";
-	
-	var data = {
-			type: type,
-			username: empId,
-			password: password
-	}
-	
-	$.ajax({
-        type: 'POST',
-        data: JSON.stringify(data),
-        contentType: "application/json",
-        url: urlPath+'/api/auth/login/',
-        success:function(data){
-        	$("#submit-button").text("Success");
-         	window.location.replace(urlPath+"/api/view/home");
-        },
-        error: function(data) {
-        	//console.log("error");
-        	$("#submit-button").popover({
-                placement:'left',
-                content:'Provided credential invalid.'
-            });
-        	$("#submit-button").popover('show');
-        	setTimeout(function() {
-        		$("#submit-button").popover('dispose');
-        	},3000);
-        },
-        complete: function() {
-        	toggleWorkingScreen(false);
-        }
-	});	
-	
-	}
-	
-	return false;
-}
-function toggleWorkingScreen(doShow) {
-	if(doShow) {
-		$(document.body).css("cursor","wait");
-		$("#working-screen").css("display","block");
-	} else {
-		$(document.body).css("cursor","default");
-		$("#working-screen").css("display","none");
-	}
-}
 
+			var type = !isNaN(empId) ? "ID" : "USERNAME";
+
+			var data = {
+				type : type,
+				username : empId,
+				password : password
+			}
+
+			$.ajax({
+				type : 'POST',
+				data : JSON.stringify(data),
+				contentType : "application/json",
+				url : urlPath + '/api/auth/login/',
+				success : function(data) {
+					$("#submit-button").text("Success");
+					window.location.replace(urlPath + "/api/view/home");
+				},
+				error : function(data) {
+					//console.log("error");
+					$("#submit-button").popover({
+						placement : 'left',
+						content : 'Provided credential invalid.'
+					});
+					$("#submit-button").popover('show');
+					setTimeout(function() {
+						$("#submit-button").popover('dispose');
+					}, 3000);
+				},
+				complete : function() {
+					toggleWorkingScreen(false);
+				}
+			});
+
+		}
+
+		return false;
+	}
+	function toggleWorkingScreen(doShow) {
+		if (doShow) {
+			$(document.body).css("cursor", "wait");
+			$("#working-screen").css("display", "block");
+		} else {
+			$(document.body).css("cursor", "default");
+			$("#working-screen").css("display", "none");
+		}
+	}
 </script>
 
 </head>
-<body>
+<body th:style="'background:url(../image/bus.png);'">
 	<div id="working-screen" class="overlay"></div>
-	<video playsinline="playsinline" autoplay="autoplay" muted="muted"
-		loop="loop"> <source src="../static/video/bus.mp4"
-		th:src="@{/video/bus.mp4}" type="video/mp4"></video>
-	<div class="black-overlay"></div>
 	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-	<h4 class="text-white">Infosys</h4><a class="text-white"><small>&nbsp;&nbsp;Shuttle Pass</small></a> </nav>
-	<!-- <div class="overlays"></div> -->
-	
-	<div class="container-fluid">
-		<div class="row main-desc">
+	<h4 class="text-white">Infosys</h4>
+	<a class="text-white"><small>&nbsp;&nbsp;Shuttle Pass</small></a> </nav>
+	<div class="container-fluid container-fluid-ovr">
+		<div class="row">
 			<div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 main-desc-title">
-				<h4 class="text-white" style="line-height:1.7"><mark style="background:unset;color:#fff">Enjoy hassle free booking of Shuttles between DCs.</mark></h4>
+				<h4 class="text-white" style="line-height: 1.7">
+					<mark style="background:unset;color:#fff">Enjoy hassle free
+					booking of Shuttles between DCs.</mark>
+				</h4>
 			</div>
-			<div class="col-lg-1 col-md-1 hidden-sm hidden-xs"></div>
-			<div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-				<div class="main-form">
-					<!-- <h4 style="margin-top:-20px"><mark>Login:</mark></h4> -->
-					<form class="main-form-sty" action='#' id="form-shuttle-request" name="form-shuttle-request" onsubmit="return loginSubmission()">
-						<div class="form-group mb-4">
-							<label for="employeeid" class='text-white'>Employee Id:</label>
-							<input class="form-control" placeholder="Enter your employee id here" type="text" style="font-size:14px" id="employeeid" name="employeeid" />
-						</div>
-						<div class="form-group mb-4">
-							<label for="password" class='text-white'>Password:</label>
-							<input class="form-control" placeholder="Enter your password here" style="font-size:14px" type="password" id="password" name="password" />
-						</div>
-						<div class="form-group mb-3 text-right">
-							<button id="submit-button" type="submit" class="btn btn-primary">
-								Login
-							</button>
-						</div>
-					</form>
-				</div>
+			<div class="col-lg-1 col-md-1 col-sm-12 col-xs-12"></div>
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<!-- <div class="main-form"> -->
+				<!-- <h4 style="margin-top:-20px"><mark>Login:</mark></h4> -->
+				<form class="main-form-sty" action='#' id="form-shuttle-request"
+					name="form-shuttle-request" onsubmit="return loginSubmission()">
+					<div class="form-group mb-4">
+						<label for="employeeid" class='text-black font-weight-bold'>Employee Id:</label> <input
+							class="form-control" placeholder="Enter your employee id here"
+							type="text" style="font-size: 14px" id="employeeid"
+							name="employeeid" />
+					</div>
+					<div class="form-group mb-4">
+						<label for="password" class='text-black font-weight-bold'>Password:</label> <input
+							class="form-control" placeholder="Enter your password here"
+							style="font-size: 14px" type="password" id="password"
+							name="password" />
+					</div>
+					<div class="form-group mb-3 text-right">
+						<button id="submit-button" type="submit" class="btn btn-primary">
+							Login</button>
+					</div>
+				</form>
 			</div>
-			<div class="col-lg-1 col-md-1 hidden-sm hidden-xs"></div>
 		</div>
 	</div>
-	
+
 
 </body>
 </html>
