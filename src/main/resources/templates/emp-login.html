@@ -64,53 +64,6 @@ a, h1, h2, h3, h4, h5, h6, p, label, input {
 }
 </style>
 <script type="text/javascript">
-	/**
-	 $(document).ready(function() {
-	 $("form[name='form-shuttle-request']").validate({ 
-	 rules: {
-	 employeeid:"required",
-	 password:"required"
-	 },
-	 messages: {
-	 employeeid:"Please enter an employeee id",
-	 password:"Please enter a password"
-	 },
-	 submitHandler: function(form) {
-	 var empId = $("#employeeid").val();
-	 var password = $("#password").val();
-	
-	 toggleWorkingScreen(true);
-	 var urlPath = '[[${path}]]';
-	
-	 var type = !isNaN(empId)?"ID":"USERNAME";
-	
-	 var data = {
-	 type: type,
-	 username: empId,
-	 password: password
-	 }
-	 console.log(data);
-	 $.ajax({
-	 type: 'POST',
-	 data: JSON.stringify(data),
-	 contentType: "application/json",
-	 url: urlPath+'/api/auth/login/',
-	 success:function(data){
-	 console.log(data.data);
-	 //alert("Login was successfull.");
-	 window.location.replace(urlPath+"/api/view/home");
-	 },
-	 error: function(data) {
-	 console.log(data.responseText);
-	 bootbox.alert(data.responseText);
-	 },
-	 complete: function() {
-	 toggleWorkingScreen(false);
-	 }
-	 });
-	 }
-	 });
-	 });**/
 	function showPopover(id, text, duration) {
 		$(id).popover({
 			placement : 'auto',
@@ -127,7 +80,7 @@ a, h1, h2, h3, h4, h5, h6, p, label, input {
 		var empId = $("#employeeid").val();
 		var password = $("#password").val();
 		if (empId == "") {
-			showPopover("#employeeid", "Enter an user id", 3000);
+			showPopover("#employeeid", "Enter an employee id", 3000);
 			return false;
 		} else if (password == "") {
 			showPopover("#password", "Enter a password", 3000);
@@ -186,11 +139,11 @@ a, h1, h2, h3, h4, h5, h6, p, label, input {
 </script>
 
 </head>
-<body th:style="'background:url(../image/bus.png);'">
+<body th:style="'background:url(../image/bus1.jpg);'">
 	<div id="working-screen" class="overlay"></div>
-	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-	<h4 class="text-white">Infosys</h4>
-	<a class="text-white"><small>&nbsp;&nbsp;Shuttle Pass</small></a> </nav>
+	<nav class="navbar navbar-expand-lg navbar-light bg-sky-blue"> <a
+		class="navbar-brand" href="#"><span
+		class="text-white font-weight-bold">Infosys Shuttle Pass</span></a> </nav>
 	<div class="container-fluid container-fluid-ovr">
 		<div class="row">
 			<div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 main-desc-title">
@@ -201,27 +154,29 @@ a, h1, h2, h3, h4, h5, h6, p, label, input {
 			</div>
 			<div class="col-lg-1 col-md-1 col-sm-12 col-xs-12"></div>
 			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-				<!-- <div class="main-form"> -->
-				<!-- <h4 style="margin-top:-20px"><mark>Login:</mark></h4> -->
-				<form class="main-form-sty" action='#' id="form-shuttle-request"
-					name="form-shuttle-request" onsubmit="return loginSubmission()">
-					<div class="form-group mb-4">
-						<label for="employeeid" class='text-black font-weight-bold'>Employee Id:</label> <input
-							class="form-control" placeholder="Enter your employee id here"
-							type="text" style="font-size: 14px" id="employeeid"
-							name="employeeid" />
-					</div>
-					<div class="form-group mb-4">
-						<label for="password" class='text-black font-weight-bold'>Password:</label> <input
-							class="form-control" placeholder="Enter your password here"
-							style="font-size: 14px" type="password" id="password"
-							name="password" />
-					</div>
-					<div class="form-group mb-3 text-right">
-						<button id="submit-button" type="submit" class="btn btn-primary">
-							Login</button>
-					</div>
-				</form>
+				<div class="login-container">
+					<h3 class="text-center">Sign In</h3>
+					<form class="main-form-sty" action='#' id="form-shuttle-request"
+						name="form-shuttle-request" onsubmit="return loginSubmission()">
+						<div class="form-group mb-4">
+							<label for="employeeid">Employee Id:</label> <input
+								class="form-control" placeholder="Enter your employee id here"
+								type="text" style="font-size: 14px" id="employeeid"
+								name="employeeid" />
+						</div>
+						<div class="form-group mb-4">
+							<label for="password">Password:</label> <input
+								class="form-control" placeholder="Enter your password here"
+								style="font-size: 14px" type="password" id="password"
+								name="password" />
+						</div>
+						<div class="form-group mb-3 text-right">
+							<button id="submit-button" type="submit" class="btn btn-info">
+								Login</button>
+						</div>
+					</form>
+				</div>
+
 			</div>
 		</div>
 	</div>

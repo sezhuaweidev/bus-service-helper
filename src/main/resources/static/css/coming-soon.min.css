@@ -9,7 +9,7 @@ html {
 
 body {
 	height: 100%;
-	min-height: 35rem;
+	ain min-height: 35rem;
 	position: relative;
 	font-weight: 300
 }
@@ -33,8 +33,8 @@ video {
 
 @media ( pointer :coarse) and (hover:none) {
 	body {
-		background: url(../img/bg-mobile-fallback.jpg) #002e66 no-repeat center
-			center scroll;
+		background: url(../img/bg-mobile-fallback.jpg) no-repeat center center
+			scroll;
 		background-position: cover
 	}
 	body video {
@@ -203,8 +203,12 @@ video {
 	font-weight: 300 !important
 }
 
+.bg-sky-blue {
+	background-color: #17a2b8;
+}
+
 .container-fluid-ovr {
-	margin-top: 160px;
+	margin-top: 120px;
 	padding-right: 120px;
 	padding-left: 120px;
 }
@@ -221,20 +225,79 @@ video {
 
 .main-desc-title {
 	text-align: center;
-	padding-top: 75px;
+	padding-top: 150px;
 	padding-bottom: 75px;
 }
 
 .main-form-sty {
 	/* background-color: rgba(4, 41, 86, 0.4); */
-	background-color: #fff;
-	box-shadow: 0px -1px 2px 1px black;
-	padding: 10px 30px;
-	border: 1px rgba(4, 41, 86, 1) outset;
-	border-radius: 4px
+	/* padding: 10px 30px;  */
+	border-radius: 4px;
 }
 
-.shuttle-title-desc {
+.login-container label, .pass-container label {
+	color: #87898c;
+	font-weight: 600;
+}
+
+.login-container {
+	margin: 0px auto;
+	width: 64%;
+	background: #ffffff;
+	border-radius: 10px;
+	line-height: 2;
+	padding: 2rem;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.52), 0 2px 10px 0
+		rgba(0, 0, 0, 0.52);
+}
+
+.pass-container {
+	margin: 0px auto;
+	width: 64%;
+}
+
+@media ( max-width :768px) {
+	.container-fluid-ovr {
+		margin-top: 100px;
+		padding-right: 70px;
+		padding-left: 70px;
+	}
+	.login-container {
+		padding: 1rem;
+		width: 100%
+	}
+	.main-desc-title {
+		text-align: center;
+		padding-top: 120px;
+		padding-bottom: 65px;
+	}
+	.main-form {
+		padding: 20px 2%
+	}
+	
+}
+
+.login-container {
+	margin: 0px auto;
+	width: 64%;
+	background: #ffffff;
+	border-radius: 10px;
+	line-height: 2;
+	padding: 2rem;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.52), 0 2px 10px 0
+		rgba(0, 0, 0, 0.52);
+}
+
+.pass-container {
+	margin: 0px auto;
+	width: 64%;
+}
+
+.mng-container {
+	margin: 0px auto;
+	width: 80%;
+}
+/* .shuttle-title-desc {
 	height: 40px;
 	margin: auto;
 	margin-top: 250px;
@@ -245,35 +308,37 @@ video {
 	margin-top: 60px;
 	height: 600px;
 	background-color: black
-}
-
+} */
 @media ( max-width :768px) {
 	.container-fluid-ovr {
-		margin-top: 160px;
+		margin-top: 100px;
 		padding-right: 70px;
 		padding-left: 70px;
 	}
+	.login-container {
+		padding: 1rem;
+		width: 100%
+	}
 	.main-desc-title {
 		text-align: center;
-		padding-top: 65px;
+		padding-top: 120px;
 		padding-bottom: 65px;
 	}
 	.main-form {
 		padding: 20px 2%
 	}
-	.shuttle-title {
-		margin-top: -10px;
-	}
-	.shuttle-title-desc {
-		margin-bottom: 150px
-	}
+	
 }
 
 @media ( max-width :425px) {
 	.container-fluid-ovr {
-		margin-top: 30px;
+		margin-top: 20px;
 		padding-right: 18px;
 		padding-left: 18px;
+	}
+	.login-container {
+		padding: 1rem;
+		width: 100%
 	}
 	.main-desc-title {
 		text-align: center;
@@ -281,10 +346,16 @@ video {
 	.main-form {
 		padding: 20px 5%
 	}
-	.shuttle-title {
-		margin-top: -200px;
+	.pass-container {
+		margin: 0px auto;
+		width: 100%;
 	}
-	.shuttle-title-desc {
-		margin-bottom: 135px
-	}
+	.mng-container {
+	margin: 0px auto;
+	width: 100%;
+}
+.mng-container #log_wrapper{
+	overflow-x:scroll;
+}
+	
 }
