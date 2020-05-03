@@ -4,23 +4,34 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import app.infy.util.model.Mail;
+import app.infy.util.service.impl.MailTaskExecutor;
 
 
 @Service
 public class EmailSenderService {
-    @Autowired
-    private JavaMailSender emailSender;
-    @Autowired
+
+	private JavaMailSender emailSender;
     private SpringTemplateEngine templateEngine;
+    private MailTaskExecutor mailTaskExecutor;
+	
+    public EmailSenderService(
+    		JavaMailSender emailSender, 
+    		SpringTemplateEngine templateEngine, 
+    		MailTaskExecutor mailTaskExecutor) {
+    	
+		super();
+		this.emailSender = emailSender;
+		this.templateEngine = templateEngine;
+		this.mailTaskExecutor = mailTaskExecutor;
+	}
     
-    public void sendAckEmail(Mail mail) throws MessagingException, IOException {
+    public void sendAckEmail(String requestId, Mail mail) throws MessagingException, IOException {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message,
                 MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
@@ -33,10 +44,11 @@ public class EmailSenderService {
         helper.setText(html, true);
         helper.setSubject(mail.getSubject());
         helper.setFrom(mail.getFrom());
-        emailSender.send(message);
+        mailTaskExecutor.sendAsyncMail(requestId, message);
+        return;
     }
 
-    public void sendReqEmail(Mail mail) throws MessagingException, IOException {
+    public void sendReqEmail(String requestId, Mail mail) throws MessagingException, IOException {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message,
                 MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
@@ -49,9 +61,10 @@ public class EmailSenderService {
         helper.setText(html, true);
         helper.setSubject(mail.getSubject());
         helper.setFrom(mail.getFrom());
-        emailSender.send(message);
+        mailTaskExecutor.sendAsyncMail(requestId, message);
+        return;
     }
-    public void sendErrorEmail(Mail mail) throws MessagingException, IOException {
+    public void sendErrorEmail(String requestId, Mail mail) throws MessagingException, IOException {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message,
                 MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
@@ -64,8 +77,8 @@ public class EmailSenderService {
         helper.setText(html, true);
         helper.setSubject(mail.getSubject());
         helper.setFrom(mail.getFrom());
-        emailSender.send(message);
-    }  
-    
+        mailTaskExecutor.sendAsyncMail(requestId, message);
+        return;
+    }
 }
 

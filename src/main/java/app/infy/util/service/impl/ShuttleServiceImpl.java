@@ -3,7 +3,6 @@ package app.infy.util.service.impl;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,10 +11,8 @@ import javax.mail.MessagingException;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import app.infy.util.BusServiceHelper;
 import app.infy.util.entity.EmployeeDetail;
 import app.infy.util.entity.InfyCountry;
 import app.infy.util.entity.InfyDc;
@@ -103,9 +100,6 @@ public class ShuttleServiceImpl implements ShuttleService {
 			ShuttleRequest usr = shuttleRequestRepository.save(sr);
 			
 			EmployeeDetail managerDetail = employeeDetailRepository.findById(ed.getEmpManagerId()).orElse(new EmployeeDetail());
-			//putting data in a 28 minute time to live cache.
-			//key: shuttleRequestId, value: current epochmilis
-			BusServiceHelper.APPROVAL_MAP.put(usr.getRequestId(), new Date().getTime());
 			
 			//send email
 			System.out.println("START... Sending email");
@@ -128,7 +122,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 	        model.put("dateTime", sdf.format(new Date())+" "+shuttleTimingRepository.findById(shuttleRequest.getShuttleId()).orElse(new ShuttleTiming()).getStartTime());// put shuttle request time
 	        mail.setProps(model);
 	        try {
-				emailSenderService.sendReqEmail(mail);
+				emailSenderService.sendReqEmail(sr.getRequestId(), mail);
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw new ApplicationException(MessageConstants.EMAIL_FAILED+e.getMessage());
@@ -218,7 +212,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 			        model.put("dateTime", sdf.format(new Date())+" "+shuttleTimingRepository.findById(shuttleRequest.getShuttleId()).orElse(new ShuttleTiming()).getStartTime());// put shuttle request time
 			        mail.setProps(model);
 					try {
-						emailSenderService.sendErrorEmail(mail);
+						emailSenderService.sendErrorEmail(shuttleRequestId, mail);
 				        System.out.println("END... Email sent success");
 					} catch (MessagingException | IOException e) {
 						e.printStackTrace();
@@ -253,7 +247,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 			        model.put("dateTime",sdf.format(new Date())+" "+shuttleTimingRepository.findById(shuttleRequest.getShuttleId()).orElse(new ShuttleTiming()).getStartTime());// put shuttle request time
 			        mail.setProps(model);
 					try {
-						emailSenderService.sendAckEmail(mail);
+						emailSenderService.sendAckEmail(shuttleRequestId, mail);
 				        System.out.println("END... Email sent success");
 					} catch (MessagingException | IOException e) {
 						e.printStackTrace();

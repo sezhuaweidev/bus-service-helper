@@ -19,7 +19,7 @@
 
 <style>
 @import
-	url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap')
+	url('https%3A%2F%2Ffonts.googleapis.com%2Fcss2%3Ffamily%3DOpen%2BSans%3Awght%40300%3B400%3B600%3B700%26display%3Dswap')
 	;
 
 a, h1, h2, h3, h4, h5, h6, p, label, input {
@@ -70,7 +70,8 @@ form .error {
 	}
 
 	$(document).ready(
-			function() {
+			function() {				
+				
 				$('#timming').change(
 						function() {
 							var timing = this.value;
@@ -83,7 +84,7 @@ form .error {
 									onlyTiming[2] + onlyTiming[3]);
 							if (selectTime < currentTime) {
 								showPopover("#timming",
-										"Kindly select future time", 3000);
+										"Can't find any shuttle for the selected time.", 3000);
 								$('#timming').val("-1");
 							}
 						});
@@ -215,9 +216,9 @@ form .error {
 		}
 
 		var reason = $("#fsr-reason").val();
-		if (!reason || reason === "-1") {
+		if (!reason || reason === "-1" || reason.length<10 || reason.length>100) {
 			showPopover("#fsr-reason",
-					"Please write a reason. Atleast 10 characters.", 3000);
+					"Please write a reason. Atleast 10 characters and max 100 characters.", 3000);
 			return false;
 		}
 
@@ -333,19 +334,18 @@ form .error {
 
 	<div id="working-screen" class="overlay"></div>
 	<nav class="navbar navbar-expand-lg navbar-light bg-sky-blue">
+	<a class="navbar-brand text-white font-weight-bold" href="#">
+		Welcome <span th:text="${employeename}"></span>
+	</a>
 
 	<button class="navbar-toggler" type="button" data-toggle="collapse"
 		data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02"
 		aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
-
-	<div class="collapse navbar-collapse" style="color: white!impotant"
-		id="navbarTogglerDemo02">
-		<div class="mr-auto">
-			<a class="navbar-brand text-white font-weight-bold" href="#">
-				Welcome <span th:text="${employeename}"></span>
-			</a>
+	<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+		<div class=" mr-auto">
+			<a></a>
 		</div>
 		<ul class="navbar-nav">
 
@@ -353,9 +353,9 @@ form .error {
 				th:if="${employeeRole eq 'EMPLOYEE'}" th:href="${pathApply}">Apply</a>
 			</li>
 			<li class="nav-item"><a
-				class="nav-link disabled font-weight-bold" th:href="${pathManage}">Manage</a></li>
+				class="nav-link font-weight-bold" th:href="${pathManage}">Manage&nbsp;&nbsp;&nbsp;</a></li>
 			<li class="nav-item"><a
-				class="nav-link disabled font-weight-bold" href="#"
+				class="nav-link font-weight-bold" href="#"
 				th:attr="onclick=|logout('${logoutUrl}')|" style="">Log Out</a></li>
 		</ul>
 	</div>

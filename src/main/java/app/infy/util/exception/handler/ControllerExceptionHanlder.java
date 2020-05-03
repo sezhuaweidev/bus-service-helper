@@ -1,6 +1,7 @@
 package app.infy.util.exception.handler;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.firewall.RequestRejectedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -9,7 +10,6 @@ import app.infy.util.exception.PasswordInvalidException;
 import app.infy.util.exception.UnwantedAccessException;
 import app.infy.util.exception.UserAlreadyLoggedInException;
 import app.infy.util.exception.UsernameNotFoundException;
-import app.infy.util.helper.AppResponse;
 
 @ControllerAdvice
 public class ControllerExceptionHanlder {
@@ -32,6 +32,10 @@ public class ControllerExceptionHanlder {
 	}
 	@ExceptionHandler(UsernameNotFoundException.class)
 	public ResponseEntity<String> handlerUsernameNotFoundControllerException(UsernameNotFoundException ce) {
+		return ResponseEntity.badRequest().body(ce.getMessage());
+	}
+	@ExceptionHandler(RequestRejectedException.class)
+	public ResponseEntity<String> handlerRequestRejectedException(RequestRejectedException ce) {
 		return ResponseEntity.badRequest().body(ce.getMessage());
 	}
 }
