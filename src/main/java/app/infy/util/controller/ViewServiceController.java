@@ -55,7 +55,7 @@ public class ViewServiceController {
 		if(null != auth && !auth.getName().equalsIgnoreCase("anonymoususer")) {
 			return getHomePage(req, model);
 		} else {
-			return "emp-login";
+			return "emp-login1";
 		}
 	}
 	
@@ -143,7 +143,7 @@ public class ViewServiceController {
 		model.addAttribute("pathManage",mngUrl);
 		model.addAttribute("path",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath());
 		
-		return "emp-shuttle";
+		return "emp-shuttle1";
 	}
 	
 	
@@ -172,7 +172,7 @@ public class ViewServiceController {
 		model.addAttribute("shuttleRequestList", lstShuttleTimings);
 		model.addAttribute("optionUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/shuttleservice/");
 		model.addAttribute("logoutUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/auth/logout");
-		return "mng-shuttle";
+		return "mng-shuttle1";
 	}
 	
 	@GetMapping(value = "empManage")
@@ -199,7 +199,7 @@ public class ViewServiceController {
 		model.addAttribute("shuttleRequestList", lstShuttleTimings);
 		model.addAttribute("optionUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/shuttleservice/");
 		model.addAttribute("logoutUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/auth/logout");
-		return "mng-shuttle";
+		return "mng-shuttle1";
 	}
 	
 	@GetMapping(value = "transManage")
@@ -226,7 +226,7 @@ public class ViewServiceController {
 		model.addAttribute("shuttleRequestList", lstShuttleTimings);
 		model.addAttribute("optionUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/shuttleservice/");
 		model.addAttribute("logoutUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/auth/logout");
-		return "mng-shuttle";
+		return "mng-shuttle1";
 	}
 	
 	
