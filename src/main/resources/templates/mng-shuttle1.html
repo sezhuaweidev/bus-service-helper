@@ -1,0 +1,375 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Buss Pass</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script src="../static/js/jquery-3.3.1.js"
+	th:src="@{/js/jquery-3.3.1.js}"></script>
+<link rel="stylesheet" type='text/css'
+	href="../static/css/bootstrap.min.css"
+	th:href="@{/css/bootstrap.min.css}" />
+<script src="../static/js/bootstrap.min.js"
+	th:src="@{/js/bootstrap.min.js}"></script>
+<script src="../static/js/jquery.dataTables.min.js"
+	th:src="@{/js/jquery.dataTables.min.js}"></script>
+<script src="../static/js/dataTables.bootstrap.min.js"
+	th:src="@{/js/dataTables.bootstrap.min.js}"></script>
+<script src="../static/js/bootbox.js" th:src="@{/js/bootbox.js}"></script>
+<script src="../static/js/bootbox.min.js" th:src="@{/js/bootbox.min.js}"></script>
+<link rel='stylesheet' type='text/css'
+	href='../static/css/coming-soon.min.css'
+	th:href="@{/css/coming-soon.min.css}" />
+<link rel="stylesheet" type='text/css'
+	href="../static/css/dataTables.bootstrap.min.css"
+	th:href="@{/css/dataTables.bootstrap.min.css}" />
+<!-- <link rel='stylesheet' type='text/css'
+	href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'/> -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.js"></script>
+<style>
+@import
+	url('https%3A%2F%2Ffonts.googleapis.com%2Fcss2%3Ffamily%3DOpen%2BSans%3Awght%40300%3B400%3B600%3B700%26display%3Dswap')
+	;
+
+a, h1, h2, h3, h4, h5, h6, p, label, input {
+	font-family: 'Open Sans', sans-serif;
+}
+
+.right_panel {
+	width: 80rem;
+	z-index: 99;
+}
+
+.right_panel label {
+	font-weight: bold;
+}
+
+.zIndex99 {
+	z-index: 99;
+}
+
+.overlay {
+	float: left;
+	z-index: 100;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 2000px;
+	height: 1000px;
+	background-color: rgba(100, 100, 100, 0.3);
+	content: " ";
+	display: none;
+}
+
+.black-overlay {
+	background-color: rgba(0, 0, 0, 0.6);
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+}
+/* @Added By Lokesh */
+.pass-container{
+    border: 1px solid #077cc3;
+    border-radius: 5px;
+}
+.pass-header{
+    padding: 7px 15px;
+    background: #077cc3;
+    color: white;
+    border-radius: 5px;
+}
+.bg-custom{
+	background-color: #077cc3;
+}
+li.nav-item{
+  margin-left:5px;
+  transition: 0.3s;
+}
+li.nav-item a{
+color:white !important;
+}
+
+li.nav-item.active a{
+	color:black !important;
+	   
+}
+li.nav-item.active {
+    background: #f8f9fa;
+    border-radius: 3px;
+    padding: 0px 10px;
+}
+ul.navbar-nav li.nav-item:hover{
+    background: #f8f9fa;
+    border-radius: 3px;
+    padding: 0px 10px;
+ }
+ul.navbar-nav li.nav-item:hover a{
+    color:black !important;
+}
+div.dropdown-menu.show a.nav-link{
+	color: black !important;
+}
+.login-container label, .pass-container label {
+    color: #077cc3;
+ }
+tfoot tr, thead tr {
+	background: #077cc3;
+    color: white;
+}
+tfoot td {
+	font-weight:bold;
+}
+.mng-container{
+	border: 1px solid #077cc3;
+    border-radius: 5px;
+
+}
+.dataTables_wrapper {
+	    margin-top: 1%;
+	    margin-bottom: 1%;
+}
+table.dataTable thead>tr>th.sorting_asc, table.dataTable thead>tr>th.sorting_desc, table.dataTable thead>tr>th.sorting, table.dataTable thead>tr>td.sorting_asc, table.dataTable thead>tr>td.sorting_desc, table.dataTable thead>tr>td.sorting {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:before, table.dataTable thead .sorting_asc_disabled:before, table.dataTable thead .sorting_desc_disabled:before,table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:after {
+    top: 3px;
+}
+.dataTables_empty{
+	color: red;
+    font-weight: 600;
+}
+</style>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#log').DataTable({
+			responsive : true,
+			scrollCollapse: true,
+			scrollY: "400px",
+			scrollX: true,
+			paging:true,
+			"order": [5, "desc"]
+			
+		});
+		$("#log").css("max-height","200px");
+	});
+
+	function toggleWorkingScreen(doShow) {
+		if (doShow) {
+			$(document.body).css("cursor", "wait");
+			$("#working-screen").css("display", "block");
+		} else {
+			$(document.body).css("cursor", "default");
+			$("#working-screen").css("display", "none");
+		}
+	}
+
+	function doAction(urlPath,status) {
+		//alert(urlPath);
+		toggleWorkingScreen(true);
+		bootbox.confirm({
+		    message: "Are you sure,you want to "+status+" ?",
+		    buttons: {
+		        confirm: {
+		            label: 'Yes',
+		            className: 'btn-success'
+		        },
+		        cancel: {
+		            label: 'Cancel',
+		            className: 'btn-danger'
+		        }
+		    },
+		    callback: function (result) {
+		        if(result){
+		        	$.ajax({
+		    			type : 'GET',
+		    			url : urlPath,
+		    			contentType : 'text/plain',
+		    			success : function(data) {
+		    				showModal("Success", data.data);
+		    				//data needs to be added in table here
+
+		    			},
+		    			error : function(data) {
+		    				showModal("Error", JSON.parse(data.responseText).data);
+		    				//var tb = $("#log").DataTable();
+		    			},
+		    			complete : function() {
+		    				toggleWorkingScreen(false);
+		    			}
+		    		});
+		       }else{
+		    	   toggleWorkingScreen(false);
+		       } 
+		      
+		    }
+		});
+		
+
+	}
+
+	function logout(url) {
+		toggleWorkingScreen(true);
+		$.ajax({
+			type : 'GET',
+			url : url,
+			contentType : 'text/plain',
+			success : function(data) {
+				//bootbox.alert("Successfully logged out.");
+
+			},
+			error : function(data) {
+				showModal(data.responseText);
+			},
+			complete : function() {
+				toggleWorkingScreen(false);
+				location.reload();
+			}
+		})
+	}
+
+	function locationReload() {
+		location.reload();
+	}
+
+	function showModal(header, body) {
+		$("#modal-title").text(header);
+		$("#modal-body").text(body);
+		$("#show-modal-dialog").modal('show');
+	}
+</script>
+
+</head>
+<body>
+	<div id="working-screen" class="overlay"></div>
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-custom" style="padding: 0px 5px;margin-bottom: 3%;">
+		<a class="navbar-brand text-white font-weight-bold" href="#"> <img
+			src="../../image/infylogo.png" alt="Infosys"
+			style="width: 40%; height: 36px;" /> <!-- 	Welcome <span th:text="${employeename}"></span> -->
+		</a>
+
+	<button class="navbar-toggler" type="button" data-toggle="collapse"
+		data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02"
+		aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+		<div class=" mr-auto">
+			<a></a>
+		</div>
+		<ul class="navbar-nav">
+
+			<li class="nav-item"><a class="nav-link font-weight-bold"
+				th:if="${employeeRole eq 'EMPLOYEE'}" th:href="${pathApply}"><i
+					class="fa fa-edit"> </i> Apply</a></li>
+			<li class="nav-item active"><a class="nav-link font-weight-bold"
+				th:href="${pathManage}"><i class="fa fa-tasks"> </i> Manage</a></li>
+			<!-- Logout -->
+			<li class="nav-item dropdown"><a
+				class="nav-link dropdown-toggle" href="#" id="navbardrop"
+				data-toggle="dropdown"><i class="fas fa-user"> </i> <span
+					th:text="${employeename}"></span></a>
+				<div class="dropdown-menu">
+					<a class="nav-link font-weight-bold" href="#"
+						th:attr="onclick=|logout('${logoutUrl}')|"
+						style="text-align: center;"><i class="fas fa-sign-out-alt">
+					</i> Log Out</a>
+				</div></li>
+		</ul>
+	</div>
+	</nav>
+
+	<div class="container-fluid" style="margin-bottom:30px">
+		<div class="row mng-container mt-2">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pass-header">
+				<h5 style="margin: 0;">Manage Pass</h5>
+			</div>
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<table id="log"
+					class="table responsive table-striped table-bordered p-1"
+					style="width: 100%">
+					<thead>
+						<tr>
+							<th>Employee Id</th>
+							<th>DC Name</th>
+							<th>Shuttle Time</th>
+							<th>Reason</th>
+							<th>Status</th>
+							<th>Option</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="shuttleRequest : ${shuttleRequestList}">
+							<td th:text="${shuttleRequest.requester}"></td>
+							<td th:text="${shuttleRequest.dcFrom}"></td>
+							<td th:text="${shuttleRequest.forDate}"></td>
+							<td th:text="${shuttleRequest.reason}"></td>
+							<td><span th:if="${shuttleRequest.status eq 'PENDING'}">Pending</span>
+								<span th:if="${shuttleRequest.status eq 'CANCELLED'}">Cancelled</span>
+								<span th:if="${shuttleRequest.status eq 'APPROVED_MGR'}">Approved
+									By Manager</span> <span
+								th:if="${shuttleRequest.status eq 'APPROVED_TRNS'}">Approved
+									By Transport</span> <span
+								th:if="${shuttleRequest.status eq 'REJECTED_MGR'}">Rejected
+									By Manager</span> <span
+								th:if="${shuttleRequest.status eq 'REJECTED_TRNS'}">Rejected
+									By Transport</span></td>
+							<td>
+								<button class="btn btn-info"
+									th:if="${employeeRole eq 'MANAGER' && shuttleRequest.status eq 'PENDING'}"
+									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/APPROVED_MGR','Approve')|">Approve</button>
+								<button class="btn btn-danger"
+									th:if="${employeeRole eq 'MANAGER' && shuttleRequest.status eq 'PENDING'}"
+									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/REJECTED_MGR','Reject')|">Reject</button>
+								<button class="btn btn-info"
+									th:if="${employeeRole eq 'TRANSPORT' && shuttleRequest.status eq 'APPROVED_MGR'}"
+									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/APPROVED_TRNS','Approve')|">Approve</button>
+								<button class="btn btn-danger"
+									th:if="${employeeRole eq 'TRANSPORT' && shuttleRequest.status eq 'APPROVED_MGR'}"
+									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/REJECTED_TRNS','Reject')|">Reject</button>
+								<button class="btn btn-danger"
+									th:if="${employeeRole eq 'EMPLOYEE' && shuttleRequest.status eq 'PENDING'}"
+									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/CANCELLED','Cancel')|">Cancel</button>
+								<!-- <a th:href="@{${optionUrl}+${shuttleRequest.requestId}+'/Approved'}">Approve</a>
+										<a th:href="@{${optionUrl}+${shuttleRequest.requestId}+'/Rejected'}">Reject</a>
+										<a th:href="@{${optionUrl}+${shuttleRequest.requestId}+'/Cancelled'}">Cancel</a> -->
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<!-- </div>
+				</div> -->
+			</div>
+		</div>
+	</div>
+
+	<div class="modal" id="show-modal-dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title" id="modal-title"></h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal-body" id="modal-body"></div>
+
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal"
+						onclick="locationReload()">Close</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Buss Pass</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" type='text/css'
+	href="../static/css/bootstrap.min.css"
+	th:href="@{/css/bootstrap.min.css}" />
+<script src="../static/js/jquery-3.3.1.js"
+	th:src="@{/js/jquery-3.3.1.js}"></script>
+<script src="../static/js/bootstrap.bundle.min.js"
+	th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<link rel='stylesheet' type='text/css'
+	href='../static/css/coming-soon.min.css'
+	th:href="@{/css/coming-soon.min.css}" />
+<style>
+@import
+	url('https%3A%2F%2Ffonts.googleapis.com%2Fcss2%3Ffamily%3DOpen%2BSans%3Awght%40300%3B400%3B600%3B700%26display%3Dswap')
+	;
+
+a, h1, h2, h3, h4, h5, h6, p, label, input {
+	font-family: 'Open Sans', sans-serif;
+}
+
+.zIndex99 {
+	z-index: 99;
+}
+
+.right_panel {
+	width: 42rem;
+	z-index: 98;
+}
+
+.right_panel label {
+	font-weight: bold;
+}
+
+.overlay {
+	float: left;
+	z-index: 100;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 2000px;
+	height: 1000px;
+	background-color: rgba(100, 100, 100, 0.3);
+	content: " ";
+	display: none;
+}
+
+.black-overlay {
+	background-color: rgba(0, 0, 0, 0.6);
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+}
+
+.white-text {
+	text-color: white
+}
+/* @Lokesh Start */
+.login-container label, .pass-container label{
+    color: black !important;
+}
+.bg-custom{
+	background-color: #077cc3;
+}
+
+.error-span{
+ display: none;
+ color: red;
+}
+.popover-body {
+	color:red;
+}
+.container-fluid-ovr{
+padding-bottom: 3%;
+}
+
+/* @Lokesh End */
+</style>
+<script type="text/javascript">
+	function showPopover(id, text, duration) {
+		$(id).popover({
+			placement : 'top',
+			content : text
+		});
+		$(id).popover('show');
+		$(id).focus();
+		setTimeout(function() {
+			$(id).popover('dispose');
+		}, duration);
+	}
+	function loginSubmission(evt) {
+		//evt.preventDefault();
+		var empId = $("#employeeid").val();
+		var password = $("#password").val();
+		if (empId == "") {
+			showPopover("#employeeid", "Enter an employee id", 3000);
+			return false;
+		} else if (password == "") {
+			showPopover("#password", "Enter a password", 3000);
+			return false;
+		} else {
+
+			toggleWorkingScreen(true);
+			var urlPath = '[[${path}]]';
+
+			var type = !isNaN(empId) ? "ID" : "USERNAME";
+
+			var data = {
+				type : type,
+				username : empId,
+				password : password
+			}
+
+			$.ajax({
+				type : 'POST',
+				data : JSON.stringify(data),
+				contentType : "application/json",
+				url : urlPath + '/api/auth/login/',
+				success : function(data) {
+					$("#submit-button").text("Success");
+					window.location.replace(urlPath + "/api/view/home");
+				},
+				error : function(data) {
+					//console.log("error");
+					$(".error-span").html('Invalid Credintial').show().delay(3000).hide(0);;
+				/* 	$("#submit-button").popover({
+						placement : 'left',
+						content : 'Invalid Credintial'
+					}); */
+					/* setTimeout(function() {
+						$(".error-span").hide();
+				    }, 3000); */
+					/* $("#submit-button").popover('show');
+					setTimeout(function() {
+						$("#submit-button").popover('dispose');
+					}, 3000); */
+				},
+				complete : function() {
+					toggleWorkingScreen(false);
+				}
+			});
+
+		}
+
+		return false;
+	}
+	function toggleWorkingScreen(doShow) {
+		if (doShow) {
+			$(document.body).css("cursor", "wait");
+			$("#working-screen").css("display", "block");
+		} else {
+			$(document.body).css("cursor", "default");
+			$("#working-screen").css("display", "none");
+		}
+	}
+</script>
+<style>
+
+</style>
+</head>
+<body style="background:url(../image/bus1.jpg);background-size:cover">
+	<div id="working-screen" class="overlay"></div>
+	<nav class="navbar navbar-expand-lg navbar-light bg-custom"> <a
+		class="navbar-brand" href="#"><img src="../image/infylogo.png" alt="Infosys" style="width:25%;height: 34px;" /><span
+		class="text-white font-weight-bold"> Shuttle Pass</span></a> </nav>
+	<div class="container-fluid container-fluid-ovr">
+		<div class="row">
+			<div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 main-desc-title">
+				<h4 class="text-white" style="line-height: 1.7">
+					<mark style="background:#00000054;color:#fff">Enjoy hassle free
+					booking of Shuttles between DCs.</mark>
+				</h4>
+			</div>
+			<div class="col-lg-1 col-md-1 col-sm-12 col-xs-12"></div>
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<div class="login-container">
+					<h3 class="text-center">Sign In</h3>
+					<form class="main-form-sty" action='#' id="form-shuttle-request"
+						name="form-shuttle-request" onsubmit="return loginSubmission()">
+						<div class="form-group mb-4">
+							<label for="employeeid">Employee Id:</label> <input
+								class="form-control" placeholder="Enter your employee id here"
+								type="text" style="font-size: 14px" id="employeeid"
+								name="employeeid" />
+						</div>
+						<div class="form-group mb-4">
+							<label for="password">Password:</label> <input
+								class="form-control" placeholder="Enter your password here"
+								style="font-size: 14px" type="password" id="password"
+								name="password" />
+						</div>
+						<div class="form-group mb-4 text-center"><h6 class="error-span"></h6></div>
+						<div class="form-group mb-3 text-center">
+							<button id="submit-button" type="submit" class="btn btn-primary">
+								Login</button>
+						</div>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+</body>
+</html>
