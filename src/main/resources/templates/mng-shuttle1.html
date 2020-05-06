@@ -161,11 +161,15 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 .exp-btn .dt-buttons{
 	padding-left: 1rem;
 }
-/* .exp-btn .dt-buttons .btn{
+ .exp-btn .dt-buttons .btn{
 	background: #077cc3;
 	color: #fff;
 	border-color: #077cc3;
-} */
+} 
+.btn-secondary:active, .btn-secondary:focus, .btn-secondary:hover{
+	background-color: green !important;
+    border-color: green !important;
+}
 </style>
 
 <script type="text/javascript">
@@ -180,9 +184,9 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 			"order": [5, "desc"],
 			buttons: [ {
 		         extend: 'excel',
-		         text: 'Export',
+		         text: '<i class="fas fa-file-excel"></i> Export',
 		         title:'Pass detail',
-		         className: 'btn btn-default',
+		         className: 'btn btn-success btn-sm',
 		         exportOptions: {
 		            columns: 'th:not(:last-child)'
 		         }

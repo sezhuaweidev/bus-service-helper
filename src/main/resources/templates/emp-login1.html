@@ -78,9 +78,15 @@ a, h1, h2, h3, h4, h5, h6, p, label, input {
 	color:red;
 }
 .container-fluid-ovr{
-padding-bottom: 3%;
+	padding-bottom: 3%;
 }
-
+#working-screen div{
+	background: url("../image/loader.gif");
+	background-size:cover;
+	margin: 7% 33%;
+    width: 31vw;
+    height: 65vh;
+}
 /* @Lokesh End */
 </style>
 <script type="text/javascript">
@@ -91,8 +97,10 @@ padding-bottom: 3%;
 		});
 		$(id).popover('show');
 		$(id).focus();
+		$(id).css({"border-color": "#dc3545","box-shadow": "0 0 0 0.2rem #e20f2457"});
 		setTimeout(function() {
 			$(id).popover('dispose');
+			$(id).css({"border-color": "#ced4da","box-shadow": ""});
 		}, duration);
 	}
 	function loginSubmission(evt) {
@@ -166,7 +174,7 @@ padding-bottom: 3%;
 </style>
 </head>
 <body style="background:url(../image/bus1.jpg);background-size:cover">
-	<div id="working-screen" class="overlay"></div>
+	<div id="working-screen" class="overlay"><div></div></div>
 	<nav class="navbar navbar-expand-lg navbar-light bg-custom"> <a
 		class="navbar-brand" href="#"><img src="../image/infylogo.png" alt="Infosys" style="width:25%;height: 34px;" /><span
 		class="text-white font-weight-bold"> Shuttle Pass</span></a> </nav>

@@ -106,9 +106,19 @@ div.dropdown-menu.show a.nav-link{
 }
 .bootbox-body{
 	 font-weight:bold;
-	 color: red;
 	 text-align:center;
 }
+#remaining-box{
+	font-size: 14px;
+    color: #5f6265b0;
+    font-weight: 600;
+    /* display: block;
+    text-align: right; */
+}
+.modal-footer{
+	padding: 8px;
+}
+
 </style>
 <script type="text/javascript">
 	function showPopover(id, text, duration) {
@@ -400,7 +410,7 @@ div.dropdown-menu.show a.nav-link{
 	 $("#resetBtn").click(function(e) {
 	 e.preventDefault();
 	   bootbox.confirm({
-		    message: "Reset all fields ? Click 'Yes' to proceed.",
+		    message: "Are you sure,you want to reset all fields?",
 		    buttons: {
 		        confirm: {
 		            label: 'Yes',
@@ -478,7 +488,7 @@ div.dropdown-menu.show a.nav-link{
 					<div class="row">
 						<div class="col-sm-6">
 							<div class="form-group">
-								<label>Region:</label> <select class="form-control" id="region"
+								<label><span style="color: red">*</span>Region:</label> <select class="form-control" id="region"
 									name="region">
 									<option value="-1">Select Region</option>
 									<option th:each="data : ${region}" th:text="${data.value}"
@@ -488,7 +498,7 @@ div.dropdown-menu.show a.nav-link{
 						</div>
 						<div class="col-sm-6">
 							<div class="form-group">
-								<label>Country:</label> <select class="form-control"
+								<label><span style="color: red">*</span>Country:</label> <select class="form-control"
 									id="country" name="country">
 									<option value="-1">Select Country</option>
 									<option th:each="data : ${country}" th:value="${data.code}"
@@ -500,7 +510,7 @@ div.dropdown-menu.show a.nav-link{
 					<div class="row">
 						<div class="col-sm-6">
 							<div class="form-group">
-								<label>DC From:</label> <select class="form-control" id="dcFrom"
+								<label><span style="color: red">*</span>DC From:</label> <select class="form-control" id="dcFrom"
 									name="dcFrom">
 									<option value="-1">Select DC</option>
 									<option th:each="data : ${shuttledcs}" th:text="${data.value}"
@@ -511,7 +521,7 @@ div.dropdown-menu.show a.nav-link{
 						</div>
 						<div class="col-sm-6">
 							<div class="form-group">
-								<label>DC To:</label> <select class="form-control" id="dcTo"
+								<label><span style="color: red">*</span>DC To:</label> <select class="form-control" id="dcTo"
 									name="dcTo">
 									<option value="-1">Select DC</option>
 									<option th:each="data : ${shuttledcs}" th:text="${data.value}"
@@ -524,13 +534,13 @@ div.dropdown-menu.show a.nav-link{
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								<label>Date:</label> <input class="form-control" type="text"
+								<label><span style="color: red">*</span>Date:</label> <input class="form-control" type="text"
 									disabled id="fsr-for-date" th:value="${currentdate}" />
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								<label>Shuttle Timing:</label> <select class="form-control"
+								<label><span style="color: red">*</span>Shuttle Timing:</label> <select class="form-control"
 									id="timming" name="timming">
 									<option value="-1">Select Time</option>
 									<option th:each="data : ${shuttletimings}"
@@ -542,9 +552,10 @@ div.dropdown-menu.show a.nav-link{
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								<label>Reason:<span style="font-size: 14px;color: green;"> (<span id="word-span" style="color:red">100</span> letters remaining..)</span></label>
+								<label><span style="color: red">*</span>Reason:</label>
 								<textarea id="fsr-reason" name="reason" class="form-control" onkeyup="charCount(this)"
 									rows="3" cols="5" style="resize: none"></textarea>
+									<span id="remaining-box" style="font-size: 14px;color: #5f6265b0;font-weight: 600;"><span id="word-span" style="color:red">100</span> letters remaining..</span>
 							</div>
 						</div>
 					</div>
