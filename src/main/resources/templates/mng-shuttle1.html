@@ -342,7 +342,36 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 	<div class="container-fluid" style="margin-bottom:30px">
 		<div class="row mng-container mt-2">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pass-header">
-				<h5 style="margin: 0;">Manage Pass</h5>
+				<div class="float-left d-none d-md-block">
+					<h5 style="margin: 0 auto; padding-top:8px;padding-bottom:10px">Manage Pass</h5>
+				</div>
+				<div class="text-center d-md-none">
+					<h5 style="margin: 0 auto; padding-top:8px;padding-bottom:10px">Manage Pass</h5>
+				</div>
+				<div class="float-right d-none d-md-block">
+					<div class="float-right">
+					<div class="input-group float-right">
+						<div class="input-group-prepend">
+							<span class="input-group-text">Show:</span>
+						</div>
+						<select class="form-control" style="border-radius:0px 4px 4px 0px">
+							<option>Applied by me</option>
+							<option>Requires my approval</option>
+						</select>
+					</div>
+					</div>
+				</div>
+				<div class="mr-auto d-md-none">
+					<div class="align-self-center input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text">Show:</span>
+						</div>
+						<select class="form-control" style="border-radius:0px 4px 4px 0px">
+							<option>Applied by me</option>
+							<option>Requires my approval</option>
+						</select>
+					</div>
+				</div>
 			</div>
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<table id="log"
