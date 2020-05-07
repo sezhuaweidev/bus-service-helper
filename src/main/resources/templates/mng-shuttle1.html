@@ -170,6 +170,10 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 	background-color: green !important;
     border-color: green !important;
 }
+.export-button-style {
+	height:29px;
+	padding-top:1px;
+}
 </style>
 
 <script type="text/javascript">
@@ -195,7 +199,7 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 		         extend: 'excel',
 		         text: '<i class="fas fa-file-excel"></i> Export',
 		         title:'Pass detail',
-		         className: 'btn btn-success btn-sm',
+		         className: 'btn btn-success btn-sm export-button-style',
 		         exportOptions: {
 		            columns: 'th:not(:last-child)'
 		         }
