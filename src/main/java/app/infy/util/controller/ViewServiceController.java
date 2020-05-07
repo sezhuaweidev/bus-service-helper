@@ -74,15 +74,15 @@ public class ViewServiceController {
 		}
 		
 		//EmployeeDetail ed = employeeService.getEmployeeDetailById(intId);
-		String url = "";
+		String url = "redirect:"+ request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/";;
 		
-		if(authString.equalsIgnoreCase("EMPLOYEE")){
+		/*if(authString.equalsIgnoreCase("EMPLOYEE")){
 			url = "redirect:"+ request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/";
 		}else if(authString.equalsIgnoreCase("MANAGER")){
 			url = "redirect:"+request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() +"/view/manage/";
 		}else if(authString.equalsIgnoreCase("TRANSPORT")){
 			url = "redirect:"+ request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() +"/view/transManage/";
-		}
+		}*/
 		return url;
 	}
 	

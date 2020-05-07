@@ -20,4 +20,15 @@ public class EmployeeDetailServiceImpl implements EmployeeService {
 		return employeeDetailRepository.findById(id).orElse(new EmployeeDetail());
 	}
 
+	@Override
+	public String getEmployeeNameAndId(String empId) {
+		Integer id = Integer.parseInt(empId);
+		EmployeeDetail employeeDetail = employeeDetailRepository.findById(id).orElse(new EmployeeDetail());
+		String empName = "";
+		if(employeeDetail!=null){
+			empName = employeeDetail.getEmpName()+"("+employeeDetail.getEmpId()+")";
+		}
+		return empName;
+	}
+
 }

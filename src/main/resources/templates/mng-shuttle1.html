@@ -92,7 +92,7 @@ a, h1, h2, h3, h4, h5, h6, p, label, input {
     padding: 7px 15px;
     background: #077cc3;
     color: white;
-    border-radius: 5px;
+    border-radius: 5px 5px 0px 0px;
 }
 .bg-custom{
 	background-color: #077cc3;
@@ -181,7 +181,16 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 			scrollX: true,
 			paging:true,
 			lengthChange:true,
-			"order": [5, "desc"],
+			"columnDefs": [
+	            {
+	                "targets": [ 2 ],
+	                "visible": false,
+	                "searchable": false
+	            }
+	        ],
+			//"aaSorting": [ [2, "desc"],[3, "desc"]],
+			//"orderMulti": true,
+			order: [ 2,"desc"],
 			buttons: [ {
 		         extend: 'excel',
 		         text: '<i class="fas fa-file-excel"></i> Export',
@@ -195,6 +204,7 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 		});
 		table.buttons().container()
         .appendTo( '#log_wrapper .col-md-6:eq(0)' );
+		//table.ordder([ [2, "desc"],[3, "desc"]]);
 		//$("#log").css("max-height","200px");
 		$("#log_wrapper").find(".col-md-6:eq(0)").addClass('exp-btn')
 		console.log($("#log_wrapper").find(".col-md-6:eq(0)"));
@@ -214,7 +224,7 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 		//alert(urlPath);
 		toggleWorkingScreen(true);
 		bootbox.confirm({
-		    message: "Are you sure,you want to "+status+" ?",
+		    message: "Are you sure, do you want to "+status+"?",
 		    buttons: {
 		        confirm: {
 		            label: 'Yes',
@@ -306,8 +316,11 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 		</div>
 		<ul class="navbar-nav">
 
-			<li class="nav-item"><a class="nav-link font-weight-bold"
+			<!-- <li class="nav-item"><a class="nav-link font-weight-bold"
 				th:if="${employeeRole eq 'EMPLOYEE'}" th:href="${pathApply}"><i
+					class="fa fa-edit"> </i> Apply</a></li> -->
+			<li class="nav-item"><a class="nav-link font-weight-bold"
+				 th:href="${pathApply}"><i
 					class="fa fa-edit"> </i> Apply</a></li>
 			<li class="nav-item active"><a class="nav-link font-weight-bold"
 				th:href="${pathManage}"><i class="fa fa-tasks"> </i> Manage</a></li>
@@ -337,8 +350,11 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 					style="width: 100%">
 					<thead>
 						<tr>
-							<th>Employee Id</th>
+							<!-- <th>SL NO.</th> -->
+							<th>Employee Name</th>
 							<th>DC Name</th>
+							<th>Shuttle Date</th>
+							<th>Shuttle Date</th>
 							<th>Shuttle Time</th>
 							<th>Reason</th>
 							<th>Status</th>
@@ -346,10 +362,13 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="shuttleRequest : ${shuttleRequestList}">
-							<td th:text="${shuttleRequest.requester}"></td>
+						<tr th:each="shuttleRequest: ${shuttleRequestList}">
+							<!-- <td th:text="${id.count}"></td> -->
+							<td th:text="${@beanService.getEmployeeName(shuttleRequest.requester)}"></td>
 							<td th:text="${shuttleRequest.dcFrom}"></td>
 							<td th:text="${shuttleRequest.forDate}"></td>
+							<td th:with="sdf = ${new java.text.SimpleDateFormat('dd-MM-yyyy HH:mm')}" th:text="${#dates.format(sdf.parse(shuttleRequest.forDate),'dd-MM-yyyy')}"></td>
+							<td th:with="sdf = ${new java.text.SimpleDateFormat('dd-MM-yyyy HH:mm')}" th:text="${#dates.format(sdf.parse(shuttleRequest.forDate),'HH:mm')}"></td>
 							<td th:text="${shuttleRequest.reason}"></td>
 							<td><span th:if="${shuttleRequest.status eq 'PENDING'}">Pending</span>
 								<span th:if="${shuttleRequest.status eq 'CANCELLED'}">Cancelled</span>
@@ -364,19 +383,19 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 							<td>
 								<button class="btn btn-success"
 									th:if="${employeeRole eq 'MANAGER' && shuttleRequest.status eq 'PENDING'}"
-									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/APPROVED_MGR','Approve')|">Approve</button>
+									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/APPROVED_MGR','approve')|">Approve</button>
 								<button class="btn btn-danger"
 									th:if="${employeeRole eq 'MANAGER' && shuttleRequest.status eq 'PENDING'}"
-									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/REJECTED_MGR','Reject')|">Reject</button>
+									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/REJECTED_MGR','reject')|">Reject</button>
 								<button class="btn btn-success"
 									th:if="${employeeRole eq 'TRANSPORT' && shuttleRequest.status eq 'APPROVED_MGR'}"
-									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/APPROVED_TRNS','Approve')|">Approve</button>
+									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/APPROVED_TRNS','approve')|">Approve</button>
 								<button class="btn btn-danger"
 									th:if="${employeeRole eq 'TRANSPORT' && shuttleRequest.status eq 'APPROVED_MGR'}"
-									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/REJECTED_TRNS','Reject')|">Reject</button>
+									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/REJECTED_TRNS','reject')|">Reject</button>
 								<button class="btn btn-danger"
 									th:if="${employeeRole eq 'EMPLOYEE' && shuttleRequest.status eq 'PENDING'}"
-									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/CANCELLED','Cancel')|">Cancel</button>
+									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/CANCELLED','cancel')|">Cancel</button>
 								<!-- <a th:href="@{${optionUrl}+${shuttleRequest.requestId}+'/Approved'}">Approve</a>
 										<a th:href="@{${optionUrl}+${shuttleRequest.requestId}+'/Rejected'}">Reject</a>
 										<a th:href="@{${optionUrl}+${shuttleRequest.requestId}+'/Cancelled'}">Cancel</a> -->

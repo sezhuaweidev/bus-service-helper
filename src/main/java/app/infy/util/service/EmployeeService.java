@@ -6,4 +6,6 @@ public interface EmployeeService {
 
 	EmployeeDetail getEmployeeDetailById(Integer id);
 
+	String getEmployeeNameAndId(String empId);
+
 }
