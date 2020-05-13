@@ -534,22 +534,22 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 								th:if="${shuttleRequest.status eq 'REJECTED_TRNS'}">Rejected
 									By Transport</span></td>
 							<td>
-								<span class="cust fa fa-check fa-sm"
+								<span class="cust fa fa-check fa-sm" style="color:green;cursor:pointer"
 									th:if="${employeeRole eq 'MANAGER' && shuttleRequest.status eq 'PENDING' && shuttleRequest.requester ne employeeid }"
 									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/APPROVED_MGR','approve',${@beanService.getSeatCount(shuttleRequest.shuttleId)})|" title="Approve"></span>
-								<span class="cust fa fa-times fa-sm"
+								<span class="cust fa fa-times fa-sm" style="color:red;cursor:pointer"
 									th:if="${employeeRole eq 'MANAGER' && shuttleRequest.status eq 'PENDING' && shuttleRequest.requester ne employeeid }"
 									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/REJECTED_MGR','reject',${@beanService.getSeatCount(shuttleRequest.shuttleId)})|" title="Reject"></span>
-								<span class="cust fa fa-check fa-sm"
+								<span class="cust fa fa-check fa-sm" style="color:green;cursor:pointer"
 									th:if="${employeeRole eq 'TRANSPORT' && shuttleRequest.status eq 'APPROVED_MGR' && shuttleRequest.requester ne employeeid }"
 									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/APPROVED_TRNS','approve',${@beanService.getSeatCount(shuttleRequest.shuttleId)})|" title="Approve"></span>
-								<span class="cust fa fa-times fa-sm"
+								<span class="cust fa fa-times fa-sm" style="color:red;cursor:pointer"
 									th:if="${employeeRole eq 'TRANSPORT' && shuttleRequest.status eq 'APPROVED_MGR' && shuttleRequest.requester ne employeeid }"
 									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/REJECTED_TRNS','reject',${@beanService.getSeatCount(shuttleRequest.shuttleId)})|" title="Reject"></span>
-								<span class="cust fa fa-times fa-sm"
+								<span class="cust fa fa-times fa-sm" style="color:red;cursor:pointer"
 									th:if="${(employeeRole eq 'EMPLOYEE' || employeeRole eq 'MANAGER') && shuttleRequest.requester eq employeeid  && (shuttleRequest.status ne 'APPROVED_TRNS' && shuttleRequest.status ne 'REJECTED_TRNS' && shuttleRequest.status ne 'REJECTED_MGR' && shuttleRequest.status ne 'CANCELLED')}"
 									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/CANCELLED','cancel',${@beanService.getSeatCount(shuttleRequest.shuttleId)})|" title="Cancel"></span>
-								<span class="cust fa fa-eye fa-sm"
+								<span class="cust fa fa-eye fa-sm" style="color:blue;cursor:pointer"
 									th:if="${shuttleRequest.status ne 'PENDING'}"
 									th:attr="onclick=|showRemark('<b>Employee Remark:</b> ${shuttleRequest.remark}</br><b>Manager Remark:</b> ${shuttleRequest.mngRemark}</br><b>Transporter Remark:</b> ${shuttleRequest.trnsRemark}')|" title="View Remark">
 								</span> 
