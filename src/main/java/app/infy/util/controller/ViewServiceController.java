@@ -1,7 +1,9 @@
 package app.infy.util.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -161,6 +163,7 @@ public class ViewServiceController {
 			throw new ControllerException(MessageConstants.PROVIDED_ID_INVALID);
 		}
 		
+		SimpleDateFormat forDateFormatter= new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm");
 		String curDate = sdf.format(new Date());
 		EmployeeDetail ed = employeeService.getEmployeeDetailById(intId);
 		model.addAttribute("employeename", ed.getEmpName());
@@ -168,7 +171,16 @@ public class ViewServiceController {
 		model.addAttribute("employeeid", ed.getEmpId());
 		model.addAttribute("pathApply",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/");
 		model.addAttribute("pathManage",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/manage/");
-		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByMngIdAndDate(intId,curDate);
+		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByMngIdAndDate(intId,curDate).parallelStream().sorted(
+					(t1,t2)-> 
+						{ 
+							try {
+								return forDateFormatter.parse(t2.getForDate()).compareTo(forDateFormatter.parse(t1.getForDate()));
+							} catch (ParseException e) {
+								return -1;
+							}
+					}).collect(Collectors.toList());
+		Collections.reverse(lstShuttleTimings);
 		model.addAttribute("shuttleRequestList", lstShuttleTimings);
 		model.addAttribute("optionUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/shuttleservice/");
 		model.addAttribute("logoutUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/auth/logout");

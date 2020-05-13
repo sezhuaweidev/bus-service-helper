@@ -263,26 +263,26 @@ public class ShuttleServiceImpl implements ShuttleService {
 	}
 
 	@Override
-	@Cacheable("shuttletiming")
+	//@Cacheable("shuttletiming")
 	public List<ShuttleTiming> getAllShuttles() {
 		// TODO Auto-generated method stub
 		return shuttleTimingRepository.findAll();
 	}
 
 	@Override
-	@Cacheable("infydc")
+	//@Cacheable("infydc")
 	public List<InfyDc> getAllInfyDcs() {
 		return infyDcRepository.findAll();
 	}
 
 	@Override
-	@Cacheable("infyregion")
+	//@Cacheable("infyregion")
 	public List<InfyRegion> getAllInfyRegion() {
 		return infyRegionRepository.findAll();
 	}
 
 	@Override
-	@Cacheable(cacheNames = "infycountry", key="")
+	//@Cacheable(cacheNames = "infycountry", key="")
 	public List<InfyCountry> getInfyCountry(String continent) {
 		if(continent.equalsIgnoreCase("all") ) {
 			return infyCountryRepository.findAll();
@@ -326,7 +326,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 */
 	@Override
 	public List<ShuttleRequest> findShuttleRequestByMngIdAndDate(Integer approverId,String forDate) {
-		return shuttleRequestRepository.findShuttleRequestByMngIdAndDate(approverId);
+		return shuttleRequestRepository.findShuttleRequestByMngIdAndDate(approverId, approverId);
 	}
 
 	@Override

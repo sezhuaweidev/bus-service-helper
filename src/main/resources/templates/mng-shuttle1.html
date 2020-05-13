@@ -228,18 +228,19 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 										{
 											responsive : true,
 											scrollCollapse : true,
+											sorting: false,
 											//scrollY: "400px",
 											scrollX : true,
 											paging : true,
 											lengthChange : true,
-											"columnDefs" : [ {
-												"targets" : [ 3 ],
-												"visible" : false,
-												"searchable" : false
-											} ],
+											//"columnDefs" : [ {
+											//	"targets" : [ 3 ],
+											//	"visible" : false,
+											//	"searchable" : false
+											//} ],
 											//"aaSorting": [ [2, "desc"],[3, "desc"]],
 											//"orderMulti": true,
-											order : [ 3, "desc" ],
+											//order : [ 7, "desc" ],
 											buttons : [
 													{
 														extend : 'excel',
@@ -488,7 +489,6 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 							<th>DC From</th>
 							<th>DC To</th>
 							<th>Shuttle Date</th>
-							<th>Shuttle Date</th>
 							<th>Shuttle Time</th>
 							<th>Reason</th>
 							<th>Status</th>
@@ -502,7 +502,6 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 								th:text="${@beanService.getEmployeeName(shuttleRequest.requester)}"></td>
 							<td th:text="${shuttleRequest.dcFrom}"></td>
 							<td th:text="${shuttleRequest.dcTo}"></td>
-							<td th:text="${shuttleRequest.forDate}"></td>
 							<td
 								th:with="sdf = ${new java.text.SimpleDateFormat('dd-MM-yyyy HH:mm')}"
 								th:text="${#dates.format(sdf.parse(shuttleRequest.forDate),'dd-MM-yyyy')}"></td>
@@ -523,19 +522,19 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 									By Transport</span></td>
 							<td>
 								<button class="btn btn-success"
-									th:if="${employeeRole eq 'MANAGER' && shuttleRequest.status eq 'PENDING'}"
+									th:if="${employeeRole eq 'MANAGER' && shuttleRequest.status eq 'PENDING' && shuttleRequest.requester ne employeeid }"
 									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/APPROVED_MGR','approve')|">Approve</button>
 								<button class="btn btn-danger"
-									th:if="${employeeRole eq 'MANAGER' && shuttleRequest.status eq 'PENDING'}"
+									th:if="${employeeRole eq 'MANAGER' && shuttleRequest.status eq 'PENDING' && shuttleRequest.requester ne employeeid }"
 									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/REJECTED_MGR','reject')|">Reject</button>
 								<button class="btn btn-success"
-									th:if="${employeeRole eq 'TRANSPORT' && shuttleRequest.status eq 'APPROVED_MGR'}"
+									th:if="${employeeRole eq 'TRANSPORT' && shuttleRequest.status eq 'APPROVED_MGR' && shuttleRequest.requester ne employeeid }"
 									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/APPROVED_TRNS','approve')|">Approve</button>
 								<button class="btn btn-danger"
-									th:if="${employeeRole eq 'TRANSPORT' && shuttleRequest.status eq 'APPROVED_MGR'}"
+									th:if="${employeeRole eq 'TRANSPORT' && shuttleRequest.status eq 'APPROVED_MGR' && shuttleRequest.requester ne employeeid }"
 									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/REJECTED_TRNS','reject')|">Reject</button>
 								<button class="btn btn-danger"
-									th:if="${employeeRole eq 'EMPLOYEE' && shuttleRequest.status eq 'PENDING'}"
+									th:if="${(employeeRole eq 'EMPLOYEE' || employeeRole eq 'MANAGER') && shuttleRequest.requester eq employeeid  && (shuttleRequest.status ne 'APPROVED_TRNS' && shuttleRequest.status ne 'REJECTED_TRNS' && shuttleRequest.status ne 'REJECTED_MGR' )}"
 									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/CANCELLED','cancel')|">Cancel</button>
 								<button class="btn btn-info"
 									th:if="${shuttleRequest.remark ne null}"
