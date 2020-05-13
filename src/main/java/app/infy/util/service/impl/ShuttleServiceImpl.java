@@ -376,5 +376,14 @@ public class ShuttleServiceImpl implements ShuttleService {
 	public List<ShuttleRequest> findShuttleRequestByTransMngIdAndDate(String dcId, String curDate) {
 		return shuttleRequestRepository.findShuttleRequestByTransMngIdAndDate(dcId);
 	}
+
+	@Override
+	public String getSeatCountByReqTime(String reqTime) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        String currentDate = sdf.format(new Date());
+        List<ShuttleRequest> shuttleRequestList =  shuttleRequestRepository.getSeatCountByReqTime(currentDate,reqTime);
+        Integer count =  shuttleRequestList.size();
+        return count.toString();
+	}
 	
 }

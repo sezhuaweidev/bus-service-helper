@@ -31,4 +31,6 @@ public interface ShuttleService {
 	List<ShuttleRequest> findShuttleRequestByEmpMngIdAndDate(Integer requesterId, String curDate);
 
 	List<ShuttleRequest> findShuttleRequestByTransMngIdAndDate(String dcId, String curDate);
+
+	String getSeatCountByReqTime(String reqId);
 }

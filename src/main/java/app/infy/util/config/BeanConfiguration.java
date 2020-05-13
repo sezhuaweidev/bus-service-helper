@@ -26,9 +26,16 @@ public class BeanConfiguration {
         				return employeeService.getEmployeeNameAndId(empId);
         			}
 
+					public String getSeatCount(String reqTime) {
+						return shuttleService.getSeatCountByReqTime(reqTime);
+					}
+
         		};
         		
     }
+	
+	
+	
 
 
 }

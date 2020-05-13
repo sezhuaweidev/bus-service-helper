@@ -26,5 +26,8 @@ public interface ShuttleRequestRepository extends JpaRepository<ShuttleRequest, 
 	 //@Query("SELECT s FROM ShuttleRequest s WHERE s.requester=:requesterId and s.forDate = :forDate")
 	 @Query("SELECT s FROM ShuttleRequest s WHERE s.requester=:requesterId order by forDate DESC")
 	 public List<ShuttleRequest> findShuttleRequestByEmpMngIdAndDate(@Param("requesterId")Integer requesterId);
+
+	 @Query("SELECT s FROM ShuttleRequest s WHERE s.shuttleId=:shuttleId and forDate like :forDate% and s.status='APPROVED_TRNS'")
+     public List<ShuttleRequest> getSeatCountByReqTime(@Param("forDate")String currentDate, @Param("shuttleId")String reqTime);
 	 
 }
