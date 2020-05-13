@@ -534,11 +534,11 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 									th:if="${employeeRole eq 'TRANSPORT' && shuttleRequest.status eq 'APPROVED_MGR' && shuttleRequest.requester ne employeeid }"
 									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/REJECTED_TRNS','reject')|">Reject</button>
 								<button class="btn btn-danger"
-									th:if="${(employeeRole eq 'EMPLOYEE' || employeeRole eq 'MANAGER') && shuttleRequest.requester eq employeeid  && (shuttleRequest.status ne 'APPROVED_TRNS' && shuttleRequest.status ne 'REJECTED_TRNS' && shuttleRequest.status ne 'REJECTED_MGR' )}"
+									th:if="${(employeeRole eq 'EMPLOYEE' || employeeRole eq 'MANAGER') && shuttleRequest.requester eq employeeid  && (shuttleRequest.status ne 'APPROVED_TRNS' && shuttleRequest.status ne 'REJECTED_TRNS' && shuttleRequest.status ne 'REJECTED_MGR' && shuttleRequest.status ne 'CANCELLED')}"
 									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/CANCELLED','cancel')|">Cancel</button>
 								<button class="btn btn-info"
-									th:if="${shuttleRequest.remark ne null}"
-									th:attr="onclick=|showRemark('${shuttleRequest.remark}')|">
+									th:if="${shuttleRequest.status ne 'PENDING'}"
+									th:attr="onclick=|showRemark('Employee Remark:${shuttleRequest.remark}</br>Manager Remark:${shuttleRequest.mngRemark}</br>Transporter Remark:${shuttleRequest.trnsRemark}')|">
 									View Remark</button> <!-- <a th:href="@{${optionUrl}+${shuttleRequest.requestId}+'/Approved'}">Approve</a>
 										<a th:href="@{${optionUrl}+${shuttleRequest.requestId}+'/Rejected'}">Reject</a>
 										<a th:href="@{${optionUrl}+${shuttleRequest.requestId}+'/Cancelled'}">Cancel</a> -->

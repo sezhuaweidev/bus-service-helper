@@ -33,6 +33,12 @@ public class ShuttleRequest {
 	
 	@Column(name="remark")
 	private String remark;
+	
+	@Column(name="mng_remark")
+	private String mngRemark;
+	
+	@Column(name="trns_remark")
+	private String trnsRemark;
 
 	@Column(name="for_date")
 	private String forDate;
@@ -113,6 +119,22 @@ public class ShuttleRequest {
 
 	public void setDcTo(String dcTo) {
 		this.dcTo = dcTo;
+	}
+	
+	public String getMngRemark() {
+		return mngRemark;
+	}
+
+	public void setMngRemark(String mngRemark) {
+		this.mngRemark = mngRemark;
+	}
+	
+	public String getTrnsRemark() {
+		return trnsRemark;
+	}
+
+	public void setTrnsRemark(String trnsRemark) {
+		this.trnsRemark = trnsRemark;
 	}
 
 	@Override

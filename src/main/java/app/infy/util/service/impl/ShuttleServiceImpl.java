@@ -11,6 +11,7 @@ import javax.mail.MessagingException;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import app.infy.util.entity.EmployeeDetail;
@@ -33,6 +34,7 @@ import app.infy.util.repository.InfyRegionRepository;
 import app.infy.util.repository.ShuttleRequestRepository;
 import app.infy.util.repository.ShuttleTimingRepository;
 import app.infy.util.service.EmailSenderService;
+import app.infy.util.service.EmployeeService;
 import app.infy.util.service.ShuttleService;
 
 @Service
@@ -46,6 +48,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 	private InfyCountryRepository infyCountryRepository;
 	
 	private EmailSenderService emailSenderService;
+	private EmployeeService employeeService;
 
 	private Converter<FormShuttleRequest, ShuttleRequest> formToShuttleReuqestConverter;
 	//private Converter<ShuttleRequest, ShuttleBookingStatus> entityToShuttleRequestModelConverter;
@@ -60,6 +63,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 			Converter<FormShuttleRequest, ShuttleRequest> formToShuttleReuqestConverter,
 			//Converter<ShuttleRequest, ShuttleBookingStatus> entityToShuttleRequestModelConverter,
 			EmailSenderService emailSenderService,
+			EmployeeService employeeService,
 			InfyDcRepository infyDcRepository ) {
 		
 		this.employeeDetailRepository = employeeDetailRepository;
@@ -70,6 +74,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 		this.formToShuttleReuqestConverter = formToShuttleReuqestConverter;
 		//this.entityToShuttleRequestModelConverter = entityToShuttleRequestModelConverter;
 		this.emailSenderService = emailSenderService;
+		this.employeeService = employeeService;
 		this.infyDcRepository = infyDcRepository;
 	}
 	
@@ -88,7 +93,9 @@ public class ShuttleServiceImpl implements ShuttleService {
 		}
 		
 		ShuttleRequest sr = formToShuttleReuqestConverter.convert(shuttleRequest);
-		
+		sr.setRemark("NA");
+		sr.setMngRemark("NA");
+		sr.setTrnsRemark("NA");
 		EmployeeDetail ed = employeeDetailRepository.findById(shuttleRequest.getRequester()).orElse(null);
 		sr.setApprover(ed.getEmpManagerId());
 		
@@ -164,6 +171,16 @@ public class ShuttleServiceImpl implements ShuttleService {
 	public String updateShuttleBookingStatus(String shuttleRequestId, StatusEnum statusEnum,String reason) {
 		//check status of request-- to be done
 		//cancelled - no op
+		
+		String id = SecurityContextHolder.getContext().getAuthentication().getName();
+		Integer intId = null;
+		try {
+			intId = Integer.parseInt(id);
+		} catch(NumberFormatException nfe) {
+			throw new ControllerException(MessageConstants.PROVIDED_ID_INVALID);
+		}
+		EmployeeDetail currEmp = employeeService.getEmployeeDetailById(intId);
+		
 		if(!shuttleRequestRepository.existsById(shuttleRequestId)) {
 			throw new ApplicationException(MessageConstants.SHUTTLE_REQUEST_ID_INVALID);
 		} else {
@@ -178,7 +195,14 @@ public class ShuttleServiceImpl implements ShuttleService {
 				throw new ApplicationException(MessageConstants.STATUS_NOTRANSPORT);
 			}else {
 				shuttleRequest.setStatus(statusEnum.name().toUpperCase());
-				shuttleRequest.setRemark(reason);
+				if(currEmp.getEmpType().equals("EMPLOYEE")){
+					shuttleRequest.setRemark(reason);
+				}else if(currEmp.getEmpType().equals("MANAGER")){
+					shuttleRequest.setMngRemark(reason);
+				}else{
+					shuttleRequest.setTrnsRemark(reason);
+				}
+				
 				
 				if(shuttleRequest.getStatus().equalsIgnoreCase("CANCELLED") || shuttleRequest.getStatus().equalsIgnoreCase("REJECTED_TRNS") || shuttleRequest.getStatus().equalsIgnoreCase("REJECTED_MGR")) {
 					int random = new Double(Math.floor(Math.random()*100)).intValue();
