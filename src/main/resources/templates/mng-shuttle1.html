@@ -302,7 +302,7 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 		var title = '';
 		var urlStatus = urlPath.split("/");
 		if(urlStatus[6]=='APPROVED_TRNS' || urlStatus[6]=='REJECTED_TRNS'){
-			title = "Seat Occupied("+count+"):"+"Are you sure, do you want to " + status + "?";
+			title = "Seats left: "+count+"<br/>Are you sure, do you want to " + status + "?";
 		}else{
 			title = "Are you sure, do you want to " + status + "?";
 		}
@@ -525,8 +525,8 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 							<td><span th:if="${shuttleRequest.status eq 'PENDING'}">Pending
 									With Manager</span> <span
 								th:if="${shuttleRequest.status eq 'CANCELLED'}">Cancelled</span>
-								<span th:if="${shuttleRequest.status eq 'APPROVED_MGR'}">Approved
-									By Manager</span> <span
+								<span th:if="${shuttleRequest.status eq 'APPROVED_MGR'}">Pending
+									With Transport</span> <span
 								th:if="${shuttleRequest.status eq 'APPROVED_TRNS'}">Approved
 									By Transport</span> <span
 								th:if="${shuttleRequest.status eq 'REJECTED_MGR'}">Rejected

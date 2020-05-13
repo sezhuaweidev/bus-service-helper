@@ -31,4 +31,6 @@ public class MessageConstants {
 	public static final String REJECT_SUCCESS = "Rejected successfully.";
 	public static final String CANCEL_SUCCESS = "Cancelled successfully.";
 	public static final String REQUEST_ALREADY_EXISTS = "Bus pass request is already there";
+	public static final String NO_SEATING_SPACE = "No seating space available for the current shuttle timing.";
+	public static final String EMAIL_FAILED_BUT_REJECTED = "Email sending failed. But the request was rejected.";
 }

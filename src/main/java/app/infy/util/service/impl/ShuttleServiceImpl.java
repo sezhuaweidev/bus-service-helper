@@ -8,9 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
+import javax.transaction.Transactional;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import app.infy.util.entity.InfyCountry;
 import app.infy.util.entity.InfyDc;
 import app.infy.util.entity.InfyRegion;
 import app.infy.util.entity.ShuttleRequest;
+import app.infy.util.entity.ShuttleSeating;
 import app.infy.util.entity.ShuttleTiming;
 import app.infy.util.exception.ApplicationException;
 import app.infy.util.exception.ControllerException;
@@ -32,6 +34,7 @@ import app.infy.util.repository.InfyCountryRepository;
 import app.infy.util.repository.InfyDcRepository;
 import app.infy.util.repository.InfyRegionRepository;
 import app.infy.util.repository.ShuttleRequestRepository;
+import app.infy.util.repository.ShuttleSeatingRepository;
 import app.infy.util.repository.ShuttleTimingRepository;
 import app.infy.util.service.EmailSenderService;
 import app.infy.util.service.EmployeeService;
@@ -46,6 +49,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 	private InfyDcRepository infyDcRepository;
 	private InfyRegionRepository infyRegionRepository;
 	private InfyCountryRepository infyCountryRepository;
+	private ShuttleSeatingRepository shuttleSeatingRepository;
 	
 	private EmailSenderService emailSenderService;
 	private EmployeeService employeeService;
@@ -64,7 +68,8 @@ public class ShuttleServiceImpl implements ShuttleService {
 			//Converter<ShuttleRequest, ShuttleBookingStatus> entityToShuttleRequestModelConverter,
 			EmailSenderService emailSenderService,
 			EmployeeService employeeService,
-			InfyDcRepository infyDcRepository ) {
+			InfyDcRepository infyDcRepository,
+			ShuttleSeatingRepository shuttleSeatingRepository) {
 		
 		this.employeeDetailRepository = employeeDetailRepository;
 		this.shuttleRequestRepository = shuttleRequestRepository;
@@ -76,6 +81,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 		this.emailSenderService = emailSenderService;
 		this.employeeService = employeeService;
 		this.infyDcRepository = infyDcRepository;
+		this.shuttleSeatingRepository = shuttleSeatingRepository;
 	}
 	
 	@Override
@@ -167,6 +173,13 @@ public class ShuttleServiceImpl implements ShuttleService {
 		}
 	}
 
+	private synchronized void bookOneSeatFor(String shuttleId) {
+		ShuttleSeating ss = shuttleSeatingRepository.findByCode(shuttleId);
+		ss.setCount(ss.getCount()-1);
+		shuttleSeatingRepository.save(ss);
+
+	}
+	
 	@Override
 	public String updateShuttleBookingStatus(String shuttleRequestId, StatusEnum statusEnum,String reason) {
 		//check status of request-- to be done
@@ -179,6 +192,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 		} catch(NumberFormatException nfe) {
 			throw new ControllerException(MessageConstants.PROVIDED_ID_INVALID);
 		}
+		
 		EmployeeDetail currEmp = employeeService.getEmployeeDetailById(intId);
 		
 		if(!shuttleRequestRepository.existsById(shuttleRequestId)) {
@@ -194,6 +208,9 @@ public class ShuttleServiceImpl implements ShuttleService {
 			if(transportDetail==null){
 				throw new ApplicationException(MessageConstants.STATUS_NOTRANSPORT);
 			}else {
+				if(statusEnum.name().equalsIgnoreCase(StatusEnum.approved_trns.name()) && shuttleSeatingRepository.getSeatingStatusFor(shuttleRequest.getShuttleId())<1 ) {
+					throw new ApplicationException(MessageConstants.NO_SEATING_SPACE);
+				}
 				shuttleRequest.setStatus(statusEnum.name().toUpperCase());
 				if(currEmp.getEmpType().equals("EMPLOYEE")){
 					shuttleRequest.setRemark(reason);
@@ -204,6 +221,9 @@ public class ShuttleServiceImpl implements ShuttleService {
 				}
 				
 				
+				if(shuttleRequest.getStatus().equalsIgnoreCase(StatusEnum.approved_trns.name()) ) {
+					bookOneSeatFor(shuttleRequest.getShuttleId());
+				}
 				if(shuttleRequest.getStatus().equalsIgnoreCase("CANCELLED") || shuttleRequest.getStatus().equalsIgnoreCase("REJECTED_TRNS") || shuttleRequest.getStatus().equalsIgnoreCase("REJECTED_MGR")) {
 					int random = new Double(Math.floor(Math.random()*100)).intValue();
 					
@@ -211,6 +231,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 					shuttleRequest.setRequestId(shuttleRequest.getRequestId()+"F"+random);
 					
 				}
+				System.out.println("About to save new instance.");
 				shuttleRequestRepository.save(shuttleRequest);
 				
 				EmployeeDetail ed = employeeDetailRepository.findById(shuttleRequest.getRequester()).orElse(new EmployeeDetail());
@@ -381,9 +402,129 @@ public class ShuttleServiceImpl implements ShuttleService {
 	public String getSeatCountByReqTime(String reqTime) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         String currentDate = sdf.format(new Date());
-        List<ShuttleRequest> shuttleRequestList =  shuttleRequestRepository.getSeatCountByReqTime(currentDate,reqTime);
-        Integer count =  shuttleRequestList.size();
+        
+        //reqTime is actually shuttleId
+        Integer count = shuttleSeatingRepository.getSeatingStatusFor(reqTime);
+        
+        //List<ShuttleRequest> shuttleRequestList =  shuttleRequestRepository.getSeatCountByReqTime(currentDate,reqTime);
+        //Integer count =  shuttleRequestList.size();
         return count.toString();
 	}
+	
+	
+	@Scheduled(cron = "0 45 10 ? * *")
+	private void updateShuttleRequest11() {
+		final String currShuttleId = "STL1100";
+		String forDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date());
+		List<ShuttleRequest> oldRequests = shuttleRequestRepository.findShuttleRequestBy(forDate, "STL1100");
+		
+		oldRequests.stream().forEach(t-> {
+			if(shuttleSeatingRepository.getSeatingStatusFor(currShuttleId)>=1) {
+				EmployeeDetail ed = employeeDetailRepository.findById(t.getRequester()).orElse(new EmployeeDetail());
+				EmployeeDetail managerDetail = employeeDetailRepository.findById(t.getApprover()).orElse(new EmployeeDetail());
+				EmployeeDetail transportDetail = employeeDetailRepository.findByDc(t.getDcFrom());
+
+				t.setStatus(StatusEnum.approved_trns.name().toUpperCase());
+				t.setMngRemark("Auto approved by system");
+				t.setTrnsRemark("Auto approved by system");
+				
+				bookOneSeatFor(currShuttleId);
+				shuttleRequestRepository.save(t);
+				
+		        Mail mail = new Mail();
+		        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		        mail.setFrom("sez.huawei.dev@gmail.com");
+		        mail.setMailCc(new String[] {managerDetail.getEmpMail(),transportDetail.getEmpMail()});
+		        mail.setMailTo(ed.getEmpMail());
+		        mail.setSubject("Shuttle Pass");
+		        //email template parameter
+		        Map<String, Object> model = new HashMap<String, Object>();
+		        model.put("name", ed.getEmpName());//put manager name
+		        model.put("empName", transportDetail.getEmpName());
+		        model.put("empId", ed.getEmpId());
+		        model.put("location", infyDcRepository.findById(t.getDcFrom()).orElse(new InfyDc()).getValue());
+		        model.put("sign", "Transportation Team");
+		        model.put("status", t.getStatus());
+		        model.put("dateTime", sdf.format(new Date())+" "+shuttleTimingRepository.findById(t.getShuttleId()).orElse(new ShuttleTiming()).getStartTime());// put shuttle request time
+		        mail.setProps(model);
+				try {
+					emailSenderService.sendErrorEmail(t.getRequestId(), mail);
+			        System.out.println("END... Email sent success");
+				} catch (MessagingException | IOException e) {
+					e.printStackTrace();
+					throw new ApplicationException(MessageConstants.EMAIL_FAILED_BUT_REJECTED);
+				}
+				
+			} else {
+				int random = new Double(Math.floor(Math.random()*100)).intValue();
+				
+				t.setStatus(StatusEnum.rejected_trns.name().toUpperCase());
+				t.setMngRemark("Auto rejected by system");
+				t.setTrnsRemark("Auto rejected by system");
+				shuttleRequestRepository.deleteById(t.getRequestId());
+				t.setRequestId(t.getRequestId()+"F"+random);
+				shuttleRequestRepository.save(t);
+			}
+		});
+		
+	}
+
+	@Scheduled(cron = "0 45 14 ? * *")
+	private void updateShuttleReques15() {
+		final String currShuttleId = "STL1500";
+		String forDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date());
+		List<ShuttleRequest> oldRequests = shuttleRequestRepository.findShuttleRequestBy(forDate, currShuttleId);
+		
+		oldRequests.stream().forEach(t-> {
+			if(shuttleSeatingRepository.getSeatingStatusFor(currShuttleId)>=1) {
+				EmployeeDetail ed = employeeDetailRepository.findById(t.getRequester()).orElse(new EmployeeDetail());
+				EmployeeDetail managerDetail = employeeDetailRepository.findById(t.getApprover()).orElse(new EmployeeDetail());
+				EmployeeDetail transportDetail = employeeDetailRepository.findByDc(t.getDcFrom());
+
+				t.setStatus(StatusEnum.approved_trns.name().toUpperCase());
+				t.setMngRemark("Auto approved by system");
+				t.setTrnsRemark("Auto approved by system");
+				
+				bookOneSeatFor(currShuttleId);
+				shuttleRequestRepository.save(t);
+				
+		        Mail mail = new Mail();
+		        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		        mail.setFrom("sez.huawei.dev@gmail.com");
+		        mail.setMailCc(new String[] {managerDetail.getEmpMail(),transportDetail.getEmpMail()});
+		        mail.setMailTo(ed.getEmpMail());
+		        mail.setSubject("Shuttle Pass");
+		        //email template parameter
+		        Map<String, Object> model = new HashMap<String, Object>();
+		        model.put("name", ed.getEmpName());//put manager name
+		        model.put("empName", transportDetail.getEmpName());
+		        model.put("empId", ed.getEmpId());
+		        model.put("location", infyDcRepository.findById(t.getDcFrom()).orElse(new InfyDc()).getValue());
+		        model.put("sign", "Transportation Team");
+		        model.put("status", t.getStatus());
+		        model.put("dateTime", sdf.format(new Date())+" "+shuttleTimingRepository.findById(t.getShuttleId()).orElse(new ShuttleTiming()).getStartTime());// put shuttle request time
+		        mail.setProps(model);
+				try {
+					emailSenderService.sendErrorEmail(t.getRequestId(), mail);
+			        System.out.println("END... Email sent success");
+				} catch (MessagingException | IOException e) {
+					e.printStackTrace();
+					throw new ApplicationException(MessageConstants.EMAIL_FAILED_BUT_REJECTED);
+				}
+				
+			} else {
+				int random = new Double(Math.floor(Math.random()*100)).intValue();
+				
+				t.setStatus(StatusEnum.rejected_trns.name().toUpperCase());
+				t.setMngRemark("Auto rejected by system");
+				t.setTrnsRemark("Auto rejected by system");
+				shuttleRequestRepository.deleteById(t.getRequestId());
+				t.setRequestId(t.getRequestId()+"F"+random);
+				shuttleRequestRepository.save(t);
+			}
+		});
+		
+	}
+
 	
 }

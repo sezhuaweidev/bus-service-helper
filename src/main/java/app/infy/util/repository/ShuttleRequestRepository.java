@@ -13,7 +13,7 @@ import app.infy.util.entity.ShuttleRequest;
 public interface ShuttleRequestRepository extends JpaRepository<ShuttleRequest, String> {
 	
 	//@Query("SELECT s FROM ShuttleRequest s WHERE s.approver=:approverId and (s.status='PENDING' or s.status='APPROVED_MGR'or s.status='REJECTED_MGR' or s.status='APPROVED_TRNS' or s.status='REJECTED_TRNS')") 
-	@Query("SELECT s FROM ShuttleRequest s WHERE (s.approver=:approverId or s.requester=:requesterId) and (s.status!='CANCELLED') order by forDate DESC")
+	@Query("SELECT s FROM ShuttleRequest s WHERE (s.approver=:approverId or s.requester=:requesterId) order by forDate DESC")
 	public List<ShuttleRequest> findShuttleRequestByMngIdAndDate(@Param("approverId") Integer approverId,@Param("requesterId") Integer requesterId);
 
 	 public List<ShuttleRequest> findByRequester(Integer id);
@@ -29,5 +29,9 @@ public interface ShuttleRequestRepository extends JpaRepository<ShuttleRequest, 
 
 	 @Query("SELECT s FROM ShuttleRequest s WHERE s.shuttleId=:shuttleId and forDate like :forDate% and s.status='APPROVED_TRNS'")
      public List<ShuttleRequest> getSeatCountByReqTime(@Param("forDate")String currentDate, @Param("shuttleId")String reqTime);
+	 
+	 
+	@Query("SELECT s FROM ShuttleRequest s WHERE forDate=:forDate and shuttleId=:shuttleReq and (status='PENDING' or s.status='APPROVED_MGR')")
+	 public List<ShuttleRequest> findShuttleRequestBy(String forDate, String shuttleReq);
 	 
 }

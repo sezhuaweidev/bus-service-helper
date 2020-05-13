@@ -173,12 +173,23 @@ public class ViewServiceController {
 		model.addAttribute("pathApply",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/");
 		model.addAttribute("pathManage",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/manage/");
 		SimpleDateFormat forDateFormatter= new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm");
+		
+		//List<String> seq = Arrays.stream("pending,approved_mgr,approved_trns,cancelled,rejected_mgr,rejected_trns,approved,rejected".split(",")).collect(Collectors.toList());
 		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByMngIdAndDate(intId,curDate)
 				.parallelStream().sorted(
 					(t1,t2)-> 
 						{ 
 							try {
-								return forDateFormatter.parse(t2.getForDate()).compareTo(forDateFormatter.parse(t1.getForDate()));
+								int val = forDateFormatter.parse(t2.getForDate()).compareTo(forDateFormatter.parse(t1.getForDate()));
+								val = t2.getStatus().compareTo(t1.getStatus());
+								
+								if(t2.getStatus().equalsIgnoreCase("pending")) {
+									val = 1;
+								}else if(t2.getStatus().equalsIgnoreCase("approved_mgr")) {
+									val = 1;
+								}
+								
+								return val;
 							} catch (ParseException e) {
 								return -1;
 							}
@@ -211,12 +222,22 @@ public class ViewServiceController {
 		model.addAttribute("pathApply",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/");
 		model.addAttribute("pathManage",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/empManage/");
 		SimpleDateFormat forDateFormatter= new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm");
+		//List<String> seq = Arrays.stream("pending,approved_mgr,approved_trns,cancelled,rejected_mgr,rejected_trns,approved,rejected".split(",")).collect(Collectors.toList());
 		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByEmpMngIdAndDate(intId,curDate)
 				.parallelStream().sorted(
 						(t1,t2)-> 
 							{ 
 								try {
-									return forDateFormatter.parse(t2.getForDate()).compareTo(forDateFormatter.parse(t1.getForDate()));
+									int val = forDateFormatter.parse(t2.getForDate()).compareTo(forDateFormatter.parse(t1.getForDate()));
+									val = t2.getStatus().compareTo(t1.getStatus());
+									
+									if(t2.getStatus().equalsIgnoreCase("pending")) {
+										val = 1;
+									}else if(t2.getStatus().equalsIgnoreCase("approved_mgr")) {
+										val = 1;
+									}
+									
+									return val;
 								} catch (ParseException e) {
 									return -1;
 								}
@@ -249,12 +270,27 @@ public class ViewServiceController {
 		//model.addAttribute("pathApply",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/"+ed.getEmpId());
 		model.addAttribute("pathManage",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/transManage/");
 		SimpleDateFormat forDateFormatter= new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm");
+		List<String> seq = Arrays.stream("pending,approved_mgr,approved_trns,cancelled,rejected_mgr,rejected_trns,approved,rejected".split(",")).collect(Collectors.toList());
 		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByTransMngIdAndDate(ed.getEmpDc(),curDate)
 				.parallelStream().sorted(
 						(t1,t2)-> 
 							{ 
 								try {
-									return forDateFormatter.parse(t2.getForDate()).compareTo(forDateFormatter.parse(t1.getForDate()));
+									int val = forDateFormatter.parse(t2.getForDate()).compareTo(forDateFormatter.parse(t1.getForDate()));
+									val = t2.getStatus().compareTo(t1.getStatus());
+									
+									int t1StatPos = seq.indexOf(t1.getStatus().toLowerCase());
+									int t2StatPos = seq.indexOf(t2.getStatus().toLowerCase());
+									
+									if(t2StatPos>t1StatPos) {
+										val = -1;
+									} else if(t2StatPos==t1StatPos) {
+										val = 0;
+									} else {
+										val = 1;
+									}
+									
+									return val;
 								} catch (ParseException e) {
 									return -1;
 								}

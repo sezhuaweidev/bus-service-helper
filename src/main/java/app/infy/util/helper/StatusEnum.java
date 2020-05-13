@@ -1,11 +1,12 @@
 package app.infy.util.helper;
 
 public enum StatusEnum {
+	pending,
 	approved,
-	rejected,
 	approved_mgr,
-	rejected_mgr,
 	approved_trns,
+	rejected,
+	rejected_mgr,
 	rejected_trns,
 	cancelled
 }
