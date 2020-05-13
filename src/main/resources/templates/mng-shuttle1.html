@@ -538,7 +538,7 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/CANCELLED','cancel')|">Cancel</button>
 								<button class="btn btn-info"
 									th:if="${shuttleRequest.status ne 'PENDING'}"
-									th:attr="onclick=|showRemark('Employee Remark:${shuttleRequest.remark}</br>Manager Remark:${shuttleRequest.mngRemark}</br>Transporter Remark:${shuttleRequest.trnsRemark}')|">
+									th:attr="onclick=|showRemark('<b>Employee Remark:</b> ${shuttleRequest.remark}</br><b>Manager Remark:</b> ${shuttleRequest.mngRemark}</br><b>Transporter Remark:</b> ${shuttleRequest.trnsRemark}')|">
 									View Remark</button> <!-- <a th:href="@{${optionUrl}+${shuttleRequest.requestId}+'/Approved'}">Approve</a>
 										<a th:href="@{${optionUrl}+${shuttleRequest.requestId}+'/Rejected'}">Reject</a>
 										<a th:href="@{${optionUrl}+${shuttleRequest.requestId}+'/Cancelled'}">Cancel</a> -->
