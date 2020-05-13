@@ -2,6 +2,7 @@ package app.infy.util.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -21,6 +22,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import app.infy.util.entity.EmployeeDetail;
 import app.infy.util.entity.InfyCountry;
@@ -75,12 +79,12 @@ public class ViewServiceController {
 			throw new ControllerException(MessageConstants.PROVIDED_ID_INVALID);
 		}
 		
-		//EmployeeDetail ed = employeeService.getEmployeeDetailById(intId);
+		EmployeeDetail ed = employeeService.getEmployeeDetailById(intId);
 		String url = "redirect:"+ request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/";;
 		
-		if(authString.equalsIgnoreCase("EMPLOYEE") || authString.equalsIgnoreCase("MANAGER")){
+		if(!authString.equalsIgnoreCase("TRANSPORT")){
 			url = "redirect:"+ request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/";
-		}else if(authString.equalsIgnoreCase("TRANSPORT")){
+		}else {
 			url = "redirect:"+ request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() +"/view/transManage/";
 		}
 		return url;
@@ -161,7 +165,6 @@ public class ViewServiceController {
 			throw new ControllerException(MessageConstants.PROVIDED_ID_INVALID);
 		}
 		
-		SimpleDateFormat forDateFormatter= new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm");
 		String curDate = sdf.format(new Date());
 		EmployeeDetail ed = employeeService.getEmployeeDetailById(intId);
 		model.addAttribute("employeename", ed.getEmpName());
@@ -169,7 +172,9 @@ public class ViewServiceController {
 		model.addAttribute("employeeid", ed.getEmpId());
 		model.addAttribute("pathApply",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/");
 		model.addAttribute("pathManage",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/manage/");
-		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByMngIdAndDate(intId,curDate).parallelStream().sorted(
+		SimpleDateFormat forDateFormatter= new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm");
+		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByMngIdAndDate(intId,curDate)
+				.parallelStream().sorted(
 					(t1,t2)-> 
 						{ 
 							try {
@@ -178,7 +183,7 @@ public class ViewServiceController {
 								return -1;
 							}
 					}).collect(Collectors.toList());
-		Collections.reverse(lstShuttleTimings);
+		
 		model.addAttribute("shuttleRequestList", lstShuttleTimings);
 		model.addAttribute("optionUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/shuttleservice/");
 		model.addAttribute("logoutUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/auth/logout");
@@ -205,7 +210,18 @@ public class ViewServiceController {
 		model.addAttribute("employeeRole", ed.getEmpType());
 		model.addAttribute("pathApply",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/");
 		model.addAttribute("pathManage",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/empManage/");
-		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByEmpMngIdAndDate(intId,curDate);
+		SimpleDateFormat forDateFormatter= new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm");
+		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByEmpMngIdAndDate(intId,curDate)
+				.parallelStream().sorted(
+						(t1,t2)-> 
+							{ 
+								try {
+									return forDateFormatter.parse(t2.getForDate()).compareTo(forDateFormatter.parse(t1.getForDate()));
+								} catch (ParseException e) {
+									return -1;
+								}
+						}).collect(Collectors.toList());
+			
 		model.addAttribute("shuttleRequestList", lstShuttleTimings);
 		model.addAttribute("optionUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/shuttleservice/");
 		model.addAttribute("logoutUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/auth/logout");
@@ -232,12 +248,20 @@ public class ViewServiceController {
 		model.addAttribute("employeeRole", ed.getEmpType());
 		//model.addAttribute("pathApply",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/"+ed.getEmpId());
 		model.addAttribute("pathManage",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/transManage/");
-		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByTransMngIdAndDate(ed.getEmpDc(),curDate);
+		SimpleDateFormat forDateFormatter= new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm");
+		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByTransMngIdAndDate(ed.getEmpDc(),curDate)
+				.parallelStream().sorted(
+						(t1,t2)-> 
+							{ 
+								try {
+									return forDateFormatter.parse(t2.getForDate()).compareTo(forDateFormatter.parse(t1.getForDate()));
+								} catch (ParseException e) {
+									return -1;
+								}
+						}).collect(Collectors.toList());
 		model.addAttribute("shuttleRequestList", lstShuttleTimings);
 		model.addAttribute("optionUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/shuttleservice/");
 		model.addAttribute("logoutUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/auth/logout");
 		return "mng-shuttle1";
 	}
-	
-	
 }
