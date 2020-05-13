@@ -26,17 +26,26 @@
 	th:href="@{/css/dataTables.bootstrap.min.css}" />
 <!-- <link rel='stylesheet' type='text/css'
 	href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'/> -->
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"/>
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" />
 
 
-<script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.bootstrap4.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.colVis.min.js"></script>
+<script
+	src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+<script
+	src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.bootstrap4.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script
+	src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+<script
+	src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>
+<script
+	src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.colVis.min.js"></script>
 
 
 
@@ -84,158 +93,195 @@ a, h1, h2, h3, h4, h5, h6, p, label, input {
 	height: 100%;
 }
 /* @Added By Lokesh */
-.pass-container{
-    border: 1px solid #077cc3;
-    border-radius: 5px;
+.pass-container {
+	border: 1px solid #077cc3;
+	border-radius: 5px;
 }
-.pass-header{
-    padding: 7px 15px;
-    background: #077cc3;
-    color: white;
-    border-radius: 5px 5px 0px 0px;
+
+.pass-header {
+	padding: 7px 15px;
+	background: #077cc3;
+	color: white;
+	border-radius: 5px 5px 0px 0px;
 }
-.bg-custom{
+
+.bg-custom {
 	background-color: #077cc3;
 }
-li.nav-item{
-  margin-left:5px;
-  transition: 0.3s;
-}
-li.nav-item a{
-color:white !important;
+
+li.nav-item {
+	margin-left: 5px;
+	transition: 0.3s;
 }
 
-li.nav-item.active a{
-	color:black !important;
-	   
+li.nav-item a {
+	color: white !important;
 }
-li.nav-item.active {
-    background: #f8f9fa;
-    border-radius: 3px;
-    padding: 0px 10px;
-}
-ul.navbar-nav li.nav-item:hover{
-    background: #f8f9fa;
-    border-radius: 3px;
-    padding: 0px 10px;
- }
-ul.navbar-nav li.nav-item:hover a{
-    color:black !important;
-}
-div.dropdown-menu.show a.nav-link{
+
+li.nav-item.active a {
 	color: black !important;
 }
+
+li.nav-item.active {
+	background: #f8f9fa;
+	border-radius: 3px;
+	padding: 0px 10px;
+}
+
+ul.navbar-nav li.nav-item:hover {
+	background: #f8f9fa;
+	border-radius: 3px;
+	padding: 0px 10px;
+}
+
+ul.navbar-nav li.nav-item:hover a {
+	color: black !important;
+}
+
+div.dropdown-menu.show a.nav-link {
+	color: black !important;
+}
+
 .login-container label, .pass-container label {
-    color: #077cc3;
- }
+	color: #077cc3;
+}
+
 tfoot tr, thead tr {
 	background: #077cc3;
-    color: white;
+	color: white;
 }
-tfoot td {
-	font-weight:bold;
-}
-.mng-container{
-	border: 1px solid #077cc3;
-    border-radius: 5px;
-   	margin: 0px auto;
-	width: 96%;
 
+tfoot td {
+	font-weight: bold;
 }
+
+.mng-container {
+	border: 1px solid #077cc3;
+	border-radius: 5px;
+	margin: 0px auto;
+	width: 96%;
+}
+
 .dataTables_wrapper {
-	    margin-top: 1%;
-	    margin-bottom: 1%;
+	margin-top: 1%;
+	margin-bottom: 1%;
 }
-table.dataTable thead>tr>th.sorting_asc, table.dataTable thead>tr>th.sorting_desc, table.dataTable thead>tr>th.sorting, table.dataTable thead>tr>td.sorting_asc, table.dataTable thead>tr>td.sorting_desc, table.dataTable thead>tr>td.sorting {
-    padding-top: 5px;
-    padding-bottom: 5px;
+
+table.dataTable thead>tr>th.sorting_asc, table.dataTable thead>tr>th.sorting_desc,
+	table.dataTable thead>tr>th.sorting, table.dataTable thead>tr>td.sorting_asc,
+	table.dataTable thead>tr>td.sorting_desc, table.dataTable thead>tr>td.sorting
+	{
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
-table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:before, table.dataTable thead .sorting_asc_disabled:before, table.dataTable thead .sorting_desc_disabled:before,table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:after {
-    top: 3px;
+
+table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before,
+	table.dataTable thead .sorting_desc:before, table.dataTable thead .sorting_asc_disabled:before,
+	table.dataTable thead .sorting_desc_disabled:before, table.dataTable thead .sorting:after,
+	table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after,
+	table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:after
+	{
+	top: 3px;
 }
-.dataTables_empty{
+
+.dataTables_empty {
 	color: red;
-    font-weight: 600;
+	font-weight: 600;
 }
-.exp-btn{
+
+.exp-btn {
 	display: flex;
 }
-.exp-btn .dt-buttons{
+
+.exp-btn .dt-buttons {
 	padding-left: 1rem;
 }
- .exp-btn .dt-buttons .btn{
+
+.exp-btn .dt-buttons .btn {
 	background: #077cc3;
 	color: #fff;
 	border-color: #077cc3;
-} 
-.btn-secondary:active, .btn-secondary:focus, .btn-secondary:hover{
-	background-color: green !important;
-    border-color: green !important;
 }
+
+.btn-secondary:active, .btn-secondary:focus, .btn-secondary:hover {
+	background-color: green !important;
+	border-color: green !important;
+}
+
 .export-button-style {
-	height:29px;
-	padding-top:2px;
+	height: 29px;
+	padding-top: 2px;
+}
+
+.control-group error { "
+	border-color ": "#dc3545"; "
+	box-shadow ": "0 0 0 0.2rem #e20f2457"
 }
 </style>
 
 <script type="text/javascript">
-	$(document).ready(function() {
-		var table = $('#log').DataTable({
-			responsive : true,
-			scrollCollapse: true,
-			//scrollY: "400px",
-			scrollX: true,
-			paging:true,
-			lengthChange:true,
-			"columnDefs": [
-	            {
-	                "targets": [ 2 ],
-	                "visible": false,
-	                "searchable": false
-	            }
-	        ],
-			//"aaSorting": [ [2, "desc"],[3, "desc"]],
-			//"orderMulti": true,
-			order: [ 2,"desc"],
-			buttons: [ {
-		         extend: 'excel',
-		         text: '<i class="fas fa-file-excel"></i> Export',
-		         title:'Pass detail',
-		         className: 'btn btn-success btn-sm export-button-style',
-		         exportOptions: {
-		            columns: 'th:not(:last-child)'
-		         }
-				},
-		        {
-			         text: '<i class="fas fa-search-plus"></i>Advanced Search',
-			         title:'Click to open advanced search window',
-			         className: 'btn btn-success btn-sm export-button-style ml-1',
-			         exportOptions: {
-			            columns: 'th:not(:last-child)'
-			         }
+	$(document)
+			.ready(
+					function() {
+						var table = $('#log')
+								.DataTable(
+										{
+											responsive : true,
+											scrollCollapse : true,
+											//scrollY: "400px",
+											scrollX : true,
+											paging : true,
+											lengthChange : true,
+											"columnDefs" : [ {
+												"targets" : [ 3 ],
+												"visible" : false,
+												"searchable" : false
+											} ],
+											//"aaSorting": [ [2, "desc"],[3, "desc"]],
+											//"orderMulti": true,
+											order : [ 3, "desc" ],
+											buttons : [
+													{
+														extend : 'excel',
+														text : '<i class="fas fa-file-excel"></i> Export',
+														title : 'Pass detail',
+														className : 'btn btn-success btn-sm export-button-style',
+														exportOptions : {
+															columns : 'th:not(:last-child)'
+														}
+													}/* ,
+													{
+														text : '<i class="fas fa-search-plus"></i>Advanced Search',
+														title : 'Click to open advanced search window',
+														className : 'btn btn-success btn-sm export-button-style ml-1',
+														exportOptions : {
+															columns : 'th:not(:last-child)'
+														}
 
-		      } ]
-			
-		});
-		table.buttons().container()
-        .appendTo( '#log_wrapper .col-md-6:eq(0)' );
-		//table.ordder([ [2, "desc"],[3, "desc"]]);
-		//$("#log").css("max-height","200px");
-		$("#log_wrapper").find(".col-md-6:eq(0)").addClass('exp-btn')
-		console.log($("#log_wrapper").find(".col-md-6:eq(0)"));
-		
-		//providing custom search
-		$("#log_filter").html('<label><label class="input-group-text p-0"><i class="fas fa-search" style="padding-left:7px;color:#077cc3"></i><input type="search" class="form-control form-control-sm" placeholder="Search from any column" id="search-input" aria-controls="log"></label></label>');
-		
-		//injecting searching functionality
-		var oTable = $('#log').DataTable();
-		$('#search-input').keyup(function(){
-			oTable.search($(this).val()).draw() ;
-		})
-		
-	});
-	
-	
+													}  */]
+
+										});
+						table.buttons().container().appendTo(
+								'#log_wrapper .col-md-6:eq(0)');
+						//table.ordder([ [2, "desc"],[3, "desc"]]);
+						//$("#log").css("max-height","200px");
+						$("#log_wrapper").find(".col-md-6:eq(0)").addClass(
+								'exp-btn')
+						console.log($("#log_wrapper").find(".col-md-6:eq(0)"));
+
+						//providing custom search
+						$("#log_filter")
+								.html(
+										'<label><label class="input-group-text p-0"><i class="fas fa-search" style="padding-left:7px;color:#077cc3"></i><input type="search" class="form-control form-control-sm" placeholder="Search from any column" id="search-input" aria-controls="log"></label></label>');
+
+						//injecting searching functionality
+						var oTable = $('#log').DataTable();
+						$('#search-input').keyup(function() {
+							oTable.search($(this).val()).draw();
+						})
+
+					});
+
 	function toggleWorkingScreen(doShow) {
 		if (doShow) {
 			$(document.body).css("cursor", "wait");
@@ -246,48 +292,79 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 		}
 	}
 
-	function doAction(urlPath,status) {
+	function doAction(urlPath, status) {
 		//alert(urlPath);
 		toggleWorkingScreen(true);
-		bootbox.confirm({
-		    message: "Are you sure, do you want to "+status+"?",
-		    buttons: {
-		        confirm: {
-		            label: 'Yes',
-		            className: 'btn-success'
-		        },
-		        cancel: {
-		            label: 'Cancel',
-		            className: 'btn-danger'
-		        }
-		    },
-		    callback: function (result) {
-		        if(result){
-		        	$.ajax({
-		    			type : 'GET',
-		    			url : urlPath,
-		    			contentType : 'text/plain',
-		    			success : function(data) {
-		    				showModal("Success", data.data);
-		    				//data needs to be added in table here
+		bootbox.prompt({
+			title : "Are you sure, do you want to " + status + "?",
+			placeholder : "Enter a reason",
+			buttons : {
+				confirm : {
+					label : 'Yes',
+					className : 'btn-success'
+				},
+				cancel : {
+					label : 'Cancel',
+					className : 'btn-danger'
+				}
+			},
+			callback : function(result) {
+				var remark;
+				if (result == "") {
+					remark = "NA";
+				} else {
+					remark = result;
+				}
+				if (result != null) {
+					$.ajax({
+						type : 'GET',
+						url : urlPath + '/' + remark,
+						contentType : 'text/plain',
+						success : function(data) {
+							showModal("Success", data.data);
+							//data needs to be added in table here
 
-		    			},
-		    			error : function(data) {
-		    				showModal("Error", JSON.parse(data.responseText).data);
-		    				//var tb = $("#log").DataTable();
-		    			},
-		    			complete : function() {
-		    				toggleWorkingScreen(false);
-		    			}
-		    		});
-		       }else{
-		    	   toggleWorkingScreen(false);
-		       } 
-		      
-		    }
+						},
+						error : function(data) {
+							showModal("Error",
+									JSON.parse(data.responseText).data);
+							//var tb = $("#log").DataTable();
+						},
+						complete : function() {
+							toggleWorkingScreen(false);
+						}
+					});
+				} else {
+					toggleWorkingScreen(false);
+				}
+
+			}
 		});
-		
 
+	}
+
+	function showRemark(remark) {
+
+		bootbox.alert(remark);
+	}
+	function showPopover(id, text, duration) {
+		$(id).popover({
+			placement : 'top',
+			content : text
+		});
+		$(id).popover('show');
+		$(id).focus();
+		$(id).css({
+			"border-color" : "#dc3545",
+			"box-shadow" : "0 0 0 0.2rem #e20f2457"
+		});
+		setTimeout(function() {
+			$(id).popover('dispose');
+			$(id).css({
+				"border-color" : "#ced4da",
+				"box-shadow" : ""
+			});
+		}, duration);
 	}
 
 	function logout(url) {
@@ -325,11 +402,12 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 <body>
 	<div id="working-screen" class="overlay"></div>
 
-	<nav class="navbar navbar-expand-lg navbar-light bg-custom" style="padding: 0px 5px;margin-bottom: 3%;">
-		<a class="navbar-brand text-white font-weight-bold" href="#"> <img
-			src="../../image/infylogo.png" alt="Infosys"
-			style="width: 40%; height: 36px;" /> <!-- 	Welcome <span th:text="${employeename}"></span> -->
-		</a>
+	<nav class="navbar navbar-expand-lg navbar-light bg-custom"
+		style="padding: 0px 5px;margin-bottom: 3%;"> <a
+		class="navbar-brand text-white font-weight-bold" href="#"> <img
+		src="../../image/infylogo.png" alt="Infosys"
+		style="width: 40%; height: 36px;" /> <!-- 	Welcome <span th:text="${employeename}"></span> -->
+	</a>
 
 	<button class="navbar-toggler" type="button" data-toggle="collapse"
 		data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02"
@@ -342,12 +420,8 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 		</div>
 		<ul class="navbar-nav">
 
-			<!-- <li class="nav-item"><a class="nav-link font-weight-bold"
-				th:if="${employeeRole eq 'EMPLOYEE'}" th:href="${pathApply}"><i
-					class="fa fa-edit"> </i> Apply</a></li> -->
 			<li class="nav-item"><a class="nav-link font-weight-bold"
-				 th:href="${pathApply}"><i
-					class="fa fa-edit"> </i> Apply</a></li>
+				th:href="${pathApply}"><i class="fa fa-edit"> </i> Apply</a></li>
 			<li class="nav-item active"><a class="nav-link font-weight-bold"
 				th:href="${pathManage}"><i class="fa fa-tasks"> </i> Manage</a></li>
 			<!-- Logout -->
@@ -365,16 +439,18 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 	</div>
 	</nav>
 
-	<div class="container-fluid" style="margin-bottom:30px">
+	<div class="container-fluid" style="margin-bottom: 30px">
 		<div class="row mng-container mt-2">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pass-header">
 				<div class="float-left d-none d-md-block">
-					<h5 style="margin: 0 auto; padding-top:2px;padding-bottom:4px">Manage Pass</h5>
+					<h5 style="margin: 0 auto; padding-top: 2px; padding-bottom: 4px">Manage
+						Pass</h5>
 				</div>
 				<div class="text-center d-md-none">
-					<h5 style="margin: 0 auto; padding-top:4px;padding-bottom:10px">Manage Pass</h5>
+					<h5 style="margin: 0 auto; padding-top: 4px; padding-bottom: 10px">Manage
+						Pass</h5>
 				</div>
-				<div class="float-right d-none d-md-block">
+				<!-- <div class="float-right d-none d-md-block">
 					<div class="float-right">
 					<div class="input-group input-group-sm float-right">
 						<div class="input-group-prepend">
@@ -387,8 +463,8 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 						</select>
 					</div>
 					</div>
-				</div>
-				<div class="mr-auto d-md-none p-2">
+				</div> -->
+				<!-- <div class="mr-auto d-md-none p-2">
 					<div class="align-self-center input-group input-group-sm">
 						<div class="input-group-prepend">
 							<span class="input-group-text">Show:</span>
@@ -399,7 +475,7 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 							<option>Requires my approval</option>
 						</select>
 					</div>
-				</div>
+				</div> -->
 			</div>
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<table id="log"
@@ -408,8 +484,9 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 					<thead>
 						<tr>
 							<!-- <th>SL NO.</th> -->
-							<th>Employee Name</th>
-							<th>DC Name</th>
+							<th>Employee</th>
+							<th>DC From</th>
+							<th>DC To</th>
 							<th>Shuttle Date</th>
 							<th>Shuttle Date</th>
 							<th>Shuttle Time</th>
@@ -421,14 +498,21 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 					<tbody>
 						<tr th:each="shuttleRequest: ${shuttleRequestList}">
 							<!-- <td th:text="${id.count}"></td> -->
-							<td th:text="${@beanService.getEmployeeName(shuttleRequest.requester)}"></td>
+							<td
+								th:text="${@beanService.getEmployeeName(shuttleRequest.requester)}"></td>
 							<td th:text="${shuttleRequest.dcFrom}"></td>
+							<td th:text="${shuttleRequest.dcTo}"></td>
 							<td th:text="${shuttleRequest.forDate}"></td>
-							<td th:with="sdf = ${new java.text.SimpleDateFormat('dd-MM-yyyy HH:mm')}" th:text="${#dates.format(sdf.parse(shuttleRequest.forDate),'dd-MM-yyyy')}"></td>
-							<td th:with="sdf = ${new java.text.SimpleDateFormat('dd-MM-yyyy HH:mm')}" th:text="${#dates.format(sdf.parse(shuttleRequest.forDate),'HH:mm')}"></td>
+							<td
+								th:with="sdf = ${new java.text.SimpleDateFormat('dd-MM-yyyy HH:mm')}"
+								th:text="${#dates.format(sdf.parse(shuttleRequest.forDate),'dd-MM-yyyy')}"></td>
+							<td
+								th:with="sdf = ${new java.text.SimpleDateFormat('dd-MM-yyyy HH:mm')}"
+								th:text="${#dates.format(sdf.parse(shuttleRequest.forDate),'HH:mm')}"></td>
 							<td th:text="${shuttleRequest.reason}"></td>
-							<td><span th:if="${shuttleRequest.status eq 'PENDING'}">Pending</span>
-								<span th:if="${shuttleRequest.status eq 'CANCELLED'}">Cancelled</span>
+							<td><span th:if="${shuttleRequest.status eq 'PENDING'}">Pending
+									With Manager</span> <span
+								th:if="${shuttleRequest.status eq 'CANCELLED'}">Cancelled</span>
 								<span th:if="${shuttleRequest.status eq 'APPROVED_MGR'}">Approved
 									By Manager</span> <span
 								th:if="${shuttleRequest.status eq 'APPROVED_TRNS'}">Approved
@@ -453,7 +537,10 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 								<button class="btn btn-danger"
 									th:if="${employeeRole eq 'EMPLOYEE' && shuttleRequest.status eq 'PENDING'}"
 									th:attr="onclick=|doAction('${optionUrl}${shuttleRequest.requestId}/CANCELLED','cancel')|">Cancel</button>
-								<!-- <a th:href="@{${optionUrl}+${shuttleRequest.requestId}+'/Approved'}">Approve</a>
+								<button class="btn btn-info"
+									th:if="${shuttleRequest.remark ne null}"
+									th:attr="onclick=|showRemark('${shuttleRequest.remark}')|">
+									View Remark</button> <!-- <a th:href="@{${optionUrl}+${shuttleRequest.requestId}+'/Approved'}">Approve</a>
 										<a th:href="@{${optionUrl}+${shuttleRequest.requestId}+'/Rejected'}">Reject</a>
 										<a th:href="@{${optionUrl}+${shuttleRequest.requestId}+'/Cancelled'}">Cancel</a> -->
 							</td>

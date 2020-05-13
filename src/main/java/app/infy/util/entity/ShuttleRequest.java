@@ -30,6 +30,9 @@ public class ShuttleRequest {
 	
 	@Column(name="reason")
 	private String reason;
+	
+	@Column(name="remark")
+	private String remark;
 
 	@Column(name="for_date")
 	private String forDate;
@@ -70,6 +73,14 @@ public class ShuttleRequest {
 
 	public void setReason(String reason) {
 		this.reason = reason;
+	}
+	
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 	public String getForDate() {

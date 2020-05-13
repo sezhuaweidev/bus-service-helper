@@ -183,6 +183,16 @@ div.dropdown-menu.show a.nav-link {
 												$('#timming').val("-1");
 											}
 										});
+						$('#dcTo')
+						.change(
+								function() {
+									var dcFrom = $("#dcFrom").val();
+									var dcTo = $("#dcTo").val();
+									if(dcFrom == dcTo){
+										showPopover("#dcTo", "Dc from and to cannot be same.", 3000);
+										$('#dcTo').val("-1");
+									}
+								});
 
 						$('#region')
 								.change(

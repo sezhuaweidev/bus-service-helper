@@ -17,7 +17,7 @@ public interface ShuttleService {
 
 	ShuttleBookingStatus getShuttleStatusById(String id);
 
-	String updateShuttleBookingStatus(String shuttleRequestId, StatusEnum statusEnum);
+	String updateShuttleBookingStatus(String shuttleRequestId, StatusEnum statusEnum, String reason);
 
 	List<ShuttleTiming> getAllShuttles();
 

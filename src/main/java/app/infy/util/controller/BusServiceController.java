@@ -69,12 +69,13 @@ public class BusServiceController {
 		return new AppResponse<ShuttleBookingStatus>(shuttleBookingStatus);
 	}
 	
-	@GetMapping(value="{shuttleRequestId}/{status}",produces=MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value="{shuttleRequestId}/{status}/{reason}",produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(code=HttpStatus.OK)
 	public AppResponse<String> updateShuttleRequestStatus(
 			@PathVariable(name="shuttleRequestId", required = true) String shuttleRequestId, 
-			@PathVariable(name="status",required = true) String status) {
-		logger.info("updateShuttleRequestStatus called with "+shuttleRequestId+ " and status:"+status);
+			@PathVariable(name="status",required = true) String status,
+			@PathVariable(name="reason") String reason) {
+		logger.info("updateShuttleRequestStatus called with "+shuttleRequestId+ " and status:"+status+"reason:"+reason);
 		//validation
 		if(!StringUtils.hasText(shuttleRequestId) || shuttleRequestId.length() < 4 ) {
 			throw new ApplicationException(MessageConstants.PROVIDED_ID_INVALID);
@@ -87,7 +88,7 @@ public class BusServiceController {
 		}
 		
 		//logic
-		String retStatus = shuttleService.updateShuttleBookingStatus(shuttleRequestId, statusEnum);
+		String retStatus = shuttleService.updateShuttleBookingStatus(shuttleRequestId, statusEnum,reason);
 		return new AppResponse<String>(getMessageFromStatusEnum(retStatus));
 	}
 

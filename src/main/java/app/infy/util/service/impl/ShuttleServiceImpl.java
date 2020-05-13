@@ -161,7 +161,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 	}
 
 	@Override
-	public String updateShuttleBookingStatus(String shuttleRequestId, StatusEnum statusEnum) {
+	public String updateShuttleBookingStatus(String shuttleRequestId, StatusEnum statusEnum,String reason) {
 		//check status of request-- to be done
 		//cancelled - no op
 		if(!shuttleRequestRepository.existsById(shuttleRequestId)) {
@@ -178,6 +178,7 @@ public class ShuttleServiceImpl implements ShuttleService {
 				throw new ApplicationException(MessageConstants.STATUS_NOTRANSPORT);
 			}else {
 				shuttleRequest.setStatus(statusEnum.name().toUpperCase());
+				shuttleRequest.setRemark(reason);
 				
 				if(shuttleRequest.getStatus().equalsIgnoreCase("CANCELLED") || shuttleRequest.getStatus().equalsIgnoreCase("REJECTED_TRNS") || shuttleRequest.getStatus().equalsIgnoreCase("REJECTED_MGR")) {
 					int random = new Double(Math.floor(Math.random()*100)).intValue();
