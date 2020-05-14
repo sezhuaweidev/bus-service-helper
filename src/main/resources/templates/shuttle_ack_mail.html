@@ -40,7 +40,7 @@
     </p>
     <p>
     	
-    	<a th:href="${manageUrl}"><button type="button">Click to take action.</button></a>
+    	<a th:if="${status eq 'APPROVED_MGR'}" th:href="${manageUrl}"><button type="button">Click to take action.</button></a>
     	<!-- 
     	<a th:href="${approveUrl}"><button type="button">Approve</button></a>
     	<a th:href="${rejectUrl}"><button type="button">Reject</button></a>

@@ -1,5 +1,7 @@
 package app.infy.util.entity;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -42,6 +44,9 @@ public class ShuttleRequest {
 
 	@Column(name="for_date")
 	private String forDate;
+	
+	@Column(name="created_at")
+	private Timestamp createdAt;
 	
 	private String status;
 	
@@ -135,6 +140,14 @@ public class ShuttleRequest {
 
 	public void setTrnsRemark(String trnsRemark) {
 		this.trnsRemark = trnsRemark;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
 	}
 
 	@Override

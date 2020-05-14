@@ -1,10 +1,13 @@
 package app.infy.util.controller;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -150,6 +153,26 @@ public class ViewServiceController {
 		return "emp-shuttle1";
 	}
 	
+	private List<ShuttleRequest> sortDataByDate(Integer empId, List<ShuttleRequest> lstData, String...seq) {
+		Collections.sort(lstData, (t1, t2)-> { 
+			return t2.getCreatedAt().compareTo(t1.getCreatedAt());
+		});
+		Date obj = Timestamp.valueOf(LocalDate.now().atTime(0, 0, 1));
+		List<ShuttleRequest> todaysReqs = lstData.parallelStream()
+					.filter(t->t.getCreatedAt().after(obj)).collect(Collectors.toList());
+		todaysReqs.forEach(t->lstData.remove(t));
+		todaysReqs.sort((t1,t2)-> {
+			if(t2.getStatus().equalsIgnoreCase("PENDING") || (t2.getStatus().equalsIgnoreCase("APPROVED_MGR") && t2.getRequester() == empId)) {
+				return 1;
+			} else if(t2.getStatus().equalsIgnoreCase("APPROVED_MGR")) {
+				return 0;
+			} else {
+				return -1;
+			}
+		});
+		lstData.addAll(0, todaysReqs);
+		return lstData;
+	}
 	
 	@GetMapping(value = "manage")
 	public String getManagePage(Model model) {
@@ -172,29 +195,13 @@ public class ViewServiceController {
 		model.addAttribute("employeeid", ed.getEmpId());
 		model.addAttribute("pathApply",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/");
 		model.addAttribute("pathManage",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/manage/");
-		SimpleDateFormat forDateFormatter= new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm");
+		//SimpleDateFormat forDateFormatter= new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm");
 		
 		//List<String> seq = Arrays.stream("pending,approved_mgr,approved_trns,cancelled,rejected_mgr,rejected_trns,approved,rejected".split(",")).collect(Collectors.toList());
-		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByMngIdAndDate(intId,curDate)
-				.parallelStream().sorted(
-					(t1,t2)-> 
-						{ 
-							try {
-								int val = forDateFormatter.parse(t2.getForDate()).compareTo(forDateFormatter.parse(t1.getForDate()));
-								val = t2.getStatus().compareTo(t1.getStatus());
-								
-								if(t2.getStatus().equalsIgnoreCase("pending")) {
-									val = 1;
-								}else if(t2.getStatus().equalsIgnoreCase("approved_mgr")) {
-									val = 1;
-								}
-								
-								return val;
-							} catch (ParseException e) {
-								return -1;
-							}
-					}).collect(Collectors.toList());
-		
+		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByMngIdAndDate(intId,curDate);
+		if(lstShuttleTimings != null && lstShuttleTimings.size()>0) {
+			lstShuttleTimings = sortDataByDate(ed.getEmpId(), lstShuttleTimings, "PENDING","APPROVED_MGR");
+		}
 		model.addAttribute("shuttleRequestList", lstShuttleTimings);
 		model.addAttribute("optionUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/shuttleservice/");
 		model.addAttribute("logoutUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/auth/logout");
@@ -221,28 +228,12 @@ public class ViewServiceController {
 		model.addAttribute("employeeRole", ed.getEmpType());
 		model.addAttribute("pathApply",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/");
 		model.addAttribute("pathManage",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/empManage/");
-		SimpleDateFormat forDateFormatter= new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm");
+		//SimpleDateFormat forDateFormatter= new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm");
 		//List<String> seq = Arrays.stream("pending,approved_mgr,approved_trns,cancelled,rejected_mgr,rejected_trns,approved,rejected".split(",")).collect(Collectors.toList());
-		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByEmpMngIdAndDate(intId,curDate)
-				.parallelStream().sorted(
-						(t1,t2)-> 
-							{ 
-								try {
-									int val = forDateFormatter.parse(t2.getForDate()).compareTo(forDateFormatter.parse(t1.getForDate()));
-									val = t2.getStatus().compareTo(t1.getStatus());
-									
-									if(t2.getStatus().equalsIgnoreCase("pending")) {
-										val = 1;
-									}else if(t2.getStatus().equalsIgnoreCase("approved_mgr")) {
-										val = 1;
-									}
-									
-									return val;
-								} catch (ParseException e) {
-									return -1;
-								}
-						}).collect(Collectors.toList());
-			
+		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByEmpMngIdAndDate(intId,curDate);			
+		if(lstShuttleTimings != null && lstShuttleTimings.size()>0) {
+			lstShuttleTimings = sortDataByDate(ed.getEmpId(), lstShuttleTimings, "PENDING","APPROVED_MGR");
+		}
 		model.addAttribute("shuttleRequestList", lstShuttleTimings);
 		model.addAttribute("optionUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/shuttleservice/");
 		model.addAttribute("logoutUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/auth/logout");
@@ -269,32 +260,12 @@ public class ViewServiceController {
 		model.addAttribute("employeeRole", ed.getEmpType());
 		//model.addAttribute("pathApply",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/apply/"+ed.getEmpId());
 		model.addAttribute("pathManage",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/view/transManage/");
-		SimpleDateFormat forDateFormatter= new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm");
-		List<String> seq = Arrays.stream("pending,approved_mgr,approved_trns,cancelled,rejected_mgr,rejected_trns,approved,rejected".split(",")).collect(Collectors.toList());
-		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByTransMngIdAndDate(ed.getEmpDc(),curDate)
-				.parallelStream().sorted(
-						(t1,t2)-> 
-							{ 
-								try {
-									int val = forDateFormatter.parse(t2.getForDate()).compareTo(forDateFormatter.parse(t1.getForDate()));
-									val = t2.getStatus().compareTo(t1.getStatus());
-									
-									int t1StatPos = seq.indexOf(t1.getStatus().toLowerCase());
-									int t2StatPos = seq.indexOf(t2.getStatus().toLowerCase());
-									
-									if(t2StatPos>t1StatPos) {
-										val = -1;
-									} else if(t2StatPos==t1StatPos) {
-										val = 0;
-									} else {
-										val = 1;
-									}
-									
-									return val;
-								} catch (ParseException e) {
-									return -1;
-								}
-						}).collect(Collectors.toList());
+		//SimpleDateFormat forDateFormatter= new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm");
+		//List<String> seq = Arrays.stream("pending,approved_mgr,approved_trns,cancelled,rejected_mgr,rejected_trns,approved,rejected".split(",")).collect(Collectors.toList());
+		List<ShuttleRequest> lstShuttleTimings = shuttleService.findShuttleRequestByTransMngIdAndDate(ed.getEmpDc(),curDate);
+		if(lstShuttleTimings != null && lstShuttleTimings.size()>0) {
+			lstShuttleTimings = sortDataByDate(ed.getEmpId(), lstShuttleTimings, "PENDING","APPROVED_MGR");
+		}
 		model.addAttribute("shuttleRequestList", lstShuttleTimings);
 		model.addAttribute("optionUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/shuttleservice/");
 		model.addAttribute("logoutUrl",request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/auth/logout");

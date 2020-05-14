@@ -274,14 +274,35 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 						console.log($("#log_wrapper").find(".col-md-6:eq(0)"));
 
 						//providing custom search
+						var selectText = "<select title='specify to search in specific column' class='form-control form-control-sm mr-0 pr-0' id='search-input-col'><option value='-1'>All</option><option value='0'>Applied By</option><option value='1'>DC From</option><option value='2'>DC To</option><option value='3'>Shuttle Date</option><option value='4'>Shuttle Time</option><option value='5'>Reason</option><option value='6'>Status</option></select>";
 						$("#log_filter")
 								.html(
-										'<label><label class="input-group-text p-0"><i class="fas fa-search" style="padding-left:7px;color:#077cc3"></i><input type="search" class="form-control form-control-sm" placeholder="Search from any column" id="search-input" aria-controls="log"></label></label>');
+										'<label><label class="input-group-text p-0"><i class="fas fa-search" style="padding-left:7px;padding-right:7px;color:#077cc3"></i>'+selectText+'<input type="search" class="ml-0 pl-1 form-control form-control-sm" placeholder="Search from any column" id="search-input" aria-controls="log"></label></label>');
 
 						//injecting searching functionality
 						var oTable = $('#log').DataTable();
 						$('#search-input').keyup(function() {
-							oTable.search($(this).val()).draw();
+							var searchCol = $("#search-input-col").val();
+							if(searchCol === '-1') {
+								oTable.columns().search(" ").draw();
+								oTable.search($(this).val()).draw();
+							} else {
+								oTable.columns().search(" ").draw();
+								oTable.columns(searchCol).search($(this).val()).draw();
+							}
+						})
+						$('#search-input-col').change(function() {
+							var searchCol = $(this).val();
+							var val = $('#search-input').val();
+							//console.log("called with "+searchCol+" val:"+val);
+							//oTable.columns().search('').draw();
+							if(searchCol === '-1') {
+								oTable.columns().search(" ").draw();
+								oTable.search(val).draw();
+							} else {
+								oTable.columns().search(" ").draw();
+								oTable.columns(searchCol).search(val).draw();
+							}
 						})
 
 					});
@@ -498,7 +519,7 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 					<thead>
 						<tr>
 							<!-- <th>SL NO.</th> -->
-							<th>Employee</th>
+							<th>Applied By</th>
 							<th>DC From</th>
 							<th>DC To</th>
 							<th>Shuttle Date</th>
@@ -512,6 +533,9 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 						<tr th:each="shuttleRequest: ${shuttleRequestList}">
 							<!-- <td th:text="${id.count}"></td> -->
 							<td
+								 th:if="${shuttleRequest.requester eq employeeid}">You</td>
+							<td
+								 th:if="${shuttleRequest.requester ne employeeid}"
 								th:text="${@beanService.getEmployeeName(shuttleRequest.requester)}"></td>
 							<td th:text="${shuttleRequest.dcFrom}"></td>
 							<td th:text="${shuttleRequest.dcTo}"></td>
@@ -522,16 +546,26 @@ table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before
 								th:with="sdf = ${new java.text.SimpleDateFormat('dd-MM-yyyy HH:mm')}"
 								th:text="${#dates.format(sdf.parse(shuttleRequest.forDate),'HH:mm')}"></td>
 							<td th:text="${shuttleRequest.reason}"></td>
-							<td><span th:if="${shuttleRequest.status eq 'PENDING'}">Pending
+							<td><span th:if="${shuttleRequest.status eq 'PENDING' && shuttleRequest.approver eq employeeid}">Requires
+									 Your approval</span>
+								<span th:if="${shuttleRequest.status eq 'PENDING' && shuttleRequest.approver ne employeeid}">Pending
 									With Manager</span> <span
 								th:if="${shuttleRequest.status eq 'CANCELLED'}">Cancelled</span>
-								<span th:if="${shuttleRequest.status eq 'APPROVED_MGR'}">Pending
+								<span th:if="${shuttleRequest.status eq 'APPROVED_MGR' && employeeRole eq 'TRANSPORT'}">Pending
+									With You</span>
+								<span th:if="${shuttleRequest.status eq 'APPROVED_MGR' && employeeRole ne 'TRANSPORT'}">Pending
 									With Transport</span> <span
-								th:if="${shuttleRequest.status eq 'APPROVED_TRNS'}">Approved
+								th:if="${shuttleRequest.status eq 'APPROVED_TRNS' && employeeRole eq 'TRANSPORT'}">Approved
+									By You</span> <span
+								th:if="${shuttleRequest.status eq 'APPROVED_TRNS' && employeeRole ne 'TRANSPORT'}">Approved
 									By Transport</span> <span
-								th:if="${shuttleRequest.status eq 'REJECTED_MGR'}">Rejected
+								th:if="${shuttleRequest.status eq 'REJECTED_MGR' && shuttleRequest.approver eq employeeid}">Rejected
+									By You</span> <span
+								th:if="${shuttleRequest.status eq 'REJECTED_MGR' && shuttleRequest.approver ne employeeid}">Rejected
 									By Manager</span> <span
-								th:if="${shuttleRequest.status eq 'REJECTED_TRNS'}">Rejected
+								th:if="${shuttleRequest.status eq 'REJECTED_TRNS' && employeeRole eq 'TRANSPORT'}">Rejected
+									By You</span> <span
+								th:if="${shuttleRequest.status eq 'REJECTED_TRNS' && employeeRole ne 'TRANSPORT'}">Rejected
 									By Transport</span></td>
 							<td>
 								<span class="cust fa fa-check fa-sm" style="color:green;cursor:pointer"

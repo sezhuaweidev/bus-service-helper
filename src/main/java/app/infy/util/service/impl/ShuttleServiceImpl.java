@@ -1,7 +1,9 @@
 package app.infy.util.service.impl;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -110,6 +112,8 @@ public class ShuttleServiceImpl implements ShuttleService {
 		}else if(ed.getEmpManagerId()==null){
 			throw new ApplicationException(MessageConstants.SHUTTLE_APPROVER_NOT_FOUND);
 		}else {
+			
+			sr.setCreatedAt(Timestamp.from(Instant.now()));
 			ShuttleRequest usr = shuttleRequestRepository.save(sr);
 			
 			EmployeeDetail managerDetail = employeeDetailRepository.findById(ed.getEmpManagerId()).orElse(new EmployeeDetail());
