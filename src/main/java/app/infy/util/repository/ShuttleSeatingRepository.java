@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import app.infy.util.entity.ShuttleSeating;
@@ -17,6 +18,6 @@ public interface ShuttleSeatingRepository extends JpaRepository<ShuttleSeating, 
 	public ShuttleSeating findByCode(String code);
 	
 	@Query("select s.count from ShuttleSeating as s where s.code=:reqTime")
-	Integer getSeatingStatusFor(String reqTime);
+	Integer getSeatingStatusFor(@Param("reqTime")String reqTime);
 	
 }
