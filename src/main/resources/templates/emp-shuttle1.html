@@ -198,7 +198,8 @@ div.dropdown-menu.show a.nav-link {
 								.change(
 										function() {
 											var thisRegion = this.value;
-											resetCountry();
+											$("#country").prop( "disabled", false );
+										resetCountry();
 											resetDcFrom();
 											resetDcTo();
 											$("#country option")
@@ -279,6 +280,7 @@ div.dropdown-menu.show a.nav-link {
 						$('#country')
 								.change(
 										function() {
+											$("#dcFrom").prop( "disabled", false );
 											resetDcFrom();
 											resetDcTo();
 											var thisCountry = this.value;
@@ -313,6 +315,8 @@ div.dropdown-menu.show a.nav-link {
 																}
 
 															});
+											$("#dcTo").prop( "disabled", false );
+											$("#timming").prop( "disabled", false );
 											$("#dcTo option")
 													.each(
 															function() {
@@ -509,6 +513,10 @@ div.dropdown-menu.show a.nav-link {
 		//return confirm("Reset all fields?");
 		$("#resetBtn").click(function(e) {
 			e.preventDefault();
+			$("#country").prop( "disabled", true );
+			$("#dcFrom").prop( "disabled", true );
+			$("#dcTo").prop( "disabled", true );
+			$("#timming").prop( "disabled", true );
 			bootbox.confirm({
 				message : "Are you sure,do you want to reset all fields?",
 				buttons : {
@@ -604,7 +612,7 @@ div.dropdown-menu.show a.nav-link {
 						<div class="col-sm-6">
 							<div class="form-group">
 								<label><span style="color: red">*</span>Country:</label> <select
-									class="form-control" id="country" name="country">
+									class="form-control" id="country" name="country" disabled>
 									<option value="-1">Select Country</option>
 									<option th:each="data : ${country}" th:value="${data.code}"
 										th:text="${data.name}" th:continent="${data.continent}" />
@@ -616,7 +624,7 @@ div.dropdown-menu.show a.nav-link {
 						<div class="col-sm-6">
 							<div class="form-group">
 								<label><span style="color: red">*</span>DC From:</label> <select
-									class="form-control" id="dcFrom" name="dcFrom">
+									class="form-control" id="dcFrom" name="dcFrom" disabled>
 									<option value="-1">Select DC</option>
 									<option th:each="data : ${shuttledcs}" th:text="${data.value}"
 										th:value="${data.code}" th:country="${data.country}"
@@ -627,7 +635,7 @@ div.dropdown-menu.show a.nav-link {
 						<div class="col-sm-6">
 							<div class="form-group">
 								<label><span style="color: red">*</span>DC To:</label> <select
-									class="form-control" id="dcTo" name="dcTo">
+									class="form-control" id="dcTo" name="dcTo" disabled>
 									<option value="-1">Select DC</option>
 									<option th:each="data : ${shuttledcs}" th:text="${data.value}"
 										th:value="${data.code}" th:country="${data.country}"
@@ -647,7 +655,7 @@ div.dropdown-menu.show a.nav-link {
 						<div class="col-md-6">
 							<div class="form-group">
 								<label><span style="color: red">*</span>Shuttle Timing:</label>
-								<select class="form-control" id="timming" name="timming">
+								<select class="form-control" id="timming" name="timming" disabled>
 									<option value="-1">Select Time</option>
 									<option th:each="data : ${shuttletimings}"
 										th:text="${data.startTime}" th:value="${data.code}" />
